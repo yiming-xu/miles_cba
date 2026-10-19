@@ -9,8 +9,15 @@ A five-minute interactive presentation for Singapore colleagues: start with what
 
 All redemption examples are one-way, per person. Actual award availability, cash fares and charges have not been checked for specific dates. Cash travel inputs in the worked examples are illustrative, not quotations. Card promotions are time-limited; follow their cited terms.
 
-## Status
-Content and research only. No calculator application or slide-deck file has been built. GitHub Pages is not enabled by this upload, and repository visibility remains unchanged.
+## Application and presentation
 
-## Proposed application
-Mobile-first static calculator with Value → Earn → Cost sections, editable assumptions, transparent break-even upgrade willingness, separate welcome-offer choices, and no collection of personal inputs. Hosting and implementation remain a subsequent step.
+- [Live calculator](https://yiming-xu.github.io/miles_cba/)
+- [Five-slide browser presentation](https://yiming-xu.github.io/miles_cba/slides.html)
+
+Static HTML/CSS/JavaScript, no backend, analytics, external assets or collection of financial inputs. GitHub still handles ordinary hosting request metadata. Use arrow keys or on-screen controls for slides; print to PDF if needed.
+
+The application conservatively rounds accumulation to whole months and uses an editable hypothetical 10,000-mile transfer block. Leftover miles are valued at zero. This differs intentionally from the earlier continuous-accrual research examples: default Tokyo is 15 months, S$535 cost and S$65 net benefit at S$150 upgrade willingness. These are hypothetical assumptions, not quotes. Optional welcome credits must already be net usable miles; required qualifying spend and card-specific fulfilment conditions are not automatically modelled. The tool is a teaching scenario, not a card optimiser or existing-mile valuation tool.
+
+Verification: 13 Python reference/static tests; separate actual app.js DOM execution using Node and jsdom covering defaults, route changes, time sensitivity, zero spending, blank validation, cap and welcome delay. DOM simulation is not a full visual/mobile browser acceptance test.
+
+Run reference tests: `python3 -m unittest discover -s tests -v`.

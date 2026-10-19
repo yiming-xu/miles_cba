@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en-SG">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10263a">
+  <meta name="description" content="A five-slide browser presentation: compare personal value, miles, cash and time for Singapore-origin one-way awards.">
+  <title>Miles or cash? — five-slide browser presentation</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="slides-page">
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Open Miles or cash calculator">
+      <span class="brand-mark" aria-hidden="true">M</span>
+      <span>Miles <span class="brand-light">/</span> cash</span>
+    </a>
+    <nav class="top-nav" aria-label="Page navigation">
+      <a href="index.html">Open calculator <span aria-hidden="true">↗</span></a>
+      <a href="https://yiming-xu.github.io/miles_cba/">Public URL <span aria-hidden="true">↗</span></a>
+    </nav>
+  </header>
+
+  <div class="slides-topline">
+    <span>Five-minute talk · one-way · one person · Singapore origin</span>
+    <strong id="slide-counter" aria-live="polite">Slide 1 of 5</strong>
+  </div>
+
+  <main class="slide-stage" id="slide-stage" aria-label="Five-slide presentation">
+    <section class="slide" id="slide-1" aria-labelledby="slide-title-1" aria-hidden="false">
+      <p class="slide-kicker">01 · Start with your value</p>
+      <h1 id="slide-title-1">What is the experience <em>worth to you?</em></h1>
+      <p class="slide-lede">Before looking at retail business fares, decide what you would actually pay for the better seat on a trip you want to take.</p>
+      <p class="slide-question">Choose Perth or Tokyo. How much extra would you personally pay for business instead of the economy trip you would otherwise buy?</p>
+      <p class="slide-url">Open the calculator or copy its persistent address:<br>
+        <a href="https://yiming-xu.github.io/miles_cba/">https://yiming-xu.github.io/miles_cba/</a>
+      </p>
+      <p class="slide-note">No QR image is embedded; the direct address avoids an external QR service or library. The editable defaults are hypothetical, not quotations.</p>
+    </section>
+
+    <section class="slide" id="slide-2" aria-labelledby="slide-title-2" aria-hidden="true" hidden>
+      <p class="slide-kicker">02 · What do the miles buy?</p>
+      <h1 id="slide-title-2">A full award, <em>one way.</em></h1>
+      <p class="slide-lede">These are Singapore Airlines Saver business awards from Singapore, for one person. They are not upgrade-award prices.</p>
+      <div class="slide-table-wrap" role="region" aria-label="One-way award and illustrative cash assumptions" tabindex="0">
+        <table class="slide-table">
+          <thead>
+            <tr><th scope="col">Singapore to</th><th scope="col">Full business award</th><th scope="col">Economy saving*</th><th scope="col">Award cash*</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Perth</td><td><strong>42,500 miles</strong></td><td>S$300</td><td>S$100</td></tr>
+            <tr><td>Tokyo, Haneda or Narita</td><td><strong>54,500 miles</strong></td><td>S$450</td><td>S$100</td></tr>
+            <tr><td>London Heathrow</td><td><strong>108,500 miles</strong></td><td>S$700</td><td>S$100</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="slide-callout"><strong>*Hypothetical teaching inputs, not live fares or taxes.</strong> Match the whole itinerary and the cash you truly avoid. Award cash charges are additional; seats are capacity-controlled.</div>
+      <p class="slide-note">Rate research verified 19 October 2026. No date-specific seat search was performed. Recheck the award chart, cash charges and inventory before presenting or booking. <a href="https://github.com/yiming-xu/miles_cba/blob/main/presentation.md#sources" target="_blank" rel="noopener">Source notes on GitHub ↗</a></p>
+    </section>
+
+    <section class="slide" id="slide-3" aria-labelledby="slide-title-3" aria-hidden="true" hidden>
+      <p class="slide-kicker">03 · How would you earn them?</p>
+      <h1 id="slide-title-3">One pool. <em>One cap.</em></h1>
+      <p class="slide-lede">The calculator uses one simple monthly eligible-spend pool. It does not combine bank points or optimize category caps.</p>
+      <div class="slide-kpis">
+        <div class="slide-kpi"><span>Eligible spend / month</span><strong>S$1,000</strong><small>Hypothetical one-pool cap</small></div>
+        <div class="slide-kpi"><span>Illustrative earn rate</span><strong>4 mpd</strong><small>4,000 miles in a full month</small></div>
+        <div class="slide-kpi"><span>Opening balance</span><strong>0</strong><small>Prospective earning only</small></div>
+      </div>
+      <div class="slide-two-col">
+        <div class="slide-panel">
+          <h2>Why does the calculator show more time?</h2>
+          <ul>
+            <li>Default transfer block: 10,000 miles; editable, with an idealised 1-mile switch.</li>
+            <li>Round the remaining award target up to a transfer block, then round accumulation up to full months.</li>
+            <li>Whole-month cashback and time costs include any miles earned beyond the award target. Leftover miles receive S$0 value.</li>
+          </ul>
+        </div>
+        <div class="slide-panel">
+          <h2>Keep the earning pool simple</h2>
+          <p>Effective monthly spend is the lower of eligible spend and the single cap. No multi-bank optimiser, category split, transaction rounding or exclusions are simulated.</p>
+          <p class="slide-formula">Monthly eligible spend × miles per S$ = miles per month</p>
+        </div>
+      </div>
+      <p class="slide-note">This does not model opening miles; do not use it to price an existing balance. Choose a one-way trip that matches your actual plan.</p>
+    </section>
+
+    <section class="slide" id="slide-4" aria-labelledby="slide-title-4" aria-hidden="true" hidden>
+      <p class="slide-kicker">04 · What do you give up?</p>
+      <h1 id="slide-title-4">Count the cash <em>and the time.</em></h1>
+      <p class="slide-lede">Tokyo illustrates the default whole-month model. The result changes when your genuine alternative or earning conditions change.</p>
+      <div class="slide-two-col">
+        <div class="slide-panel">
+          <h2>Tokyo · 54,500-mile award</h2>
+          <ul>
+            <li>54,500 required miles round up to a 60,000-mile transfer goal at the default 10,000-mile block.</li>
+            <li>At 4,000 miles per month, 15 whole months earn 60,000 miles; 5,500 remain after the award.</li>
+            <li>15 months × S$1,000 × 1.7% = <strong>S$255 cashback forgone</strong>.</li>
+            <li>15 months × 15 minutes × S$40/hour = <strong>S$150 time cost</strong>.</li>
+          </ul>
+        </div>
+        <div class="slide-panel">
+          <h2>Fees and gift routes</h2>
+          <p>S$100 hypothetical award cash + S$30 hypothetical fee allowance.</p>
+          <p>A welcome fee or a genuinely displaced cash offer belongs in the cost. A cash gift that can accompany the miles card belongs on the value side.</p>
+          <p class="slide-formula">Cashback + time + award cash + incremental fees = modeled cost</p>
+        </div>
+      </div>
+      <div class="slide-callout">Surplus miles are shown separately and valued at <strong>S$0</strong>. Credit delay affects the ready-date estimate in parallel; no extra monthly spend or time cost is assumed during that wait.</div>
+      <p class="slide-note">All cash amounts and personal time values are illustrative, not quotes or universal valuations. Offer eligibility and qualifying spend are not checked.</p>
+    </section>
+
+    <section class="slide" id="slide-5" aria-labelledby="slide-title-5" aria-hidden="true" hidden>
+      <p class="slide-kicker">05 · Your answer, not the airline's valuation</p>
+      <h1 id="slide-title-5">Start with your own <em>break-even.</em></h1>
+      <p class="slide-lede">Under the Tokyo defaults, the whole-month estimate is simple enough to audit—and sensitive to your own numbers.</p>
+      <div class="slide-result">
+        <div><span>Total modeled cost</span><strong>S$535</strong></div>
+        <div><span>Break-even extra willingness</span><strong>S$85</strong></div>
+        <div class="highlight"><span>Example willingness S$150 → net</span><strong>+S$65</strong></div>
+      </div>
+      <div class="slide-two-col">
+        <div class="slide-panel">
+          <h2>Use your own real alternative</h2>
+          <p>The S$450 economy saving plus S$150 willingness gives S$600 personal value. Subtract S$535 modeled cost. This is a teaching comparison, not a booking recommendation.</p>
+          <p class="slide-formula">Break-even willingness = max(0, total cost − economy saving − miles-card cash gift)</p>
+        </div>
+        <div class="slide-panel">
+          <h2>Before deciding</h2>
+          <ul>
+            <li>Positive does not guarantee a seat, savings, or a future award rate.</li>
+            <li>Check expiry, devaluation risk, real dates, cash charges and full-trip fares.</li>
+            <li>Within S$50 of zero? Small assumption changes can reverse the sign.</li>
+          </ul>
+        </div>
+      </div>
+      <p class="slide-note">Research snapshot: 19 October 2026. Offers expire; recheck terms and eligibility. No live seat check. <a href="https://github.com/yiming-xu/miles_cba/blob/main/research/sweet-spots.md" target="_blank" rel="noopener">Detailed sweet spots and promotion notes ↗</a> · <a href="https://github.com/yiming-xu/miles_cba/blob/main/presentation.md#appendix--public-welcome-offer-examples" target="_blank" rel="noopener">Welcome-offer appendix ↗</a></p>
+      <p class="slide-note">Close: compare the trip you want, count money and time, then decide for yourself.</p>
+    </section>
+  </main>
+
+  <nav class="slide-controls" aria-label="Presentation controls">
+    <div class="slide-control-group">
+      <button id="previous-slide" type="button" aria-label="Previous slide">← <span class="print-label">Previous</span></button>
+      <span class="slide-count" id="slide-count" aria-live="polite">Slide 1 of 5</span>
+      <button id="next-slide" type="button" aria-label="Next slide"><span class="print-label">Next</span> →</button>
+    </div>
+    <div class="slide-control-group">
+      <span class="slide-note">Use ← / → keys</span>
+      <button id="print-slides" type="button">Print slides</button>
+    </div>
+  </nav>
+
+  <footer class="site-footer">
+    <p>Manual presentation: use the arrow buttons or keyboard. Print view places each of the five slides on its own page.</p>
+    <a href="index.html">Return to the calculator</a>
+  </footer>
+
+  <script>
+    (() => {
+      "use strict";
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const previous = document.getElementById("previous-slide");
+      const next = document.getElementById("next-slide");
+      const counter = document.getElementById("slide-count");
+      const topCounter = document.getElementById("slide-counter");
+      const status = document.getElementById("slide-counter");
+      let current = 0;
+      let touchStartX = null;
+
+      function showSlide(index) {
+        current = Math.max(0, Math.min(slides.length - 1, index));
+        slides.forEach((slide, slideIndex) => {
+          const isCurrent = slideIndex === current;
+          slide.hidden = !isCurrent;
+          slide.setAttribute("aria-hidden", String(!isCurrent));
+        });
+        const label = `Slide ${current + 1} of ${slides.length}`;
+        counter.textContent = label;
+        topCounter.textContent = label;
+        previous.disabled = current === 0;
+        next.disabled = current === slides.length - 1;
+        status.setAttribute("aria-label", `${label}: ${slides[current].querySelector("h1").textContent}`);
+      }
+
+      previous.addEventListener("click", () => showSlide(current - 1));
+      next.addEventListener("click", () => showSlide(current + 1));
+      document.getElementById("print-slides").addEventListener("click", () => window.print());
+      document.addEventListener("keydown", (event) => {
+        if (event.altKey || event.ctrlKey || event.metaKey) return;
+        if (event.target instanceof HTMLElement && event.target.isContentEditable) return;
+        if (event.key === "ArrowRight" || event.key === "PageDown") {
+          event.preventDefault();
+          showSlide(current + 1);
+        } else if (event.key === "ArrowLeft" || event.key === "PageUp") {
+          event.preventDefault();
+          showSlide(current - 1);
+        } else if (event.key === "Home") {
+          showSlide(0);
+        } else if (event.key === "End") {
+          showSlide(slides.length - 1);
+        }
+      });
+      const stage = document.getElementById("slide-stage");
+      stage.addEventListener("touchstart", (event) => {
+        touchStartX = event.changedTouches[0]?.clientX ?? null;
+      }, { passive: true });
+      stage.addEventListener("touchend", (event) => {
+        const endX = event.changedTouches[0]?.clientX;
+        if (touchStartX === null || typeof endX !== "number") return;
+        const distance = endX - touchStartX;
+        if (Math.abs(distance) > 70) showSlide(current + (distance < 0 ? 1 : -1));
+        touchStartX = null;
+      }, { passive: true });
+      showSlide(0);
+    })();
+  </script>
+</body>
+</html>
