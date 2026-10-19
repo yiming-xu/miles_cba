@@ -1,0 +1,38 @@
+{
+  "note": "All cash travel values hypothetical; one-way Singapore-origin; no bonuses; continuous accrual; decimal half-up display rounding.",
+  "examples": [
+    {
+      "destination": "Perth",
+      "miles": 42500,
+      "months": "10.625",
+      "spend": "10625",
+      "cashback": "180.625",
+      "time": "106.25000",
+      "cost": "416.87500",
+      "break_even": "116.87500",
+      "net": "-16.87500"
+    },
+    {
+      "destination": "Tokyo",
+      "miles": 54500,
+      "months": "13.625",
+      "spend": "13625",
+      "cashback": "231.625",
+      "time": "136.25000",
+      "cost": "497.87500",
+      "break_even": "47.87500",
+      "net": "102.12500"
+    },
+    {
+      "destination": "Heathrow",
+      "miles": 108500,
+      "months": "27.125",
+      "spend": "27125",
+      "cashback": "461.125",
+      "time": "271.25000",
+      "cost": "862.37500",
+      "break_even": "162.37500",
+      "net": "337.62500"
+    }
+  ]
+}
