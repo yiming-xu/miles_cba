@@ -170,7 +170,7 @@ run("fallback defaults render the shared SIN–HND example and actual model valu
   const dom = createDom();
   const { document } = dom.window;
   assert.equal(value(dom, "destination"), "tokyo-hnd");
-  assert.equal(value(dom, "economy-saving"), "450");
+  assert.equal(value(dom, "economy-saving"), "858");
   assert.equal(value(dom, "upgrade-willingness"), "150");
   assert.equal(value(dom, "monthly-spend"), "1000");
   assert.equal(value(dom, "monthly-cap"), "1000");
@@ -180,7 +180,7 @@ run("fallback defaults render the shared SIN–HND example and actual model valu
   assert.equal(document.getElementById("idealised-transfer").checked, true);
   assert.equal(document.getElementById("transfer-block").disabled, true);
   assert.match(document.getElementById("award-route-display").textContent, /Tokyo/);
-  assert.equal(document.getElementById("detail-net").textContent, "+S$230.00");
+  assert.equal(document.getElementById("detail-net").textContent, "+S$638.00");
   assert.equal(document.querySelector('[data-output="earning-months"]').textContent, "10");
   assert.equal(document.querySelector('[data-output="total-cost"]').textContent, "S$370.00");
   assert.equal(document.querySelector('[data-output="cashback-cost"]').textContent, "S$170.00");
@@ -241,14 +241,11 @@ run("checked research-data.js feeds all twelve routes and Citi presets into the 
     assert.ok(selectedFareTitle.textContent.includes(`(${route.fareStatus})`));
     assert.ok(selectedFareNote.textContent.includes(route.fareNote));
     assert.ok(economyHint.textContent.includes(route.fareNote));
-    if (route.id === "tokyo") {
-      assert.match(selectedFareNote.textContent, /1 June 2027/);
-    } else {
-      assert.doesNotMatch(
-        `${selectedFareNote.textContent} ${economyHint.textContent} ${document.getElementById("date-feasibility-note").textContent}`,
-        /HND|Haneda|June 2027|CAPTCHA/i,
-      );
-    }
+    assert.equal(route.fareStatus, "listed fare");
+    assert.match(selectedFareNote.textContent, /1 June 2027/);
+    assert.ok(selectedFareNote.querySelector("a").href.includes("google.com/travel/flights"));
+    assert.doesNotMatch(economyHint.textContent, /assumed amount/);
+    assert.match(document.getElementById("date-feasibility-note").textContent, /1 June 2027/);
   }
   dom.window.close();
 });
@@ -508,9 +505,20 @@ run("slides execute the same exported model and match the calculator's default t
   assert.equal(document.getElementById("slide-earning-months").textContent, "10");
   assert.equal(document.getElementById("slide-total-cost").textContent, "S$370.00");
   assert.equal(document.getElementById("slide-break-even").textContent, "S$0.00");
-  assert.equal(document.getElementById("slide-net").textContent, "+S$230.00");
+  assert.equal(document.getElementById("slide-net").textContent, "+S$240.00");
   document.getElementById("next-slide").click();
   assert.equal(document.getElementById("slide-count").textContent, "Slide 2 of 6");
+  dom.window.close();
+});
+
+run("dated fare defaults and real slides agree on the Tokyo example", () => {
+  const dom = createDomFromResearchFile(slidesHtml);
+  const script = Array.from(dom.window.document.scripts).find(s => !s.src);
+  dom.window.eval(script.textContent);
+  const d = dom.window.document;
+  assert.equal(d.getElementById("slide-economy-saving").textContent, "S$858.00");
+  assert.equal(d.getElementById("slide-total-value").textContent, "S$1,008.00");
+  assert.equal(d.getElementById("slide-net").textContent, "+S$638.00");
   dom.window.close();
 });
 

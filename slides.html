@@ -169,16 +169,16 @@
         <h1 id="slide-title-5">Make the call <em>personal.</em></h1>
       </header>
       <div class="value-equation">
-        <div class="value-cell"><span>Economy cash avoided</span><strong id="slide-economy-saving">S$450.00</strong></div>
+        <div class="value-cell"><span>Economy cash avoided</span><strong id="slide-economy-saving">S$858.00</strong></div>
         <span class="equation-sign" aria-hidden="true">+</span>
         <div class="value-cell"><span>Your extra willingness</span><strong id="slide-willingness">S$150.00</strong></div>
         <span class="equation-sign" aria-hidden="true">=</span>
-        <div class="value-cell value-cell-total"><span>Your modeled value</span><strong id="slide-total-value">S$600.00</strong></div>
+        <div class="value-cell value-cell-total"><span>Your modeled value</span><strong id="slide-total-value">S$1,008.00</strong></div>
       </div>
       <div class="answer-band">
         <div class="answer-result">
           <span class="mini-label">Net under these assumptions</span>
-          <strong id="slide-net">+S$230.00</strong>
+          <strong id="slide-net">+S$638.00</strong>
         </div>
         <div class="answer-divider" aria-hidden="true"></div>
         <div class="answer-break-even">
@@ -186,7 +186,7 @@
           <strong id="slide-break-even">S$0.00</strong>
         </div>
       </div>
-      <p class="slide-footnote answer-note">The illustrative S$2,500 business cash fare is not part of this comparison. Use your actual economy alternative and your own comfort value.</p>
+      <p class="slide-footnote answer-note">SQ nonstop economy: S$858 listed · 1 Jun 2027 · checked 20 Oct 2026. Prices change. S$2,500 business is illustrative and excluded.</p>
     </section>
 
     <section class="slide slide-tips" id="slide-6" aria-labelledby="slide-title-6" aria-hidden="true" hidden>
@@ -241,8 +241,8 @@
     </div>
     <div class="notes-grid">
       <div>
-        <h3>Shared example</h3>
-        <p>Slides 3–5 read the same default example and calculation exported by <code>app.js</code>. Defaults: SIN–HND one-way, S$450 economy cash avoided, S$150 personal extra willingness, 16,000 welcome miles, S$1,000 eligible monthly spend at 4 mpd, S$100 award cash charges, 15 minutes per month valued at S$40/hour. The S$2,500 business cash fare is an illustration only and is not used in the calculation.</p>
+        <h3>Shared example</h3><p>Economy: SQ 13:55–21:55 nonstop, one adult, SGD. <a href="https://www.google.com/travel/flights?hl=en&amp;q=One%20way%20flights%20from%20SIN%20to%20HND%20on%20June%201%202027%20economy&amp;curr=SGD">Dated Google Flights search</a>. Rechecked 20 October 2026: S$858 (earlier S$810). Not confirmed at checkout; verify baggage and conditions. Shanghai and New York calculator defaults involve connections. A one-way fare is not necessarily half a return fare.</p>
+        <p>Slides 3–5 read the same default example and calculation exported by <code>app.js</code>. Defaults: SIN–HND one-way, S$858 listed economy cash avoided, S$150 personal extra willingness, 16,000 welcome miles, S$1,000 eligible monthly spend at 4 mpd, S$100 award cash charges, 15 minutes per month valued at S$40/hour. The S$2,500 business cash fare is an illustration only and is not used in the calculation.</p>
       </div>
       <div>
         <h3>Official SQ image credits</h3>
@@ -290,7 +290,7 @@
         const research = calculator.getResearch();
         const route = calculator.getDefaultRoute(research.routes);
         if (!route) return;
-        const inputs = { ...calculator.defaultExample };
+        const inputs = { ...calculator.defaultExample, economySaving: route.economySaving };
         const result = calculator.calculateScenario(route, inputs);
         if (!result.available) return;
 

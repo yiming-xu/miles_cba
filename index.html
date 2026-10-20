@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#10263a">
-  <meta name="description" content="A transparent miles-versus-cash calculator with destination-specific illustrative economy fare assumptions.">
+  <meta name="description" content="A transparent miles-versus-cash calculator with dated destination-specific economy fare listings.">
   <title>Miles or cash? — a personal cost–benefit calculator</title>
   <link rel="stylesheet" href="styles.css">
   <script src="research-data.js" defer></script>
@@ -30,10 +30,10 @@
     </div>
     <div class="hypothesis-banner" role="note">
       <span class="banner-icon" aria-hidden="true">i</span>
-      <p><strong>Economy cash amounts are route-specific estimates, not live fare quotes.</strong> Use the selected destination's amount as a starting point, then compare a matched one-way itinerary. No award-seat inventory has been checked.</p>
+      <p><strong>Economy defaults are dated Google Flights listings for 1 June 2027.</strong> One-way economy, one adult, SGD; checked 20 October 2026. Prices can change; baggage and checkout conditions are unverified. No award-seat inventory has been checked.</p>
     </div>
     <div class="hero-footnote">
-      <span class="flight-date-badge"><strong>Economy alternative:</strong> selected-route estimate · Award inventory: not checked</span>
+      <span class="flight-date-badge"><strong>Economy alternative:</strong> 1 Jun 2027 listed fare · Award inventory: not checked</span>
       <a href="slides.html">Open the browser presentation <span aria-hidden="true">→</span></a>
     </div>
   </section>
@@ -74,11 +74,11 @@
             <h2 id="value-heading">What is this trip worth to you?</h2>
           </div>
         </div>
-        <p class="section-lede">Select a destination to load its one-way economy cash alternative and award rate. Replace the estimate with a matched itinerary price before comparing.</p>
+        <p class="section-lede">Select a destination to load its one-way economy cash alternative and award rate. Use the itinerary you would actually buy; Shanghai and New York defaults involve connections.</p>
 
         <div class="flight-date-badge flight-date-badge-light" id="selected-fare-context" role="note" aria-live="polite">
           <strong id="selected-fare-title">Selected destination economy alternative</strong>
-          <span id="selected-fare-note">Tokyo Haneda worked example: 1 June 2027, S$450 assumed and unverified; not a live quote.</span>
+          <span id="selected-fare-note">Tokyo Haneda: 1 June 2027, SQ nonstop S$858 listed; checked 20 October 2026, not a checkout guarantee.</span>
         </div>
 
         <div class="field-grid field-grid-wide">
@@ -96,7 +96,7 @@
           </div>
           <div class="field">
             <label for="economy-saving"><strong>Economy flight cost (cash alternative)</strong> <span class="unit">SGD</span></label>
-            <div class="input-with-prefix"><span aria-hidden="true">S$</span><input id="economy-saving" name="economy-saving" type="number" inputmode="decimal" min="0" step="0.01" value="450" required aria-describedby="economy-hint"></div>
+            <div class="input-with-prefix"><span aria-hidden="true">S$</span><input id="economy-saving" name="economy-saving" type="number" inputmode="decimal" min="0" step="0.01" value="858" required aria-describedby="economy-hint"></div>
             <span class="field-hint" id="economy-hint">Enter the cash price you would pay for a matched one-way itinerary.</span>
           </div>
           <div class="field">
@@ -274,7 +274,7 @@
         </div>
       </div>
       <p class="method-note"><strong>How to read the timeline:</strong> miles are earned from zero and rounded up to whole earning months. Cashback and time costs cover every full earning month. The selected welcome miles are treated as available in the estimate; qualifying spend, eligibility and bonus-credit timing are not modeled. The stated offer window is a condition, not a ready-date forecast.</p>
-      <p class="date-feasibility-note" id="date-feasibility-note" role="note">This estimate shows the earning time for your inputs. A by-date comparison is available only for the Tokyo/Haneda worked example.</p>
+      <p class="date-feasibility-note" id="date-feasibility-note" role="note">This estimate shows the earning time for your inputs. All researched fare presets depart on 1 June 2027.</p>
       <p class="decision-note">This is a simplified personal comparison, not financial advice. It does not verify the selected economy cash alternative, award inventory, card eligibility, transaction exclusions, award expiry, devaluation, actual transfer rules, annual card fees, miles-transfer fees, or taxes beyond the award cash charge entered above. The business-cabin product depends on the aircraft; 40 kg checked baggage is subject to route rules.</p>
     </section>
 
@@ -292,7 +292,7 @@
       <summary>Research appendix: award chart and offer terms <span class="appendix-tag">Reviewed <span id="research-checked">date in research data</span></span></summary>
       <div class="appendix-content">
         <div class="appendix-warning">
-          <strong>Economy fare inputs are route-specific estimates, not verified live quotes.</strong> Replace the selected amount with a matched itinerary price before comparing; no award-seat availability is asserted.
+          <strong>Economy defaults are dated metasearch listings, not guaranteed checkout prices.</strong> Checked 20 October 2026 for 1 June 2027, one-way economy, one adult, SGD. Verify baggage and conditions; no award-seat availability is asserted.
         </div>
         <div class="appendix-columns">
           <div>

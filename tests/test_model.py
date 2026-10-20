@@ -204,7 +204,7 @@ class StaticContractTests(unittest.TestCase):
 
     def test_default_inputs_and_removed_controls_match_the_shared_example(self):
         html = (ROOT / "index.html").read_text(encoding="utf-8")
-        for value in ('value="450"', 'value="150"', 'value="1000"',
+        for value in ('value="858"', 'value="150"', 'value="1000"',
                       'value="4"', 'value="16000"', 'value="100"',
                       'value="15"', 'value="40"', 'value="1"'):
             self.assertIn(value, html)
@@ -229,7 +229,7 @@ class StaticContractTests(unittest.TestCase):
         self.assertTrue(all(url.startswith("https://assets.singaporeair.com/") for url in inspector.external_assets))
         self.assertEqual(len(inspector.ids), len(set(inspector.ids)))
         self.assertIn("1 June 2027", slides)
-        self.assertIn("S$450", slides)
+        self.assertIn("S$858", slides)
         self.assertIn('src="research-data.js"', slides)
         self.assertIn('src="app.js"', slides)
 

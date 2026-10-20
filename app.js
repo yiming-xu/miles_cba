@@ -3,7 +3,7 @@
 
   const DEFAULT_EXAMPLE = Object.freeze({
     routeId: "tokyo-hnd",
-    economySaving: 450,
+    economySaving: 858,
     willingness: 150,
     monthlySpend: 1000,
     monthlyCap: 1000,
@@ -39,9 +39,9 @@
         name: "Tokyo (Haneda)",
         zone: "Not supplied",
         awardMiles: 54500,
-        economySaving: 450,
+        economySaving: 858,
         fareStatus: "assumed",
-        fareNote: "June 2027 SIN–HND worked example; SQ fare lookup was blocked by CAPTCHA. This is assumed, unverified, and not a live quote.",
+        fareNote: "Fallback SIN–HND example for 1 June 2027; source data unavailable. S$858 is an unverified fallback, not a refreshed quote.",
         willingness: 150,
         cathayMiles: null,
         cathayRouting: "Not supplied in fallback data",
@@ -95,6 +95,8 @@
       economySaving: finiteNonnegative(economySaving) ? economySaving : 0,
       fareStatus: String(route.fareStatus ?? "assumed"),
       fareNote: String(route.fareNote ?? ""),
+      fareDate: String(route.fareDate ?? ""),
+      fareSource: String(route.fareSource ?? ""),
       willingness: finiteNonnegative(willingness) ? willingness : 0,
       cathayMiles: route.cathayMiles ?? null,
       cathayRouting: String(route.cathayRouting ?? "Not supplied"),
@@ -209,7 +211,7 @@
   }
 
   function dateFeasibilityMessage(route, earningMonths) {
-    if (!isHanedaRoute(route)) {
+    if (!route.fareDate && !isHanedaRoute(route)) {
       return `No travel date is set for ${route.name}; this is a general earning estimate, not a by-date forecast. No award inventory is checked.`;
     }
     const startDate = parseDateOnly(research.checked);
@@ -763,8 +765,17 @@
     const status = route.fareStatus || "assumed";
     const fareNote = routeFareNote(route);
     byId("selected-fare-title").textContent = `Economy alternative · ${route.routeLabel} · ${formatMoney(route.economySaving)} (${status})`;
-    byId("selected-fare-note").textContent = fareNote;
-    byId("economy-hint").textContent = `${fareNote} Replace this assumed amount with a matched one-way itinerary price if available.`;
+    const note = byId("selected-fare-note");
+    note.textContent = fareNote;
+    if (route.fareSource.startsWith("https://")) {
+      const link = document.createElement("a");
+      link.href = route.fareSource;
+      link.textContent = " View dated fare search";
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      note.appendChild(link);
+    }
+    byId("economy-hint").textContent = `${fareNote} Use the cash alternative you would actually buy.`;
   }
 
   function applyRoutePreset(updateScenario = true) {
