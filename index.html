@@ -26,7 +26,7 @@
     <div class="hero-copy">
       <p class="eyebrow eyebrow-light">One shared example · Singapore to Haneda · one way</p>
       <h1 id="page-title">What are the miles<br><em>worth to you?</em></h1>
-      <p class="hero-lede">Start with the economy trip you would actually buy. Then count the cash, time and fees behind a possible award.</p>
+      <p class="hero-lede">Start with the economy trip you would actually buy. Then count the cash and time behind a possible award.</p>
     </div>
     <div class="hypothesis-banner" role="note">
       <span class="banner-icon" aria-hidden="true">i</span>
@@ -154,7 +154,7 @@
                 <option value="citi-rewards-16k" selected>Citi Rewards — 40,000 points / 16,000 miles welcome offer</option>
                 <option value="custom">Custom / manually entered values</option>
               </select>
-              <div class="field-hint">Current presets fill the bonus, local earn rate, spend cap and any separately declared offer fee. Expired offers remain disabled for reference.</div>
+              <div class="field-hint">Available presets fill the bonus, local earn rate and spend cap. Paid-fee offers are disabled rather than treated as free; expired offers remain disabled for reference.</div>
               <p id="promotion-note" class="promotion-note" role="note">Citi Rewards official terms: 40,000 ThankYou points (16,000 miles), S$800 qualifying spend by the end of the second calendar month after approval, bonus fulfilled within three calendar months after the spend period; terms through 31 March 2027. Recheck before use. <a href="https://www.citibank.com.sg/credit-cards/rewards/citi-rewards-card/pdf/online-product-led-acquisition-promotion-terms-and-conditions.pdf" target="_blank" rel="noopener">Official campaign terms</a></p>
             </div>
             <div class="field">
@@ -180,18 +180,15 @@
             <h2 id="cost-heading">What do you give up?</h2>
           </div>
         </div>
-        <p class="section-lede">Count award cash charges, cashback you could have earned, your time, and only genuinely incremental general fees.</p>
+        <p class="section-lede">Count award cash charges, cashback you could have earned, your time, and any genuinely displaced cash offer.</p>
+
+        <div class="assumption-callout fee-omission-warning" role="note"><strong>Fees omitted:</strong> Annual card fees and miles-transfer fees (including conversion fees) are not included in this estimate. Paid-fee offer presets are disabled rather than treated as free.</div>
 
         <div class="field-grid">
           <div class="field">
             <label for="award-cash">Award cash charges <span class="unit">SGD</span></label>
             <div class="input-with-prefix"><span aria-hidden="true">S$</span><input id="award-cash" name="award-cash" type="number" inputmode="decimal" min="0" step="0.01" value="100" required></div>
             <span class="field-hint">Hypothetical default; enter actual itinerary taxes and charges.</span>
-          </div>
-          <div class="field">
-            <label for="ongoing-fee">Other incremental miles-strategy fees <span class="unit">SGD total</span></label>
-            <div class="input-with-prefix"><span aria-hidden="true">S$</span><input id="ongoing-fee" name="ongoing-fee" type="number" inputmode="decimal" min="0" step="0.01" value="30" required></div>
-            <span class="field-hint">S$30 hypothetical general-fee allowance. A preset adds only a fee declared in its terms; the default promotion adds S$0 in fees.</span>
           </div>
           <div class="field">
             <label for="minutes-per-month">Extra time vs cashback <span class="unit">minutes / month</span></label>
@@ -261,7 +258,6 @@
             <div><dt>Cashback forgone on earning spend</dt><dd data-output="cashback-cost">—</dd></div>
             <div><dt>Personal time cost</dt><dd data-output="time-cost">—</dd></div>
             <div><dt>Award cash charges</dt><dd data-output="award-cash-cost">—</dd></div>
-            <div><dt>Other incremental fees</dt><dd data-output="fees-cost">—</dd></div>
             <div><dt>Genuinely displaced cash offer</dt><dd data-output="displaced-cash">—</dd></div>
             <div class="total-row"><dt>Total modeled cost</dt><dd data-output="total-cost">—</dd></div>
           </dl>
@@ -279,7 +275,7 @@
       </div>
       <p class="method-note"><strong>How to read the timeline:</strong> miles are earned from zero and rounded up to whole earning months. Cashback and time costs cover every full earning month. The selected welcome miles are treated as available in the estimate; qualifying spend, eligibility and bonus-credit timing are not modeled. The stated offer window is a condition, not a ready-date forecast.</p>
       <p class="date-feasibility-note" id="date-feasibility-note" role="note">At default assumptions, the modeled 10 earning months exceed the remaining time to 1 June 2027 from the 20 October 2026 research snapshot; bonus posting can shorten the runway further.</p>
-      <p class="decision-note">This is a simplified personal comparison, not financial advice. It does not verify the S$450 fare, award inventory, card eligibility, transaction exclusions, award expiry, devaluation, actual transfer rules, or taxes/fees not entered above. The business-cabin product depends on the aircraft; 40 kg checked baggage is subject to route rules.</p>
+      <p class="decision-note">This is a simplified personal comparison, not financial advice. It does not verify the S$450 fare, award inventory, card eligibility, transaction exclusions, award expiry, devaluation, actual transfer rules, annual card fees, miles-transfer fees, or taxes beyond the award cash charge entered above. The business-cabin product depends on the aircraft; 40 kg checked baggage is subject to route rules.</p>
     </section>
 
     <section class="closing-card" aria-labelledby="closing-heading">
@@ -323,7 +319,7 @@
           <div>
             <h3>Welcome offer: verify before use</h3>
             <p>The default is Citi Rewards: 40,000 ThankYou points (16,000 miles), S$800 qualifying spend through the end of the second calendar month after approval, with the bonus fulfilled within three calendar months after the spend period. Terms are noted through 31 March 2027; recheck eligibility and posting timing. Citi PremierMiles remains a separate 8,000-mile, 1.2-mpd fee-waived alternative where current terms apply.</p>
-            <p>The S$30 general-fee allowance is separate from any declared offer fee. A fee on another selected preset is added explicitly; changing back to a fee-waived preset resets that added amount.</p>
+            <p>Annual card fees and miles-transfer or conversion fees are omitted from the model. Presets with a declared paid fee are disabled rather than presented as free; verify all fees in the issuer and transfer-program terms.</p>
             <p>Offer requirements do not count as extra monthly earning spend in this simplified model. A qualifying-spend condition is not a promise that the bonus will be approved or credited.</p>
           </div>
         </div>

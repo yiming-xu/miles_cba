@@ -168,6 +168,18 @@ window.MILES_RESEARCH = {
       "terms": "New-to-DBS/POSB principal cardholders; none cancelled in last12months. Apply with ALTSW28 by31Oct2026, approved14Nov2026; S$800 qualifying spend within60days approval; valid PayLah by qualifyingperiod end. Credit3–5months after qualifying spend; firstyear fee waived. SGD1.3mpd eligible spend; cap1,000,000 is model sentinel not bank cap. No stacking. Add subsequent annualfees if not waived; transferfees not auto verified.",
       "source": "https://www.dbs.com.sg/iwov-resources/media/pdf/cards/promotions/acquisition/dbs-alt-acqui-promo-tnc.pdf",
       "fee": 0
+    },
+    {
+      "id": "sc-x-2019",
+      "label": "HISTORICAL 2019 — SC X Card 60,000 miles (expired)",
+      "bonusMiles": 60000,
+      "milesRate": 1.2,
+      "monthlyCap": 1000000,
+      "expiry": "2019-12-31",
+      "historical": true,
+      "fee": 695.5,
+      "terms": "Expired reference only: approval by31Dec2019; S$6,000 eligible spend within60days; pay S$695.50 annualfee. 30,000 upfront miles plus30,000 signup miles; ongoing spending miles separate. Never apply as a fee-free or current offer.",
+      "source": "https://mainlymiles.com/2019/12/21/last-10-days-for-the-x-cards-60000-miles-sign-up-bonus/"
     }
   ]
 };

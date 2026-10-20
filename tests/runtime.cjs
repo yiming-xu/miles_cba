@@ -176,11 +176,14 @@ run("fallback defaults render the shared SIN–HND example and actual model valu
   assert.equal(document.getElementById("idealised-transfer").checked, true);
   assert.equal(document.getElementById("transfer-block").disabled, true);
   assert.match(document.getElementById("award-route-display").textContent, /Tokyo/);
-  assert.equal(document.getElementById("detail-net").textContent, "+S$200.00");
+  assert.equal(document.getElementById("detail-net").textContent, "+S$230.00");
   assert.equal(document.querySelector('[data-output="earning-months"]').textContent, "10");
-  assert.equal(document.querySelector('[data-output="total-cost"]').textContent, "S$400.00");
+  assert.equal(document.querySelector('[data-output="total-cost"]').textContent, "S$370.00");
   assert.equal(document.querySelector('[data-output="cashback-cost"]').textContent, "S$170.00");
-  assert.equal(document.querySelector('[data-output="fees-cost"]').textContent, "S$30.00");
+  assert.equal(document.getElementById("ongoing-fee"), null);
+  assert.equal(document.querySelector('[data-output="fees-cost"]'), null);
+  assert.match(document.querySelector(".fee-omission-warning").textContent, /annual card fees/i);
+  assert.match(document.querySelector(".fee-omission-warning").textContent, /transfer fees/i);
   assert.match(document.getElementById("date-feasibility-note").textContent, /only 7 full calendar months remain/);
   assert.match(document.getElementById("date-feasibility-note").textContent, /cannot be earned by the flight date/);
   dom.window.close();
@@ -208,7 +211,7 @@ run("checked research-data.js feeds all twelve routes and Citi presets into the 
   assert.equal(value(dom, "miles-rate"), "4");
   assert.equal(value(dom, "monthly-cap"), "1000");
   assert.equal(document.querySelector('[data-output="earning-months"]').textContent, "10");
-  assert.equal(document.querySelector('[data-output="total-cost"]').textContent, "S$400.00");
+  assert.equal(document.querySelector('[data-output="total-cost"]').textContent, "S$370.00");
   assert.match(document.getElementById("award-chart-body").textContent, /7: Japan & South Korea/);
   assert.match(document.getElementById("award-chart-body").textContent, /SIN–HKG–HND/);
 
@@ -218,7 +221,6 @@ run("checked research-data.js feeds all twelve routes and Citi presets into the 
   assert.equal(value(dom, "welcome-miles"), "8000");
   assert.equal(value(dom, "miles-rate"), "1.2");
   assert.equal(value(dom, "monthly-cap"), "1000000");
-  assert.equal(value(dom, "ongoing-fee"), "30");
   assert.match(document.getElementById("promotion-note").textContent, /1\.2mpd/);
   dom.window.close();
 });
@@ -233,19 +235,76 @@ run("offer expiry is date-inclusive, expired and flagged historical options are 
   dom.window.close();
 });
 
-run("paid presets add only their declared fee and switching back to fee-waived clears it", () => {
+run("paid-fee presets are disabled and cannot be applied as if they were free", () => {
   const dom = createDom(indexHtml, { data: research });
+  const { document } = dom.window;
   const picker = dom.window.document.getElementById("promotion-picker");
+  const paidOption = document.querySelector('#promotion-picker option[value="paid-route"]');
+  assert.equal(paidOption.disabled, true);
+  assert.match(paidOption.textContent, /paid fee omitted.*not modeled/i);
+  assert.match(document.getElementById("promotion-note").textContent, /paid-fee presets are disabled/i);
+
   picker.value = "paid-route";
   dispatchInput(dom.window, picker, "change");
-  assert.equal(value(dom, "welcome-miles"), "12000");
-  assert.equal(value(dom, "miles-rate"), "1.4");
-  assert.equal(value(dom, "monthly-cap"), "9000");
-  assert.equal(value(dom, "ongoing-fee"), "226.2");
-  picker.value = "citi-rewards-16k";
-  dispatchInput(dom.window, picker, "change");
-  assert.equal(value(dom, "ongoing-fee"), "30");
+  assert.equal(value(dom, "promotion-picker"), "custom");
   assert.equal(value(dom, "welcome-miles"), "16000");
+  assert.equal(value(dom, "miles-rate"), "4");
+  assert.equal(value(dom, "monthly-cap"), "1000");
+  assert.equal(document.querySelector('[data-output="total-cost"]').textContent, "S$370.00");
+  dom.window.close();
+});
+
+run("shared model ignores legacy fee inputs whether present or absent", () => {
+  const dom = createDom();
+  const { MILES_CALCULATOR } = dom.window;
+  const route = MILES_CALCULATOR.getDefaultRoute(MILES_CALCULATOR.getResearch().routes);
+  const base = {
+    monthlySpend: 1000,
+    monthlyCap: 1000,
+    milesRate: 4,
+    cashbackPercent: 1.7,
+    welcomeMiles: 16000,
+    displacedCashBonus: 0,
+    awardCash: 100,
+    minutesPerMonth: 15,
+    hourlyValue: 40,
+    economySaving: 450,
+    willingness: 150,
+    transferBlock: 1,
+  };
+  const withoutLegacyFee = MILES_CALCULATOR.calculateScenario(route, base);
+  const withLegacyFee = MILES_CALCULATOR.calculateScenario(route, {
+    ...base,
+    ongoingFee: 226.2,
+  });
+  const withInvalidLegacyFee = MILES_CALCULATOR.calculateScenario(route, {
+    ...base,
+    ongoingFee: Number.NaN,
+  });
+  assert.equal(withoutLegacyFee.totalCost, 370);
+  assert.equal(withLegacyFee.totalCost, 370);
+  assert.equal(withLegacyFee.netBenefit, 230);
+  assert.equal(withLegacyFee.feesCost, 0);
+  assert.equal(withInvalidLegacyFee.available, true);
+  assert.equal(withInvalidLegacyFee.totalCost, 370);
+  dom.window.close();
+});
+
+run("a paid configured default cannot leave a bonus silently modeled as free", () => {
+  const paidOnly = {
+    routes: routeRows(1),
+    promotions: [offers[2]],
+    defaultPromotion: "paid-route",
+    checked: "2026-10-20",
+  };
+  const dom = createDom(indexHtml, { data: paidOnly });
+  assert.equal(value(dom, "promotion-picker"), "custom");
+  assert.equal(value(dom, "welcome-miles"), "0");
+  assert.equal(
+    dom.window.document.querySelector('#promotion-picker option[value="paid-route"]').disabled,
+    true,
+  );
+  assert.match(dom.window.document.getElementById("promotion-note").textContent, /paid-fee presets are disabled/i);
   dom.window.close();
 });
 
@@ -335,7 +394,7 @@ run("personal time sensitivity and route selection change the rendered scenario"
   minutes.value = "30";
   dispatchInput(dom.window, minutes);
   assert.equal(document.querySelector('[data-output="time-cost"]').textContent, "S$200.00");
-  assert.equal(document.getElementById("detail-net").textContent, "+S$100.00");
+  assert.equal(document.getElementById("detail-net").textContent, "+S$130.00");
 
   const destination = document.getElementById("destination");
   destination.value = "route-2";
@@ -355,11 +414,11 @@ run("slides execute the same exported model and match the calculator's default t
   const { document, MILES_CALCULATOR } = dom.window;
   assert.ok(MILES_CALCULATOR);
   assert.equal(document.getElementById("slide-earning-months").textContent, "10");
-  assert.equal(document.getElementById("slide-total-cost").textContent, "S$400.00");
+  assert.equal(document.getElementById("slide-total-cost").textContent, "S$370.00");
   assert.equal(document.getElementById("slide-break-even").textContent, "S$0.00");
-  assert.equal(document.getElementById("slide-net").textContent, "+S$200.00");
+  assert.equal(document.getElementById("slide-net").textContent, "+S$230.00");
   document.getElementById("next-slide").click();
-  assert.equal(document.getElementById("slide-count").textContent, "Slide 2 of 5");
+  assert.equal(document.getElementById("slide-count").textContent, "Slide 2 of 6");
   dom.window.close();
 });
 

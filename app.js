@@ -1,7 +1,6 @@
 (() => {
   "use strict";
 
-  const BASE_GENERAL_FEES = 30;
   const DEFAULT_EXAMPLE = Object.freeze({
     routeId: "tokyo-hnd",
     economySaving: 450,
@@ -13,7 +12,7 @@
     welcomeMiles: 16000,
     displacedCashBonus: 0,
     awardCash: 100,
-    ongoingFee: 30,
+    ongoingFee: 30, // Retained for shared-model compatibility; fee inputs are ignored.
     minutesPerMonth: 15,
     hourlyValue: 40,
     transferBlock: 1,
@@ -235,7 +234,6 @@
       inputs.welcomeMiles,
       inputs.displacedCashBonus,
       inputs.awardCash,
-      inputs.ongoingFee,
       inputs.minutesPerMonth,
       inputs.hourlyValue,
       inputs.economySaving,
@@ -285,11 +283,11 @@
     const wholeMonthExcess = Math.max(0, earnedMiles - transferGoal);
     const welcomeExcess = Math.max(0, inputs.welcomeMiles - welcomeMilesUsed);
     const leftoverMiles = transferRemainder + wholeMonthExcess + welcomeExcess;
-    const feesCost = inputs.ongoingFee;
+    // Keep the legacy result field for consumers, but do not model unverified fees.
+    const feesCost = 0;
     const totalCost = inputs.awardCash
       + cashbackCost
       + timeCost
-      + feesCost
       + inputs.displacedCashBonus;
     const totalValue = inputs.economySaving + inputs.willingness;
     const rawBreakEven = totalCost - inputs.economySaving;
@@ -376,7 +374,6 @@
     { id: "welcome-miles", key: "welcomeMiles", label: "welcome miles", integer: true },
     { id: "displaced-cash-bonus", key: "displacedCashBonus", label: "displaced cash offer" },
     { id: "award-cash", key: "awardCash", label: "award cash charges" },
-    { id: "ongoing-fee", key: "ongoingFee", label: "general incremental fees" },
     { id: "minutes-per-month", key: "minutesPerMonth", label: "extra minutes per month" },
     { id: "hourly-value", key: "hourlyValue", label: "hourly time value" },
     { id: "transfer-block", key: "transferBlock", label: "transfer block", integer: true, min: 1 },
@@ -458,7 +455,6 @@
     setOutput("cashback-cost", formatMoney(result.cashbackCost));
     setOutput("time-cost", formatMoney(result.timeCost));
     setOutput("award-cash-cost", formatMoney(inputs.awardCash));
-    setOutput("fees-cost", formatMoney(result.feesCost));
     setOutput("displaced-cash", formatMoney(inputs.displacedCashBonus));
     setOutput("total-cost", formatMoney(result.totalCost));
     setOutput("leftover-miles", formatMiles(result.leftoverMiles));
@@ -606,6 +602,31 @@
       : { disabled: false, label: "current through expiry date" };
   }
 
+  function promotionFeeStatus(promotion) {
+    if (promotion.fee === undefined || promotion.fee === null || promotion.fee === "") return "";
+    if (!Number.isFinite(promotion.fee) || promotion.fee < 0) {
+      return "fee unclear — not modeled";
+    }
+    return promotion.fee > 0 ? "paid fee omitted — not modeled" : "";
+  }
+
+  function promotionAvailabilityStatus(promotion, now = new Date()) {
+    const expiryStatus = promotionExpiryStatus(promotion, now);
+    const feeStatus = promotionFeeStatus(promotion);
+    const reasons = [
+      ...(expiryStatus.disabled ? [expiryStatus.label] : []),
+      ...(feeStatus ? [feeStatus] : []),
+    ];
+    if (reasons.length > 0) {
+      return {
+        disabled: true,
+        label: reasons.join(" · "),
+        category: expiryStatus.disabled ? "expired" : "excluded",
+      };
+    }
+    return { ...expiryStatus, category: "current" };
+  }
+
   function promotionOptionLabel(promotion, expiryStatus) {
     const expiry = promotion.expiry ? ` · through ${promotion.expiry.slice(0, 10)}` : "";
     const status = expiryStatus.disabled ? ` · ${expiryStatus.label}` : expiry;
@@ -618,11 +639,11 @@
     const configuredDefault = research.promotions.find((promotion) => (
       promotion.id === research.defaultPromotionId
     ));
-    if (configuredDefault && !promotionExpiryStatus(configuredDefault).disabled) {
+    if (configuredDefault && !promotionAvailabilityStatus(configuredDefault).disabled) {
       return configuredDefault;
     }
     return research.promotions.find((promotion) => (
-      isDefaultPromotion(promotion) && !promotionExpiryStatus(promotion).disabled
+      isDefaultPromotion(promotion) && !promotionAvailabilityStatus(promotion).disabled
     )) || null;
   }
 
@@ -637,16 +658,22 @@
     current.label = "Current or undated offers — verify terms";
     const expired = document.createElement("optgroup");
     expired.label = "Historical / expired offers (disabled)";
+    const excluded = document.createElement("optgroup");
+    excluded.label = "Paid / unclear-fee offers (disabled; fees omitted)";
     for (const promotion of research.promotions) {
-      const status = promotionExpiryStatus(promotion);
+      const status = promotionAvailabilityStatus(promotion);
       const option = document.createElement("option");
       option.value = promotion.id;
       option.textContent = promotionOptionLabel(promotion, status);
       option.disabled = status.disabled;
-      (status.disabled ? expired : current).appendChild(option);
+      const group = status.category === "expired"
+        ? expired
+        : status.category === "excluded" ? excluded : current;
+      group.appendChild(option);
     }
     if (current.childElementCount > 0) promotionPicker.appendChild(current);
     if (expired.childElementCount > 0) promotionPicker.appendChild(expired);
+    if (excluded.childElementCount > 0) promotionPicker.appendChild(excluded);
 
     const activeDefault = defaultPromotion();
     promotionPicker.value = activeDefault ? activeDefault.id : "custom";
@@ -675,16 +702,11 @@
     const note = byId("promotion-note");
     clearNode(note);
     if (!promotion) {
-      note.textContent = "Custom/manual scenario: enter only verified bonus, earning-rate, cap and fee assumptions. Expired or historical presets are not applied automatically.";
+      note.textContent = "Custom/manual scenario: enter only verified bonus, earning-rate and cap assumptions. Paid-fee presets are disabled rather than treated as free; expired or historical presets are not applied automatically.";
       return;
     }
-    appendText(note, promotion.terms);
+    appendText(note, `${promotion.terms} Paid-fee presets are disabled rather than treated as free.`);
     addSafeSourceLink(note, promotion.source);
-  }
-
-  function declaredFee(promotion) {
-    if (promotion.fee === undefined || promotion.fee === null || promotion.fee === "") return 0;
-    return finiteNonnegative(promotion.fee) ? promotion.fee : 0;
   }
 
   function applyPromotionPreset(promotion) {
@@ -697,7 +719,6 @@
     for (const [id, value] of assignments) {
       if (value !== undefined && finiteNonnegative(value)) byId(id).value = String(value);
     }
-    byId("ongoing-fee").value = String(BASE_GENERAL_FEES + declaredFee(promotion));
     renderPromotionNote(promotion);
   }
 
@@ -728,7 +749,7 @@
       return;
     }
     const promotion = promotionById.get(promotionPicker.value);
-    if (!promotion || promotionExpiryStatus(promotion).disabled) {
+    if (!promotion || promotionAvailabilityStatus(promotion).disabled) {
       promotionPicker.value = "custom";
       renderPromotionNote(null);
       update();
@@ -768,8 +789,7 @@
     if (selectedPromotion) {
       applyPromotionPreset(selectedPromotion);
     } else {
-      const savedDefault = research.promotions.find(isDefaultPromotion);
-      if (savedDefault) byId("welcome-miles").value = "0";
+      byId("welcome-miles").value = "0";
       renderPromotionNote(null);
     }
     renderPromotionNote(selectedPromotion);

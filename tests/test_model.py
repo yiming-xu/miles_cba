@@ -21,7 +21,6 @@ DEFAULTS = {
     "minutes_per_month": D("15"),
     "hourly_value": D("40"),
     "award_cash": D("100"),
-    "ongoing_fee": D("30"),
     "transfer_block": 1,
     "welcome_miles": D("16000"),
     "displaced_cash_bonus": D("0"),
@@ -77,7 +76,6 @@ def reference_model(route, overrides=None):
         D(values["award_cash"])
         + cashback_cost
         + time_cost
-        + D(values["ongoing_fee"])
         + D(values["displaced_cash_bonus"])
     )
     net = D(values["economy_saving"]) + D(values["willingness"]) - total_cost
@@ -128,9 +126,9 @@ class ReferenceModelTests(unittest.TestCase):
         self.assertEqual(result["leftover"], D("1500"))
         self.assertEqual(result["cashback_cost"], D("170.00"))
         self.assertEqual(result["time_cost"], D("100"))
-        self.assertEqual(result["total_cost"], D("400.00"))
+        self.assertEqual(result["total_cost"], D("370.00"))
         self.assertEqual(result["break_even_willingness"], D("0"))
-        self.assertEqual(result["net"], D("200.00"))
+        self.assertEqual(result["net"], D("230.00"))
 
     def test_transfer_block_rounding_and_idealised_one_mile_boundary(self):
         normal = reference_model("Tokyo", {"transfer_block": 10000, "miles_per_dollar": D("3.85")})
@@ -171,15 +169,16 @@ class ReferenceModelTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             reference_model("Tokyo", {"transfer_block": 0})
 
-    def test_displaced_cash_and_declared_general_fees_only_count_when_explicit(self):
+    def test_legacy_fee_input_is_ignored_but_displaced_cash_still_counts(self):
         baseline = reference_model("Tokyo")
         adjusted = reference_model("Tokyo", {
             "ongoing_fee": D("226.20"),
             "displaced_cash_bonus": D("200"),
         })
-        self.assertEqual(adjusted["total_cost"], baseline["total_cost"] + D("396.20"))
-        self.assertEqual(adjusted["break_even_willingness"], D("346.20"))
-        self.assertEqual(adjusted["net"], baseline["net"] - D("396.20"))
+        self.assertEqual(baseline["total_cost"], D("370.00"))
+        self.assertEqual(adjusted["total_cost"], baseline["total_cost"] + D("200"))
+        self.assertEqual(adjusted["break_even_willingness"], D("120.00"))
+        self.assertEqual(adjusted["net"], D("30.00"))
 
 
 class StaticContractTests(unittest.TestCase):
@@ -206,25 +205,28 @@ class StaticContractTests(unittest.TestCase):
     def test_default_inputs_and_removed_controls_match_the_shared_example(self):
         html = (ROOT / "index.html").read_text(encoding="utf-8")
         for value in ('value="450"', 'value="150"', 'value="1000"',
-                      'value="4"', 'value="16000"', 'value="100"', 'value="30"',
+                      'value="4"', 'value="16000"', 'value="100"',
                       'value="15"', 'value="40"', 'value="1"'):
             self.assertIn(value, html)
         self.assertIn("1 June 2027", html)
         self.assertIn("unverified", html.lower())
         self.assertIn("CAPTCHA", html)
         self.assertIn('id="idealised-transfer" name="idealised-transfer" type="checkbox" checked', html)
-        for forbidden in ('id="welcome-fee"', 'id="welcome-delay"', 'id="miles-cash-gift"'):
+        for forbidden in ('id="welcome-fee"', 'id="welcome-delay"', 'id="miles-cash-gift"',
+                          'id="ongoing-fee"', 'data-output="fees-cost"'):
             self.assertNotIn(forbidden, html)
+        self.assertRegex(html, r"(?is)annual card fees.*transfer fees.*not included")
+        self.assertRegex(html, r"(?is)paid-fee offer presets.*disabled")
         js = (ROOT / "app.js").read_text(encoding="utf-8")
         for forbidden in ("welcomeFee", "welcomeDelayMonths", "milesCashGift"):
             self.assertNotIn(forbidden, js)
 
-    def test_slides_have_one_example_five_pages_and_no_external_asset_dependencies(self):
+    def test_slides_have_six_pages_and_only_credited_official_images(self):
         inspector = MarkupInspector()
         slides = (ROOT / "slides.html").read_text(encoding="utf-8")
         inspector.feed(slides)
-        self.assertEqual(inspector.slides, 5)
-        self.assertFalse(inspector.external_assets)
+        self.assertEqual(inspector.slides, 6)
+        self.assertTrue(all(url.startswith("https://assets.singaporeair.com/") for url in inspector.external_assets))
         self.assertEqual(len(inspector.ids), len(set(inspector.ids)))
         self.assertIn("1 June 2027", slides)
         self.assertIn("S$450", slides)
