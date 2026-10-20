@@ -27,6 +27,8 @@
         zone: "Not supplied",
         awardMiles: 42500,
         economySaving: 300,
+        fareStatus: "assumed",
+        fareNote: "Illustrative one-way economy cash estimate for Perth; not a live quote.",
         willingness: 100,
         cathayMiles: null,
         cathayRouting: "Not supplied in fallback data",
@@ -38,10 +40,12 @@
         zone: "Not supplied",
         awardMiles: 54500,
         economySaving: 450,
+        fareStatus: "assumed",
+        fareNote: "June 2027 SIN–HND worked example; SQ fare lookup was blocked by CAPTCHA. This is assumed, unverified, and not a live quote.",
         willingness: 150,
         cathayMiles: null,
         cathayRouting: "Not supplied in fallback data",
-        note: "SIN–HND economy cash is S$450 assumed and unverified, not a live quote.",
+        note: "Fallback route only; compare with researched chart data.",
       }),
       Object.freeze({
         id: "heathrow",
@@ -49,6 +53,8 @@
         zone: "Not supplied",
         awardMiles: 108500,
         economySaving: 700,
+        fareStatus: "assumed",
+        fareNote: "Illustrative one-way economy cash estimate for London Heathrow; not a live quote.",
         willingness: 500,
         cathayMiles: null,
         cathayRouting: "Not supplied in fallback data",
@@ -87,6 +93,8 @@
       zone: String(route.zone ?? "Not supplied"),
       awardMiles,
       economySaving: finiteNonnegative(economySaving) ? economySaving : 0,
+      fareStatus: String(route.fareStatus ?? "assumed"),
+      fareNote: String(route.fareNote ?? ""),
       willingness: finiteNonnegative(willingness) ? willingness : 0,
       cathayMiles: route.cathayMiles ?? null,
       cathayRouting: String(route.cathayRouting ?? "Not supplied"),
@@ -200,7 +208,10 @@
     return Math.max(0, monthDifference - (endDate.getUTCDate() < startDate.getUTCDate() ? 1 : 0));
   }
 
-  function dateFeasibilityMessage(earningMonths) {
+  function dateFeasibilityMessage(route, earningMonths) {
+    if (!isHanedaRoute(route)) {
+      return `No travel date is set for ${route.name}; this is a general earning estimate, not a by-date forecast. No award inventory is checked.`;
+    }
     const startDate = parseDateOnly(research.checked);
     const flightDate = parseDateOnly("2027-06-01");
     if (!startDate || !flightDate) {
@@ -363,9 +374,10 @@
   const idealisedInput = document.getElementById("idealised-transfer");
   const errorBox = document.getElementById("input-errors");
   let lastTransferBlock = 10000;
+  let economyFareEdited = false;
 
   const INPUTS = Object.freeze([
-    { id: "economy-saving", key: "economySaving", label: "economy cash saving" },
+    { id: "economy-saving", key: "economySaving", label: "economy flight cost" },
     { id: "upgrade-willingness", key: "willingness", label: "upgrade willingness" },
     { id: "monthly-spend", key: "monthlySpend", label: "eligible monthly spend" },
     { id: "monthly-cap", key: "monthlyCap", label: "monthly spend cap" },
@@ -430,7 +442,10 @@
     byId("sticky-net").textContent = "—";
     byId("sticky-months").textContent = "—";
     byId("sensitivity-note").hidden = true;
-    byId("date-feasibility-note").textContent = "Correct the inputs to compare the earning timeline with the stated flight date.";
+    const selectedRoute = routeById.get(destination.value);
+    byId("date-feasibility-note").textContent = selectedRoute && !isHanedaRoute(selectedRoute)
+      ? `No travel date is set for ${selectedRoute.name}; correct the inputs to see the general earning estimate.`
+      : "Correct the inputs to compare the timeline with the 1 June 2027 Tokyo/Haneda worked example.";
     byId("sticky-result").classList.remove("is-positive", "is-negative", "is-invalid");
   }
 
@@ -461,7 +476,7 @@
     setOutput("transfer-remainder", `${formatMiles(result.transferRemainder)} miles`);
     setOutput("month-excess", `${formatMiles(result.wholeMonthExcess)} miles`);
     setOutput("welcome-excess", `${formatMiles(result.welcomeExcess)} miles`);
-    byId("date-feasibility-note").textContent = dateFeasibilityMessage(result.earningMonths);
+    byId("date-feasibility-note").textContent = dateFeasibilityMessage(route, result.earningMonths);
 
     const netText = formatMoney(result.netBenefit);
     const signedNet = result.netBenefit > 0 ? `+${netText}` : netText;
@@ -722,24 +737,50 @@
     renderPromotionNote(promotion);
   }
 
-  function applyRoutePreset() {
+  function routeFareNote(route) {
+    if (route.fareNote.trim()) return route.fareNote;
+    if (isHanedaRoute(route)) {
+      return "1 June 2027 SIN–HND worked example; SQ fare lookup was blocked by CAPTCHA. This assumed amount is unverified and not a live quote.";
+    }
+    return `Illustrative one-way economy cash estimate for ${route.name}; not a live quote. Compare a matched itinerary.`;
+  }
+
+  function renderEconomyFare(route) {
+    const amountInput = byId("economy-saving");
+    const rawAmount = amountInput.value.trim();
+    const numericAmount = rawAmount === "" ? Number.NaN : Number(rawAmount);
+    const amount = Number.isFinite(numericAmount) && numericAmount >= 0
+      ? formatMoney(numericAmount)
+      : "your current value";
+
+    if (economyFareEdited) {
+      byId("selected-fare-title").textContent = `Economy alternative · ${route.routeLabel} · ${amount} (user-entered)`;
+      byId("selected-fare-note").textContent = "This is your manual cash alternative, not a retrieved quote. Compare it with a matched one-way itinerary.";
+      byId("economy-hint").textContent = "Manual input; this is not a retrieved quote. Use a matched one-way itinerary price.";
+      return;
+    }
+
+    const status = route.fareStatus || "assumed";
+    const fareNote = routeFareNote(route);
+    byId("selected-fare-title").textContent = `Economy alternative · ${route.routeLabel} · ${formatMoney(route.economySaving)} (${status})`;
+    byId("selected-fare-note").textContent = fareNote;
+    byId("economy-hint").textContent = `${fareNote} Replace this assumed amount with a matched one-way itinerary price if available.`;
+  }
+
+  function applyRoutePreset(updateScenario = true) {
     const route = routeById.get(destination.value);
     if (!route) return;
     const isDefaultExampleRoute = isHanedaRoute(route)
       || /tokyo/i.test(`${route.id} ${route.name}`);
-    const economySaving = isDefaultExampleRoute
-      ? DEFAULT_EXAMPLE.economySaving
-      : route.economySaving;
     const willingness = isDefaultExampleRoute
       ? DEFAULT_EXAMPLE.willingness
       : route.willingness;
-    byId("economy-saving").value = String(economySaving);
+    economyFareEdited = false;
+    byId("economy-saving").value = String(route.economySaving);
     byId("upgrade-willingness").value = String(willingness);
-    byId("economy-hint").textContent = isDefaultExampleRoute
-      ? "S$450 is assumed and unverified for the stated date, not an updated SQ quote. Replace it with a matched itinerary price."
-      : `${formatMoney(economySaving)} is a hypothetical route input, not a verified fare or live quote. Replace it with a matched itinerary price.`;
+    renderEconomyFare(route);
     byId("willingness-hint").textContent = `${formatMoney(willingness)} is a hypothetical personal preference for this route, not an airline valuation.`;
-    update();
+    if (updateScenario) update();
   }
 
   function handlePromotionChange() {
@@ -766,6 +807,13 @@
       if (Number.isInteger(current) && current >= 1) lastTransferBlock = current;
     }
     update();
+  }
+
+  function handleEconomyFareInput(event) {
+    economyFareEdited = true;
+    const route = routeById.get(destination.value);
+    if (route) renderEconomyFare(route);
+    handleNumberInput(event);
   }
 
   function handleIdealisedChange() {
@@ -798,12 +846,15 @@
     blockInput.disabled = true;
 
     form.querySelectorAll("input[type='number']").forEach((input) => {
-      input.addEventListener("input", handleNumberInput);
+      input.addEventListener("input", input.id === "economy-saving"
+        ? handleEconomyFareInput
+        : handleNumberInput);
     });
     form.addEventListener("change", update);
     destination.addEventListener("change", applyRoutePreset);
     promotionPicker.addEventListener("change", handlePromotionChange);
     idealisedInput.addEventListener("change", handleIdealisedChange);
+    applyRoutePreset(false);
     update();
   }
 

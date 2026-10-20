@@ -17,8 +17,12 @@ function routeRows(count = 12) {
     name: index === 0 ? "Tokyo (Haneda)" : `Destination ${index + 1}`,
     zone: `Zone ${index + 1}`,
     awardMiles: index === 0 ? 54500 : 20000 + index * 5000,
-    economySaving: index === 0 ? 450 : 300,
+    economySaving: index === 0 ? 460 : index === 1 ? 300 : 300 + index * 29,
     willingness: index === 0 ? 150 : 100,
+    fareStatus: "assumed",
+    fareNote: index === 0
+      ? "S$450 is assumed for 1 June 2027; SQ fare lookup was blocked by CAPTCHA."
+      : `Illustrative one-way estimate for destination ${index + 1}; not a live quote.`,
     cathayMiles: 25000 + index * 1000,
     cathayRouting: index === 0 ? "Via Hong Kong (HKG)" : "Via HKG",
     note: `Source note ${index + 1}`,
@@ -222,6 +226,30 @@ run("checked research-data.js feeds all twelve routes and Citi presets into the 
   assert.equal(value(dom, "miles-rate"), "1.2");
   assert.equal(value(dom, "monthly-cap"), "1000000");
   assert.match(document.getElementById("promotion-note").textContent, /1\.2mpd/);
+
+  const destination = document.getElementById("destination");
+  const selectedFareTitle = document.getElementById("selected-fare-title");
+  const selectedFareNote = document.getElementById("selected-fare-note");
+  const economyHint = document.getElementById("economy-hint");
+  const routeData = dom.window.MILES_RESEARCH.routes;
+  assert.equal(routeData.length, 12);
+  for (const route of routeData) {
+    destination.value = route.id;
+    dispatchInput(dom.window, destination, "change");
+    assert.equal(value(dom, "economy-saving"), String(route.economySaving), `${route.id} economy price`);
+    assert.ok(selectedFareTitle.textContent.includes(route.name));
+    assert.ok(selectedFareTitle.textContent.includes(`(${route.fareStatus})`));
+    assert.ok(selectedFareNote.textContent.includes(route.fareNote));
+    assert.ok(economyHint.textContent.includes(route.fareNote));
+    if (route.id === "tokyo") {
+      assert.match(selectedFareNote.textContent, /1 June 2027/);
+    } else {
+      assert.doesNotMatch(
+        `${selectedFareNote.textContent} ${economyHint.textContent} ${document.getElementById("date-feasibility-note").textContent}`,
+        /HND|Haneda|June 2027|CAPTCHA/i,
+      );
+    }
+  }
   dom.window.close();
 });
 
@@ -394,15 +422,79 @@ run("personal time sensitivity and route selection change the rendered scenario"
   minutes.value = "30";
   dispatchInput(dom.window, minutes);
   assert.equal(document.querySelector('[data-output="time-cost"]').textContent, "S$200.00");
-  assert.equal(document.getElementById("detail-net").textContent, "+S$130.00");
+  assert.equal(document.getElementById("detail-net").textContent, "+S$140.00");
 
   const destination = document.getElementById("destination");
   destination.value = "route-2";
   dispatchInput(dom.window, destination, "change");
   assert.equal(document.querySelector('[data-output="target-miles"]').textContent, "25,000");
   assert.equal(document.getElementById("economy-saving").value, "300");
-  assert.match(document.getElementById("economy-hint").textContent, /not a verified fare or live quote/);
+  assert.match(document.getElementById("economy-hint").textContent, /not a live quote/);
   assert.match(document.getElementById("award-route-display").textContent, /Destination 2/);
+  dom.window.close();
+});
+
+run("economy cash alternative is labeled clearly and all twelve destination prices and notes follow the selected route", () => {
+  const routeData = routeRows();
+  const dom = createDom(indexHtml, { data: { ...research, routes: routeData } });
+  const { document } = dom.window;
+  assert.equal(
+    document.querySelector('label[for="economy-saving"]').textContent.trim(),
+    "Economy flight cost (cash alternative) SGD",
+  );
+  assert.match(document.getElementById("selected-fare-context").textContent, /Tokyo.*S\$460\.00.*assumed/i);
+  assert.match(document.getElementById("selected-fare-context").textContent, /1 June 2027/);
+
+  const destination = document.getElementById("destination");
+  const economy = document.getElementById("economy-saving");
+  const context = document.getElementById("selected-fare-context");
+  for (const route of routeData) {
+    destination.value = route.id;
+    dispatchInput(dom.window, destination, "change");
+    assert.equal(economy.value, String(route.economySaving), `${route.id} economy price`);
+    assert.match(context.textContent, new RegExp(route.name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+    assert.match(context.textContent, new RegExp(route.fareNote.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+    assert.match(document.getElementById("economy-hint").textContent, new RegExp(route.fareNote.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+    assert.match(context.textContent, /assumed/i);
+    const dateNote = document.getElementById("date-feasibility-note").textContent;
+    if (route.id === "tokyo-hnd") {
+      assert.match(context.textContent, /June 2027|CAPTCHA/);
+      assert.match(dateNote, /1 June 2027/);
+    } else {
+      assert.doesNotMatch(context.textContent, /Haneda|HND|June 2027|CAPTCHA/i);
+      assert.match(dateNote, /general earning estimate/);
+      assert.doesNotMatch(dateNote, /Haneda|HND|June 2027|CAPTCHA/i);
+    }
+  }
+  dom.window.close();
+});
+
+run("a manually edited fare is marked user-entered and survives other input updates", () => {
+  const routeData = routeRows();
+  const dom = createDom(indexHtml, { data: { ...research, routes: routeData } });
+  const { document } = dom.window;
+  const destination = document.getElementById("destination");
+  const economy = document.getElementById("economy-saving");
+  destination.value = "route-2";
+  dispatchInput(dom.window, destination, "change");
+
+  economy.value = "987.65";
+  dispatchInput(dom.window, economy);
+  assert.match(document.getElementById("selected-fare-context").textContent, /user-entered/i);
+  assert.match(document.getElementById("selected-fare-context").textContent, /not a retrieved quote/i);
+  assert.equal(document.querySelector('[data-output="economy-value"]').textContent, "S$987.65");
+
+  const minutes = document.getElementById("minutes-per-month");
+  minutes.value = "30";
+  dispatchInput(dom.window, minutes);
+  assert.equal(economy.value, "987.65");
+  assert.equal(document.querySelector('[data-output="economy-value"]').textContent, "S$987.65");
+  assert.match(document.getElementById("selected-fare-context").textContent, /user-entered/i);
+
+  destination.value = "route-3";
+  dispatchInput(dom.window, destination, "change");
+  assert.equal(economy.value, String(routeData[2].economySaving));
+  assert.match(document.getElementById("selected-fare-context").textContent, /Illustrative one-way estimate/);
   dom.window.close();
 });
 

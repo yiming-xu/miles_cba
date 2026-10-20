@@ -210,7 +210,7 @@ class StaticContractTests(unittest.TestCase):
             self.assertIn(value, html)
         self.assertIn("1 June 2027", html)
         self.assertIn("unverified", html.lower())
-        self.assertIn("CAPTCHA", html)
+        self.assertIn('id="selected-fare-note"', html)
         self.assertIn('id="idealised-transfer" name="idealised-transfer" type="checkbox" checked', html)
         for forbidden in ('id="welcome-fee"', 'id="welcome-delay"', 'id="miles-cash-gift"',
                           'id="ongoing-fee"', 'data-output="fees-cost"'):

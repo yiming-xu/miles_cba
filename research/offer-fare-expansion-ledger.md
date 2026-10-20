@@ -1,0 +1,3 @@
+# Offer and economy-input expansion
+
+Baseline live59857ecc82a46e06c1ba64a75a1c140e561e75ad. Inprogress: >=7source-backed current/historicaloffers; prominentdestination-specificeconomyfield. User authorizesguessingnonquotedefaults; all12cashdefaults illustrativeonewaySGD notliveprices. KeepTokyo450andsharedslideassumptions. Preservefeeomissionanddisablepaidoffers. Testeachdestinationautofillandmanualedit. BeforecompletionverifyremotecommitandliveUI. Rollbackrevertnewreleasecommitthenpushmain,noPages/authchanges.

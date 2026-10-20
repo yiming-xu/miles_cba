@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#10263a">
-  <meta name="description" content="A transparent, hypothetical miles-versus-cash calculator for the Singapore–Haneda trip example.">
+  <meta name="description" content="A transparent miles-versus-cash calculator with destination-specific illustrative economy fare assumptions.">
   <title>Miles or cash? — a personal cost–benefit calculator</title>
   <link rel="stylesheet" href="styles.css">
   <script src="research-data.js" defer></script>
@@ -17,23 +17,23 @@
       <span>Miles <span class="brand-light">/</span> cash</span>
     </a>
     <nav class="top-nav" aria-label="Page navigation">
-      <a href="slides.html">Five-slide talk <span aria-hidden="true">↗</span></a>
+      <a href="slides.html">Six-slide talk <span aria-hidden="true">↗</span></a>
       <a href="#research-appendix">Sources &amp; award chart</a>
     </nav>
   </header>
 
   <section class="hero" aria-labelledby="page-title">
     <div class="hero-copy">
-      <p class="eyebrow eyebrow-light">One shared example · Singapore to Haneda · one way</p>
+      <p class="eyebrow eyebrow-light">One shared example · Singapore origin · one way</p>
       <h1 id="page-title">What are the miles<br><em>worth to you?</em></h1>
       <p class="hero-lede">Start with the economy trip you would actually buy. Then count the cash and time behind a possible award.</p>
     </div>
     <div class="hypothesis-banner" role="note">
       <span class="banner-icon" aria-hidden="true">i</span>
-      <p><strong>S$450 is an assumed placeholder, not a verified or updated fare quote.</strong> It is the example SQ Economy cash amount for SIN–HND on 1 June 2027; the SQ fare lookup was blocked by CAPTCHA. No award-seat inventory has been checked.</p>
+      <p><strong>Economy cash amounts are route-specific estimates, not live fare quotes.</strong> Use the selected destination's amount as a starting point, then compare a matched one-way itinerary. No award-seat inventory has been checked.</p>
     </div>
     <div class="hero-footnote">
-      <span class="flight-date-badge"><strong>Example flight date: 1 June 2027</strong> · Economy alternative: S$450 assumed / unverified · Award inventory: not checked</span>
+      <span class="flight-date-badge"><strong>Economy alternative:</strong> selected-route estimate · Award inventory: not checked</span>
       <a href="slides.html">Open the browser presentation <span aria-hidden="true">→</span></a>
     </div>
   </section>
@@ -74,11 +74,11 @@
             <h2 id="value-heading">What is this trip worth to you?</h2>
           </div>
         </div>
-        <p class="section-lede">The shared worked example is SQ Economy from Singapore (SIN) to Tokyo Haneda (HND), 1 June 2027. Other routes are selectable for comparison.</p>
+        <p class="section-lede">Select a destination to load its one-way economy cash alternative and award rate. Replace the estimate with a matched itinerary price before comparing.</p>
 
-        <div class="flight-date-badge flight-date-badge-light" role="note">
-          <strong>1 June 2027 · SIN → HND · SQ Economy alternative</strong>
-          <span>S$450 assumed placeholder — unverified; SQ fare lookup blocked by CAPTCHA. Not a live quote. No award inventory checked.</span>
+        <div class="flight-date-badge flight-date-badge-light" id="selected-fare-context" role="note" aria-live="polite">
+          <strong id="selected-fare-title">Selected destination economy alternative</strong>
+          <span id="selected-fare-note">Tokyo Haneda worked example: 1 June 2027, S$450 assumed and unverified; not a live quote.</span>
         </div>
 
         <div class="field-grid field-grid-wide">
@@ -95,9 +95,9 @@
             <span class="award-rate-route" id="award-route-display">Singapore → Tokyo (Haneda)</span>
           </div>
           <div class="field">
-            <label for="economy-saving">Economy cash you would avoid <span class="unit">SGD</span></label>
+            <label for="economy-saving"><strong>Economy flight cost (cash alternative)</strong> <span class="unit">SGD</span></label>
             <div class="input-with-prefix"><span aria-hidden="true">S$</span><input id="economy-saving" name="economy-saving" type="number" inputmode="decimal" min="0" step="0.01" value="450" required aria-describedby="economy-hint"></div>
-            <span class="field-hint" id="economy-hint">S$450 is assumed and unverified for the stated date, not an updated SQ quote. Replace it with a matched itinerary price.</span>
+            <span class="field-hint" id="economy-hint">Enter the cash price you would pay for a matched one-way itinerary.</span>
           </div>
           <div class="field">
             <label for="upgrade-willingness">Extra you would personally pay above economy for business <span class="unit">SGD</span></label>
@@ -274,8 +274,8 @@
         </div>
       </div>
       <p class="method-note"><strong>How to read the timeline:</strong> miles are earned from zero and rounded up to whole earning months. Cashback and time costs cover every full earning month. The selected welcome miles are treated as available in the estimate; qualifying spend, eligibility and bonus-credit timing are not modeled. The stated offer window is a condition, not a ready-date forecast.</p>
-      <p class="date-feasibility-note" id="date-feasibility-note" role="note">At default assumptions, the modeled 10 earning months exceed the remaining time to 1 June 2027 from the 20 October 2026 research snapshot; bonus posting can shorten the runway further.</p>
-      <p class="decision-note">This is a simplified personal comparison, not financial advice. It does not verify the S$450 fare, award inventory, card eligibility, transaction exclusions, award expiry, devaluation, actual transfer rules, annual card fees, miles-transfer fees, or taxes beyond the award cash charge entered above. The business-cabin product depends on the aircraft; 40 kg checked baggage is subject to route rules.</p>
+      <p class="date-feasibility-note" id="date-feasibility-note" role="note">This estimate shows the earning time for your inputs. A by-date comparison is available only for the Tokyo/Haneda worked example.</p>
+      <p class="decision-note">This is a simplified personal comparison, not financial advice. It does not verify the selected economy cash alternative, award inventory, card eligibility, transaction exclusions, award expiry, devaluation, actual transfer rules, annual card fees, miles-transfer fees, or taxes beyond the award cash charge entered above. The business-cabin product depends on the aircraft; 40 kg checked baggage is subject to route rules.</p>
     </section>
 
     <section class="closing-card" aria-labelledby="closing-heading">
@@ -285,14 +285,14 @@
         <h2 id="closing-heading">Start with your own value.</h2>
         <p>Compare with your real alternative. Count money and time. Then decide—without treating a positive estimate as a promise.</p>
       </div>
-      <a class="button button-dark" href="slides.html">View the five slides <span aria-hidden="true">→</span></a>
+      <a class="button button-dark" href="slides.html">View the six slides <span aria-hidden="true">→</span></a>
     </section>
 
     <details class="research-appendix" id="research-appendix">
       <summary>Research appendix: award chart and offer terms <span class="appendix-tag">Reviewed <span id="research-checked">date in research data</span></span></summary>
       <div class="appendix-content">
         <div class="appendix-warning">
-          <strong>The S$450 SIN–HND economy amount is assumed and unverified.</strong> SQ fare lookup was blocked by CAPTCHA. The date badge is a teaching example only; no award-seat availability or live fare is asserted.
+          <strong>Economy fare inputs are route-specific estimates, not verified live quotes.</strong> Replace the selected amount with a matched itinerary price before comparing; no award-seat availability is asserted.
         </div>
         <div class="appendix-columns">
           <div>
@@ -323,6 +323,7 @@
             <p>Offer requirements do not count as extra monthly earning spend in this simplified model. A qualifying-spend condition is not a promise that the bonus will be approved or credited.</p>
           </div>
         </div>
+<details class="optional-details"><summary>Seven welcome-offer examples — current, paid and historical</summary><p>These are seven offer routes, not seven fee-free recommendations. Paid and expired examples cannot be applied to the simplified model.</p><ul><li><strong>Citi Rewards —16,000 bonus miles (40,000 points)</strong> — Fee-waived preset. Ends 2027-03-31. <a href="https://www.citibank.com.sg/credit-cards/rewards/citi-rewards-card/pdf/online-product-led-acquisition-promotion-terms-and-conditions.pdf" target="_blank" rel="noopener">Source and full terms</a><p>New-to-Citi principal cardholders only; no Citi principal card closed in preceding12months and no pending application. S$800 qualifying spend: approval month plus2calendar months; approval within30days. Bonus within3calendar months after qualifying period, may be extended. No stacking unless stated. Eligibility/posting not automatically modelled. 4mpd only eligible online/shopping; excludes online travel/mobile wallets;9,000 bonuspoints per statementmonth. First-year annualfee waived; later fees assumed waived otherwise add to total.</p></li><li><strong>Citi PremierMiles —8,000 bonus miles, fee-waived route</strong> — Fee-waived preset. Ends 2027-03-31. <a href="https://www.citibank.com.sg/credit-cards/travel/premiermiles-card/pdf/online-acquisition-offer-30k-miles-tnc.pdf" target="_blank" rel="noopener">Source and full terms</a><p>New-to-Citi principal cardholders only; no Citi principal card closed in preceding12months and no pending application. S$800 qualifying spend: approval month plus2calendar months; approval within30days. Bonus within3calendar months after qualifying period, may be extended. No stacking unless stated. Eligibility/posting not automatically modelled. 1.2mpd eligible SGD spend, no earning cap; cap field1,000,000 is model sentinel not bank cap. Any voucher value deliberately omitted.</p></li><li><strong>DBS Altitude —28,000 bonus miles, ALTSW28 fee-waived</strong> — Fee-waived preset. Ends 2026-10-31. <a href="https://www.dbs.com.sg/iwov-resources/media/pdf/cards/promotions/acquisition/dbs-alt-acqui-promo-tnc.pdf" target="_blank" rel="noopener">Source and full terms</a><p>New-to-DBS/POSB principal cardholders; none cancelled in last12months. Apply with ALTSW28 by31Oct2026, approved14Nov2026; S$800 qualifying spend within60days approval; valid PayLah by qualifyingperiod end. Credit3–5months after qualifying spend; firstyear fee waived. SGD1.3mpd eligible spend; cap1,000,000 is model sentinel not bank cap. No stacking. Add subsequent annualfees if not waived; transferfees not auto verified.</p></li><li><strong>HISTORICAL 2019 — SC X Card 60,000 miles (expired)</strong> — Expired historical. Ends 2019-12-31. <a href="https://mainlymiles.com/2019/12/21/last-10-days-for-the-x-cards-60000-miles-sign-up-bonus/" target="_blank" rel="noopener">Source and full terms</a><p>Expired reference only: approval by31Dec2019; S$6,000 eligible spend within60days; pay S$695.50 annualfee. 30,000 upfront miles plus30,000 signup miles; ongoing spending miles separate. Never apply as a fee-free or current offer.</p></li><li><strong>Citi PremierMiles — 30,000 bonus Citi Miles (paid direct-online offer)</strong> — Paid · reference only. Ends 2027-03-31. <a href="https://www.citibank.com.sg/credit-cards/travel/premiermiles-card/pdf/online-acquisition-offer-tnc.pdf?icid=SGLEUJ5ENPREMCAAN17" target="_blank" rel="noopener">Source and full terms</a><p>Current direct online offer, as checked 2026-10-20. New principal Citi customers only: no existing principal Citi card at application, none closed in prior 12 months, and no pending principal-card application; approval/opening required within 30 days. Pay the S$196.20 annual fee for 10,000 miles, then make S$800 qualifying retail spend within the account-opening month plus two calendar months for another 20,000 miles. BonusMiles is 30,000 only; ordinary spend miles excluded. Local base rate 1.2 mpd (2.2 mpd overseas, per MileLion). Monthly cap not specified in the cited offer terms (null). No stacking with other acquisition offers unless stated.</p></li><li><strong>AMEX KrisFlyer Ascend — up to45,000 bonus miles (two annual fees)</strong> — Paid · reference only. Ends 2027-01-31. <a href="https://www.americanexpress.com/content/dam/amex/sg/campaigns/pdfs/kfa-ntb-welcomeoffer-1oct26.pdf" target="_blank" rel="noopener">Source and full terms</a><p>Current offer, checked 2026-10-20. New-to-AMEX eligibility applies; apply during the promotion and receive approval within 45 days. The 45,000 bonus comprises 5,000 on the first charge (first-ever Amex Singapore Airlines cobrand applicants only), 20,000 after S$5,000 eligible spend within six months and payment of the first S$397.85 annual fee, plus 20,000 after at least S$1 eligible spend in month 15. The second-year annual fee is also S$397.85; full 45,000-mile path therefore costs S$795.70 in annual fees. fee is the per-year annual fee. A separate S$100 eCapitaVoucher was limited to applications by 2026-11-01; not included in bonusMiles. Base earn is 1.2 mpd local and uncapped per Amex; welcome miles exclude ordinary spend.</p></li><li><strong>HSBC TravelOne —20,000 advertised partner miles (paid; ratio varies)</strong> — Paid · reference only. Ends 2026-10-31. <a href="https://www.hsbc.com.sg/content/dam/hsbc/sg/documents/credit-cards/travelone/travelone-sign-up-gift-offer-terms-and-conditions.pdf" target="_blank" rel="noopener">Source and full terms</a><p>Current offer, checked 2026-10-20. Apply 2026-07-01 through 2026-10-31 and be approved by 2026-11-14; provide marketing consent. New HSBC cardholder means no current principal HSBC card and none cancelled in the 12 months before approval. Pay the S$196.20 first-year annual fee (strictly chargeable, not waivable) and spend S$1,000 in qualifying transactions from account opening through the end of the following month. New-cardholder gift is 20,000 miles (50,000 HSBC Reward points) plus Samsonite luggage; existing HSBC customers receive 10,000 miles instead. Local base rate 1.2 mpd (2.4 mpd overseas, per MileLion); cap not specified in the offer terms (null). BonusMiles excludes ordinary spend miles. HSBC KrisFlyer conversion differs from Asia Miles; do not assume advertised miles equals KrisFlyer miles.</p></li></ul></details>
         <p class="source-caveat">The chart and offer source snapshot is <span id="research-checked-footer">the date shown above</span>. Recheck research and issuer terms before presenting or booking.</p>
       </div>
     </details>

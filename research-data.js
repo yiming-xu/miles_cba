@@ -7,55 +7,65 @@ window.MILES_RESEARCH = {
       "name": "Bali (DPS)",
       "zone": "2: Malaysia, Indonesia & Brunei",
       "awardMiles": 22000,
-      "economySaving": 450,
+      "economySaving": 200,
       "willingness": 150,
       "cathayMiles": 60000,
       "cathayRouting": "SIN–HKG–DPS",
-      "note": "Calculated chart comparison, approx 3,742 flown miles. Cathay-operated itinerary, not SQ; routing/award validity and seats must be checked."
+      "note": "Calculated chart comparison, approx 3,742 flown miles. Cathay-operated itinerary, not SQ; routing/award validity and seats must be checked.",
+      "fareStatus": "assumed",
+      "fareNote": "Illustrative one-way economy cash alternative in SGD; not a retrieved fare. Replace with your actual matched itinerary."
     },
     {
       "id": "bangkok",
       "name": "Bangkok (BKK)",
       "zone": "3: Philippines, Thailand, Vietnam, Myanmar, Cambodia & Laos",
       "awardMiles": 25000,
-      "economySaving": 450,
+      "economySaving": 180,
       "willingness": 150,
       "cathayMiles": 27000,
       "cathayRouting": "SIN–HKG–BKK",
-      "note": "Calculated chart comparison, approx 2,644 flown miles. Cathay-operated itinerary, not SQ; routing/award validity and seats must be checked."
+      "note": "Calculated chart comparison, approx 2,644 flown miles. Cathay-operated itinerary, not SQ; routing/award validity and seats must be checked.",
+      "fareStatus": "assumed",
+      "fareNote": "Illustrative one-way economy cash alternative in SGD; not a retrieved fare. Replace with your actual matched itinerary."
     },
     {
       "id": "hongkong",
       "name": "Hong Kong (HKG)",
       "zone": "4: China / Hong Kong / Taiwan excluding Beijing & Shanghai",
       "awardMiles": 35500,
-      "economySaving": 450,
+      "economySaving": 250,
       "willingness": 150,
       "cathayMiles": 27000,
       "cathayRouting": "SIN–HKG nonstop",
-      "note": "Calculated chart comparison, approx 1,594 flown miles. Cathay-operated itinerary, not SQ; routing/award validity and seats must be checked."
+      "note": "Calculated chart comparison, approx 1,594 flown miles. Cathay-operated itinerary, not SQ; routing/award validity and seats must be checked.",
+      "fareStatus": "assumed",
+      "fareNote": "Illustrative one-way economy cash alternative in SGD; not a retrieved fare. Replace with your actual matched itinerary."
     },
     {
       "id": "shanghai",
       "name": "Shanghai (PVG)",
       "zone": "5: Beijing & Shanghai",
       "awardMiles": 45000,
-      "economySaving": 450,
+      "economySaving": 350,
       "willingness": 150,
       "cathayMiles": 27000,
       "cathayRouting": "SIN–HKG–PVG",
-      "note": "Calculated chart comparison, approx 2,374 flown miles. Cathay-operated itinerary, not SQ; routing/award validity and seats must be checked."
+      "note": "Calculated chart comparison, approx 2,374 flown miles. Cathay-operated itinerary, not SQ; routing/award validity and seats must be checked.",
+      "fareStatus": "assumed",
+      "fareNote": "Illustrative one-way economy cash alternative in SGD; not a retrieved fare. Replace with your actual matched itinerary."
     },
     {
       "id": "delhi",
       "name": "Delhi (DEL)",
       "zone": "6: South Asia",
       "awardMiles": 45000,
-      "economySaving": 450,
+      "economySaving": 350,
       "willingness": 150,
       "cathayMiles": 60000,
       "cathayRouting": "SIN–HKG–DEL",
-      "note": "Calculated chart comparison, approx 3,922 flown miles. Cathay-operated itinerary, not SQ; routing/award validity and seats must be checked."
+      "note": "Calculated chart comparison, approx 3,922 flown miles. Cathay-operated itinerary, not SQ; routing/award validity and seats must be checked.",
+      "fareStatus": "assumed",
+      "fareNote": "Illustrative one-way economy cash alternative in SGD; not a retrieved fare. Replace with your actual matched itinerary."
     },
     {
       "id": "tokyo",
@@ -66,7 +76,9 @@ window.MILES_RESEARCH = {
       "willingness": 150,
       "cathayMiles": 60000,
       "cathayRouting": "SIN–HKG–HND",
-      "note": "Calculated chart comparison, approx 3,398 flown miles. Cathay-operated itinerary, not SQ; routing/award validity and seats must be checked."
+      "note": "Calculated chart comparison, approx 3,398 flown miles. Cathay-operated itinerary, not SQ; routing/award validity and seats must be checked.",
+      "fareStatus": "assumed",
+      "fareNote": "S$450 remains assumed for SIN–HND on 1 June 2027; exact SQ fare was not verified through SQ, Google Flights or Skyscanner."
     },
     {
       "id": "perth",
@@ -77,29 +89,35 @@ window.MILES_RESEARCH = {
       "willingness": 150,
       "cathayMiles": 91000,
       "cathayRouting": "SIN–HKG–PER",
-      "note": "Calculated chart comparison, approx 5,345 flown miles. Cathay-operated itinerary, not SQ; routing/award validity and seats must be checked."
+      "note": "Calculated chart comparison, approx 5,345 flown miles. Cathay-operated itinerary, not SQ; routing/award validity and seats must be checked.",
+      "fareStatus": "assumed",
+      "fareNote": "Illustrative one-way economy cash alternative in SGD; not a retrieved fare. Replace with your actual matched itinerary."
     },
     {
       "id": "sydney",
       "name": "Sydney (SYD)",
       "zone": "9: Other Australia & New Zealand",
       "awardMiles": 72000,
-      "economySaving": 450,
+      "economySaving": 500,
       "willingness": 150,
       "cathayMiles": 91000,
       "cathayRouting": "SIN–HKG–SYD",
-      "note": "Calculated chart comparison, approx 6,189 flown miles. Cathay-operated itinerary, not SQ; routing/award validity and seats must be checked."
+      "note": "Calculated chart comparison, approx 6,189 flown miles. Cathay-operated itinerary, not SQ; routing/award validity and seats must be checked.",
+      "fareStatus": "assumed",
+      "fareNote": "Illustrative one-way economy cash alternative in SGD; not a retrieved fare. Replace with your actual matched itinerary."
     },
     {
       "id": "dubai",
       "name": "Dubai (DXB)",
       "zone": "10: Africa, Middle East & Turkey",
       "awardMiles": 68000,
-      "economySaving": 450,
+      "economySaving": 550,
       "willingness": 150,
       "cathayMiles": 91000,
       "cathayRouting": "SIN–HKG–DXB",
-      "note": "Calculated chart comparison, approx 5,273 flown miles. Cathay-operated itinerary, not SQ; routing/award validity and seats must be checked."
+      "note": "Calculated chart comparison, approx 5,273 flown miles. Cathay-operated itinerary, not SQ; routing/award validity and seats must be checked.",
+      "fareStatus": "assumed",
+      "fareNote": "Illustrative one-way economy cash alternative in SGD; not a retrieved fare. Replace with your actual matched itinerary."
     },
     {
       "id": "heathrow",
@@ -110,29 +128,35 @@ window.MILES_RESEARCH = {
       "willingness": 150,
       "cathayMiles": 119000,
       "cathayRouting": "SIN–HKG–LHR",
-      "note": "Calculated chart comparison, approx 7,578 flown miles. Cathay-operated itinerary, not SQ; routing/award validity and seats must be checked."
+      "note": "Calculated chart comparison, approx 7,578 flown miles. Cathay-operated itinerary, not SQ; routing/award validity and seats must be checked.",
+      "fareStatus": "assumed",
+      "fareNote": "Illustrative one-way economy cash alternative in SGD; not a retrieved fare. Replace with your actual matched itinerary."
     },
     {
       "id": "sanfrancisco",
       "name": "San Francisco (SFO)",
       "zone": "12: USA West Coast",
       "awardMiles": 112500,
-      "economySaving": 450,
+      "economySaving": 850,
       "willingness": 150,
       "cathayMiles": 119000,
       "cathayRouting": "SIN–HKG–SFO",
-      "note": "Calculated chart comparison, approx 8,509 flown miles. Cathay-operated itinerary, not SQ; routing/award validity and seats must be checked."
+      "note": "Calculated chart comparison, approx 8,509 flown miles. Cathay-operated itinerary, not SQ; routing/award validity and seats must be checked.",
+      "fareStatus": "assumed",
+      "fareNote": "Illustrative one-way economy cash alternative in SGD; not a retrieved fare. Replace with your actual matched itinerary."
     },
     {
       "id": "newyork",
       "name": "New York (JFK)",
       "zone": "13: USA East Coast",
       "awardMiles": 117000,
-      "economySaving": 450,
+      "economySaving": 1000,
       "willingness": 150,
       "cathayMiles": 119000,
       "cathayRouting": "SIN–HKG–JFK",
-      "note": "Calculated chart comparison, approx 9,654 flown miles. Cathay-operated itinerary, not SQ; routing/award validity and seats must be checked."
+      "note": "Calculated chart comparison, approx 9,654 flown miles. Cathay-operated itinerary, not SQ; routing/award validity and seats must be checked.",
+      "fareStatus": "assumed",
+      "fareNote": "Illustrative one-way economy cash alternative in SGD; not a retrieved fare. Replace with your actual matched itinerary."
     }
   ],
   "promotions": [
@@ -180,6 +204,39 @@ window.MILES_RESEARCH = {
       "fee": 695.5,
       "terms": "Expired reference only: approval by31Dec2019; S$6,000 eligible spend within60days; pay S$695.50 annualfee. 30,000 upfront miles plus30,000 signup miles; ongoing spending miles separate. Never apply as a fee-free or current offer.",
       "source": "https://mainlymiles.com/2019/12/21/last-10-days-for-the-x-cards-60000-miles-sign-up-bonus/"
+    },
+    {
+      "id": "citi-premiermiles-paid-30k-direct-2027",
+      "label": "Citi PremierMiles — 30,000 bonus Citi Miles (paid direct-online offer)",
+      "bonusMiles": 30000,
+      "milesRate": 1.2,
+      "monthlyCap": 1000000,
+      "expiry": "2027-03-31",
+      "fee": 196.2,
+      "terms": "Current direct online offer, as checked 2026-10-20. New principal Citi customers only: no existing principal Citi card at application, none closed in prior 12 months, and no pending principal-card application; approval/opening required within 30 days. Pay the S$196.20 annual fee for 10,000 miles, then make S$800 qualifying retail spend within the account-opening month plus two calendar months for another 20,000 miles. BonusMiles is 30,000 only; ordinary spend miles excluded. Local base rate 1.2 mpd (2.2 mpd overseas, per MileLion). Monthly cap not specified in the cited offer terms (null). No stacking with other acquisition offers unless stated.",
+      "source": "https://www.citibank.com.sg/credit-cards/travel/premiermiles-card/pdf/online-acquisition-offer-tnc.pdf?icid=SGLEUJ5ENPREMCAAN17"
+    },
+    {
+      "id": "amex-krisflyer-ascend-45k-new-to-amex-2027",
+      "label": "AMEX KrisFlyer Ascend — up to45,000 bonus miles (two annual fees)",
+      "bonusMiles": 45000,
+      "milesRate": 1.2,
+      "monthlyCap": 1000000,
+      "expiry": "2027-01-31",
+      "fee": 795.7,
+      "terms": "Current offer, checked 2026-10-20. New-to-AMEX eligibility applies; apply during the promotion and receive approval within 45 days. The 45,000 bonus comprises 5,000 on the first charge (first-ever Amex Singapore Airlines cobrand applicants only), 20,000 after S$5,000 eligible spend within six months and payment of the first S$397.85 annual fee, plus 20,000 after at least S$1 eligible spend in month 15. The second-year annual fee is also S$397.85; full 45,000-mile path therefore costs S$795.70 in annual fees. fee is the per-year annual fee. A separate S$100 eCapitaVoucher was limited to applications by 2026-11-01; not included in bonusMiles. Base earn is 1.2 mpd local and uncapped per Amex; welcome miles exclude ordinary spend.",
+      "source": "https://www.americanexpress.com/content/dam/amex/sg/campaigns/pdfs/kfa-ntb-welcomeoffer-1oct26.pdf"
+    },
+    {
+      "id": "hsbc-travelone-new-customer-20k-2026-10",
+      "label": "HSBC TravelOne —20,000 advertised partner miles (paid; ratio varies)",
+      "bonusMiles": 20000,
+      "milesRate": 1.2,
+      "monthlyCap": 1000000,
+      "expiry": "2026-10-31",
+      "fee": 196.2,
+      "terms": "Current offer, checked 2026-10-20. Apply 2026-07-01 through 2026-10-31 and be approved by 2026-11-14; provide marketing consent. New HSBC cardholder means no current principal HSBC card and none cancelled in the 12 months before approval. Pay the S$196.20 first-year annual fee (strictly chargeable, not waivable) and spend S$1,000 in qualifying transactions from account opening through the end of the following month. New-cardholder gift is 20,000 miles (50,000 HSBC Reward points) plus Samsonite luggage; existing HSBC customers receive 10,000 miles instead. Local base rate 1.2 mpd (2.4 mpd overseas, per MileLion); cap not specified in the offer terms (null). BonusMiles excludes ordinary spend miles. HSBC KrisFlyer conversion differs from Asia Miles; do not assume advertised miles equals KrisFlyer miles.",
+      "source": "https://www.hsbc.com.sg/content/dam/hsbc/sg/documents/credit-cards/travelone/travelone-sign-up-gift-offer-terms-and-conditions.pdf"
     }
   ]
 };
