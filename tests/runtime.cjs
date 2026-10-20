@@ -1,0 +1,366 @@
+"use strict";
+
+const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
+const { JSDOM } = require("/home/hermes/.hermes/cache/scratch/miles-browser/node_modules/jsdom");
+
+const ROOT = path.resolve(__dirname, "..");
+const appSource = fs.readFileSync(path.join(ROOT, "app.js"), "utf8");
+const researchDataSource = fs.readFileSync(path.join(ROOT, "research-data.js"), "utf8");
+const indexHtml = fs.readFileSync(path.join(ROOT, "index.html"), "utf8");
+const slidesHtml = fs.readFileSync(path.join(ROOT, "slides.html"), "utf8");
+
+function routeRows(count = 12) {
+  return Array.from({ length: count }, (_, index) => ({
+    id: index === 0 ? "tokyo-hnd" : `route-${index + 1}`,
+    name: index === 0 ? "Tokyo (Haneda)" : `Destination ${index + 1}`,
+    zone: `Zone ${index + 1}`,
+    awardMiles: index === 0 ? 54500 : 20000 + index * 5000,
+    economySaving: index === 0 ? 450 : 300,
+    willingness: index === 0 ? 150 : 100,
+    cathayMiles: 25000 + index * 1000,
+    cathayRouting: index === 0 ? "Via Hong Kong (HKG)" : "Via HKG",
+    note: `Source note ${index + 1}`,
+  }));
+}
+
+const offers = [
+  {
+    id: "citi-rewards-16k",
+    label: "Citi Rewards — 16,000 miles welcome offer",
+    bonusMiles: 16000,
+    milesRate: 4,
+    monthlyCap: 1000,
+    expiry: "2027-03-31",
+    terms: "40,000 Citi ThankYou points (16,000 miles) with S$800 qualifying spend by the end of the second calendar month after approval; bonus fulfilled within three calendar months after the spend period.",
+    source: "https://www.citibank.com.sg/credit-cards/rewards/citi-rewards-card/pdf/online-product-led-acquisition-promotion-terms-and-conditions.pdf",
+  },
+  {
+    id: "citi-premiermiles-fee-waived",
+    label: "Citi PremierMiles — fee-waived alternative",
+    bonusMiles: 8000,
+    milesRate: 1.2,
+    monthlyCap: 1000000,
+    expiry: "2027-03-31",
+    terms: "8,000 welcome miles with fee-waived terms; verify eligibility.",
+    source: "https://example.test/premiermiles-terms",
+  },
+  {
+    id: "paid-route",
+    label: "Paid annual-fee route",
+    bonusMiles: 12000,
+    milesRate: 1.4,
+    monthlyCap: 9000,
+    fee: 196.2,
+    expiry: "2027-05-01",
+    terms: "A paid route with a declared fee.",
+    source: "https://example.test/paid-terms",
+  },
+  {
+    id: "expired-route",
+    label: "Expired route",
+    bonusMiles: 5000,
+    milesRate: 1.0,
+    monthlyCap: 1000,
+    expiry: "2026-10-19",
+    terms: "Historical offer.",
+  },
+  {
+    id: "boundary-route",
+    label: "Offer expiring today",
+    bonusMiles: 3000,
+    milesRate: 1.0,
+    monthlyCap: 1000,
+    expiry: "2026-10-20",
+    terms: "Inclusive expiry-date boundary.",
+  },
+  {
+    id: "historic-no-expiry",
+    label: "Historical offer without expiry",
+    bonusMiles: 2000,
+    milesRate: 1.0,
+    monthlyCap: 1000,
+    status: "historical",
+    terms: "Do not offer this historical route.",
+  },
+  {
+    id: "unsafe-copy",
+    label: "Text handling check",
+    bonusMiles: 100,
+    milesRate: 1,
+    monthlyCap: 1000,
+    expiry: "2027-06-01",
+    terms: '<img src=x onerror="window.__xss=true">',
+    source: "javascript:alert(1)",
+  },
+];
+
+const research = {
+  routes: routeRows(),
+  promotions: offers,
+  checked: "2026-10-20",
+};
+
+function setFixedDate(window, isoDate) {
+  const RealDate = window.Date;
+  const fixedInstant = new RealDate(`${isoDate}T12:00:00.000Z`);
+  window.Date = class FixedDate extends RealDate {
+    constructor(...args) {
+      super(...(args.length ? args : [fixedInstant.toISOString()]));
+    }
+    static now() {
+      return fixedInstant.valueOf();
+    }
+  };
+}
+
+function createDom(html = indexHtml, { data = null, today = "2026-10-20" } = {}) {
+  const dom = new JSDOM(html, {
+    runScripts: "outside-only",
+    url: "https://miles.example.test/",
+    pretendToBeVisual: true,
+    beforeParse(window) {
+      setFixedDate(window, today);
+      if (data) window.MILES_RESEARCH = data;
+    },
+  });
+  dom.window.eval(appSource);
+  return dom;
+}
+
+function createDomFromResearchFile(html = indexHtml, today = "2026-10-20") {
+  const dom = new JSDOM(html, {
+    runScripts: "outside-only",
+    url: "https://miles.example.test/",
+    pretendToBeVisual: true,
+    beforeParse(window) {
+      setFixedDate(window, today);
+    },
+  });
+  dom.window.eval(researchDataSource);
+  dom.window.eval(appSource);
+  return dom;
+}
+
+function dispatchInput(window, element, eventName = "input") {
+  element.dispatchEvent(new window.Event(eventName, { bubbles: true }));
+}
+
+function value(dom, id) {
+  return dom.window.document.getElementById(id).value;
+}
+
+function test(name, fn) {
+  fn();
+  process.stdout.write(`ok - ${name}\n`);
+}
+
+let passed = 0;
+function run(name, fn) {
+  test(name, fn);
+  passed += 1;
+}
+
+run("fallback defaults render the shared SIN–HND example and actual model values", () => {
+  const dom = createDom();
+  const { document } = dom.window;
+  assert.equal(value(dom, "destination"), "tokyo-hnd");
+  assert.equal(value(dom, "economy-saving"), "450");
+  assert.equal(value(dom, "upgrade-willingness"), "150");
+  assert.equal(value(dom, "monthly-spend"), "1000");
+  assert.equal(value(dom, "monthly-cap"), "1000");
+  assert.equal(value(dom, "miles-rate"), "4");
+  assert.equal(value(dom, "welcome-miles"), "16000");
+  assert.equal(value(dom, "transfer-block"), "1");
+  assert.equal(document.getElementById("idealised-transfer").checked, true);
+  assert.equal(document.getElementById("transfer-block").disabled, true);
+  assert.match(document.getElementById("award-route-display").textContent, /Tokyo/);
+  assert.equal(document.getElementById("detail-net").textContent, "+S$200.00");
+  assert.equal(document.querySelector('[data-output="earning-months"]').textContent, "10");
+  assert.equal(document.querySelector('[data-output="total-cost"]').textContent, "S$400.00");
+  assert.equal(document.querySelector('[data-output="cashback-cost"]').textContent, "S$170.00");
+  assert.equal(document.querySelector('[data-output="fees-cost"]').textContent, "S$30.00");
+  assert.match(document.getElementById("date-feasibility-note").textContent, /only 7 full calendar months remain/);
+  assert.match(document.getElementById("date-feasibility-note").textContent, /cannot be earned by the flight date/);
+  dom.window.close();
+});
+
+run("research chart populates all twelve routes and preserves route data as text", () => {
+  const dom = createDom(indexHtml, { data: research });
+  const { document } = dom.window;
+  assert.equal(document.querySelectorAll("#award-chart-body tr").length, 12);
+  assert.equal(document.querySelectorAll("#destination option").length, 12);
+  assert.equal(document.querySelector("#award-chart-body tr td").textContent, "Zone 1");
+  assert.match(document.getElementById("award-chart-body").textContent, /Via Hong Kong \(HKG\)/);
+  assert.match(document.getElementById("award-chart-body").textContent, /Source note 12/);
+  assert.equal(value(dom, "destination"), "tokyo-hnd");
+  dom.window.close();
+});
+
+run("checked research-data.js feeds all twelve routes and Citi presets into the DOM", () => {
+  const dom = createDomFromResearchFile();
+  const { document } = dom.window;
+  assert.equal(document.querySelectorAll("#award-chart-body tr").length, 12);
+  assert.equal(value(dom, "destination"), "tokyo");
+  assert.equal(value(dom, "promotion-picker"), "citi-rewards-16k");
+  assert.equal(value(dom, "welcome-miles"), "16000");
+  assert.equal(value(dom, "miles-rate"), "4");
+  assert.equal(value(dom, "monthly-cap"), "1000");
+  assert.equal(document.querySelector('[data-output="earning-months"]').textContent, "10");
+  assert.equal(document.querySelector('[data-output="total-cost"]').textContent, "S$400.00");
+  assert.match(document.getElementById("award-chart-body").textContent, /7: Japan & South Korea/);
+  assert.match(document.getElementById("award-chart-body").textContent, /SIN–HKG–HND/);
+
+  const picker = document.getElementById("promotion-picker");
+  picker.value = "citi-premiermiles-8k";
+  dispatchInput(dom.window, picker, "change");
+  assert.equal(value(dom, "welcome-miles"), "8000");
+  assert.equal(value(dom, "miles-rate"), "1.2");
+  assert.equal(value(dom, "monthly-cap"), "1000000");
+  assert.equal(value(dom, "ongoing-fee"), "30");
+  assert.match(document.getElementById("promotion-note").textContent, /1\.2mpd/);
+  dom.window.close();
+});
+
+run("offer expiry is date-inclusive, expired and flagged historical options are disabled", () => {
+  const dom = createDom(indexHtml, { data: research });
+  const { document } = dom.window;
+  assert.equal(value(dom, "promotion-picker"), "citi-rewards-16k");
+  assert.equal(document.querySelector('#promotion-picker option[value="boundary-route"]').disabled, false);
+  assert.equal(document.querySelector('#promotion-picker option[value="expired-route"]').disabled, true);
+  assert.equal(document.querySelector('#promotion-picker option[value="historic-no-expiry"]').disabled, true);
+  dom.window.close();
+});
+
+run("paid presets add only their declared fee and switching back to fee-waived clears it", () => {
+  const dom = createDom(indexHtml, { data: research });
+  const picker = dom.window.document.getElementById("promotion-picker");
+  picker.value = "paid-route";
+  dispatchInput(dom.window, picker, "change");
+  assert.equal(value(dom, "welcome-miles"), "12000");
+  assert.equal(value(dom, "miles-rate"), "1.4");
+  assert.equal(value(dom, "monthly-cap"), "9000");
+  assert.equal(value(dom, "ongoing-fee"), "226.2");
+  picker.value = "citi-rewards-16k";
+  dispatchInput(dom.window, picker, "change");
+  assert.equal(value(dom, "ongoing-fee"), "30");
+  assert.equal(value(dom, "welcome-miles"), "16000");
+  dom.window.close();
+});
+
+run("a stale default offer is never selected automatically", () => {
+  const stale = {
+    ...research,
+    promotions: [
+      { ...offers[0], expiry: "2026-10-19" },
+      { id: "custom-current", label: "Current offer", bonusMiles: 2000, milesRate: 1, monthlyCap: 5000, expiry: "2027-01-01" },
+    ],
+  };
+  const dom = createDom(indexHtml, { data: stale });
+  assert.equal(value(dom, "promotion-picker"), "custom");
+  assert.equal(dom.window.document.querySelector('#promotion-picker option[value="citi-rewards-16k"]').disabled, true);
+  assert.equal(value(dom, "welcome-miles"), "0");
+  dom.window.close();
+});
+
+run("custom entry retains manual values and offer text/source cannot inject markup", () => {
+  const dom = createDom(indexHtml, { data: research });
+  const picker = dom.window.document.getElementById("promotion-picker");
+  picker.value = "unsafe-copy";
+  dispatchInput(dom.window, picker, "change");
+  const note = dom.window.document.getElementById("promotion-note");
+  assert.equal(note.querySelector("img"), null);
+  assert.match(note.textContent, /<img src=x/);
+  assert.equal(note.querySelector('a[href^="javascript:"]'), null);
+  picker.value = "custom";
+  const miles = value(dom, "welcome-miles");
+  dispatchInput(dom.window, picker, "change");
+  assert.equal(value(dom, "welcome-miles"), miles);
+  assert.match(note.textContent, /manual/i);
+  dom.window.close();
+});
+
+run("blank, zero-spend and zero-bonus-covered inputs are handled without NaN", () => {
+  const dom = createDom();
+  const { document } = dom.window;
+  const spend = document.getElementById("monthly-spend");
+  spend.value = "";
+  dispatchInput(dom.window, spend);
+  assert.equal(document.getElementById("input-errors").hidden, false);
+  assert.match(document.getElementById("result-status").textContent, /correct/i);
+  spend.value = "0";
+  dispatchInput(dom.window, spend);
+  assert.match(document.getElementById("result-status").textContent, /positive monthly miles/i);
+  document.getElementById("welcome-miles").value = "54500";
+  dispatchInput(dom.window, document.getElementById("welcome-miles"));
+  assert.equal(document.querySelector('[data-output="earning-months"]').textContent, "0");
+  assert.doesNotMatch(document.getElementById("full-result").textContent, /NaN/);
+  dom.window.close();
+});
+
+run("spend cap, exact earning-month boundary and whole-month rounding update live", () => {
+  const dom = createDom();
+  const { document } = dom.window;
+  const cap = document.getElementById("monthly-cap");
+  cap.value = "500";
+  dispatchInput(dom.window, cap);
+  assert.equal(document.querySelector('[data-output="effective-spend"]').textContent, "S$500.00 / month");
+  assert.equal(document.querySelector('[data-output="earning-months"]').textContent, "20");
+  assert.equal(document.querySelector('[data-output="cashback-cost"]').textContent, "S$170.00");
+
+  cap.value = "1000";
+  const rate = document.getElementById("miles-rate");
+  rate.value = "3.85";
+  dispatchInput(dom.window, rate);
+  assert.equal(document.querySelector('[data-output="earning-months"]').textContent, "10");
+  assert.equal(document.querySelector('[data-output="month-excess"]').textContent, "0 miles");
+
+  const idealised = document.getElementById("idealised-transfer");
+  idealised.checked = false;
+  dispatchInput(dom.window, idealised, "change");
+  assert.equal(value(dom, "transfer-block"), "10000");
+  assert.equal(document.querySelector('[data-output="earning-months"]').textContent, "11");
+  idealised.checked = true;
+  dispatchInput(dom.window, idealised, "change");
+  assert.equal(value(dom, "transfer-block"), "1");
+  assert.equal(document.querySelector('[data-output="earning-months"]').textContent, "10");
+  dom.window.close();
+});
+
+run("personal time sensitivity and route selection change the rendered scenario", () => {
+  const dom = createDom(indexHtml, { data: research });
+  const { document } = dom.window;
+  const minutes = document.getElementById("minutes-per-month");
+  minutes.value = "30";
+  dispatchInput(dom.window, minutes);
+  assert.equal(document.querySelector('[data-output="time-cost"]').textContent, "S$200.00");
+  assert.equal(document.getElementById("detail-net").textContent, "+S$100.00");
+
+  const destination = document.getElementById("destination");
+  destination.value = "route-2";
+  dispatchInput(dom.window, destination, "change");
+  assert.equal(document.querySelector('[data-output="target-miles"]').textContent, "25,000");
+  assert.equal(document.getElementById("economy-saving").value, "300");
+  assert.match(document.getElementById("economy-hint").textContent, /not a verified fare or live quote/);
+  assert.match(document.getElementById("award-route-display").textContent, /Destination 2/);
+  dom.window.close();
+});
+
+run("slides execute the same exported model and match the calculator's default totals", () => {
+  const dom = createDom(slidesHtml, { data: research });
+  const inlineScript = Array.from(dom.window.document.scripts).find((script) => !script.src);
+  assert.ok(inlineScript, "slide navigation script is present");
+  dom.window.eval(inlineScript.textContent);
+  const { document, MILES_CALCULATOR } = dom.window;
+  assert.ok(MILES_CALCULATOR);
+  assert.equal(document.getElementById("slide-earning-months").textContent, "10");
+  assert.equal(document.getElementById("slide-total-cost").textContent, "S$400.00");
+  assert.equal(document.getElementById("slide-break-even").textContent, "S$0.00");
+  assert.equal(document.getElementById("slide-net").textContent, "+S$200.00");
+  document.getElementById("next-slide").click();
+  assert.equal(document.getElementById("slide-count").textContent, "Slide 2 of 5");
+  dom.window.close();
+});
+
+process.stdout.write(`\n${passed} runtime checks passed.\n`);

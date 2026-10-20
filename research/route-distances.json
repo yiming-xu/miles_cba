@@ -1,0 +1,18 @@
+{
+  "source": "https://raw.githubusercontent.com/jpatokal/openflights/master/data/airports.dat",
+  "method": "haversine great-circle miles via HKG; not live itinerary quote",
+  "distances": {
+    "BKK": 2644,
+    "DEL": 3922,
+    "DPS": 3742,
+    "DXB": 5273,
+    "HKG": 1594,
+    "HND": 3398,
+    "JFK": 9654,
+    "LHR": 7578,
+    "PER": 5345,
+    "PVG": 2374,
+    "SFO": 8509,
+    "SYD": 6189
+  }
+}

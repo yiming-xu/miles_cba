@@ -1,8 +1,8 @@
-"""Specification-level checks for the static miles/CBA teaching tool.
+"""Specification checks for the miles-versus-cash calculator and talk.
 
-These standard-library tests use a Python reference model and inspect the
-static-page contract. They do not execute app.js; run a browser smoke test for
-JavaScript behavior when a JS runtime is available.
+The Python reference model covers boundary vectors. tests/runtime.cjs separately
+executes the shipped JavaScript against a DOM so input wiring and rendering are
+exercised at the actual application boundary.
 """
 from decimal import Decimal, ROUND_CEILING
 from html.parser import HTMLParser
@@ -22,12 +22,9 @@ DEFAULTS = {
     "hourly_value": D("40"),
     "award_cash": D("100"),
     "ongoing_fee": D("30"),
-    "transfer_block": 10000,
-    "welcome_miles": D("0"),
-    "welcome_delay_months": 0,
-    "welcome_fee": D("0"),
+    "transfer_block": 1,
+    "welcome_miles": D("16000"),
     "displaced_cash_bonus": D("0"),
-    "miles_cash_gift": D("0"),
 }
 
 ROUTES = {
@@ -38,7 +35,7 @@ ROUTES = {
 
 
 def reference_model(route, overrides=None):
-    """Mirror the documented whole-month, one-pool calculation for test vectors."""
+    """Mirror the whole-month, one-pool model; welcome timing is not simulated."""
     values = dict(DEFAULTS)
     values.update(ROUTES[route])
     if overrides:
@@ -50,17 +47,15 @@ def reference_model(route, overrides=None):
     block = values["transfer_block"]
     if isinstance(block, bool) or not isinstance(block, int) or block < 1:
         raise ValueError("transfer_block must be a positive integer")
-    delay = values["welcome_delay_months"]
-    if isinstance(delay, bool) or not isinstance(delay, int):
-        raise ValueError("welcome delay must be a whole number of months")
 
     target = D(values["award_miles"])
     usable_welcome = min(target, D(values["welcome_miles"]))
     regular_target = target - usable_welcome
-    if regular_target:
-        transfer_goal = ((int(regular_target) + block - 1) // block) * block
-    else:
-        transfer_goal = 0
+    transfer_goal = (
+        ((int(regular_target) + block - 1) // block) * block
+        if regular_target
+        else 0
+    )
 
     eligible_monthly = min(D(values["monthly_spend"]), D(values["monthly_cap"]))
     miles_per_month = eligible_monthly * D(values["miles_per_dollar"])
@@ -71,7 +66,6 @@ def reference_model(route, overrides=None):
         (D(transfer_goal) / miles_per_month).to_integral_value(rounding=ROUND_CEILING)
     )
     accrued = miles_per_month * months
-    ready_months = max(months, delay if D(values["welcome_miles"]) > 0 else 0)
     cashback_cost = eligible_monthly * months * D(values["cashback_percent"]) / D("100")
     time_cost = D(months) * D(values["minutes_per_month"]) / D("60") * D(values["hourly_value"])
     transfer_remainder = D(transfer_goal) - regular_target
@@ -84,17 +78,13 @@ def reference_model(route, overrides=None):
         + cashback_cost
         + time_cost
         + D(values["ongoing_fee"])
-        + D(values["welcome_fee"])
         + D(values["displaced_cash_bonus"])
     )
-    base_value = D(values["economy_saving"])
-    cash_gift = D(values["miles_cash_gift"])
-    net = base_value + D(values["willingness"]) + cash_gift - total_cost
-    raw_break_even = total_cost - base_value - cash_gift
+    net = D(values["economy_saving"]) + D(values["willingness"]) - total_cost
+    raw_break_even = total_cost - D(values["economy_saving"])
     return {
         "available": True,
         "months": months,
-        "ready_months": ready_months,
         "transfer_goal": D(transfer_goal),
         "accrued": accrued,
         "transfer_remainder": transfer_remainder,
@@ -115,79 +105,58 @@ class MarkupInspector(HTMLParser):
         super().__init__()
         self.slides = 0
         self.external_assets = []
-        self.headings = []
-        self._in_h1 = False
+        self.ids = []
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
         if tag == "section" and "slide" in attrs.get("class", "").split():
             self.slides += 1
-        if tag == "h1":
-            self._in_h1 = True
+        if attrs.get("id"):
+            self.ids.append(attrs["id"])
         if tag == "script" and attrs.get("src", "").startswith(("http:", "https:")):
             self.external_assets.append(attrs["src"])
         if tag == "link" and attrs.get("href", "").startswith(("http:", "https:")):
             if attrs.get("rel") in {"stylesheet", "preload", "modulepreload"}:
                 self.external_assets.append(attrs["href"])
 
-    def handle_endtag(self, tag):
-        if tag == "h1":
-            self._in_h1 = False
-
-    def handle_data(self, data):
-        if self._in_h1 and data.strip():
-            self.headings.append(data.strip())
-
 
 class ReferenceModelTests(unittest.TestCase):
-    def test_default_routes_use_full_award_rates_and_whole_month_costs(self):
-        perth = reference_model("Perth")
-        tokyo = reference_model("Tokyo")
-        heathrow = reference_model("Heathrow")
-
-        self.assertEqual((perth["transfer_goal"], perth["months"], perth["leftover"]), (D("50000"), 13, D("9500")))
-        self.assertEqual((tokyo["transfer_goal"], tokyo["months"], tokyo["leftover"]), (D("60000"), 15, D("5500")))
-        self.assertEqual((heathrow["transfer_goal"], heathrow["months"], heathrow["leftover"]), (D("110000"), 28, D("3500")))
-        self.assertEqual(tokyo["cashback_cost"], D("255.00"))
-        self.assertEqual(tokyo["time_cost"], D("150"))
-        self.assertEqual(tokyo["total_cost"], D("535.00"))
-        self.assertEqual(tokyo["break_even_willingness"], D("85.00"))
-        self.assertEqual(tokyo["net"], D("65.00"))
-
-    def test_one_mile_block_is_idealised_but_months_still_round_up(self):
-        result = reference_model("Tokyo", {"transfer_block": 1})
-        self.assertEqual(result["transfer_goal"], D("54500"))
-        self.assertEqual(result["months"], 14)
-        self.assertEqual(result["accrued"], D("56000"))
+    def test_default_sin_hnd_example_cost_and_break_even(self):
+        result = reference_model("Tokyo")
+        self.assertEqual(result["transfer_goal"], D("38500"))
+        self.assertEqual(result["months"], 10)
         self.assertEqual(result["leftover"], D("1500"))
-        self.assertEqual(result["cashback_cost"], D("238.00"))
-        self.assertEqual(result["time_cost"], D("140"))
+        self.assertEqual(result["cashback_cost"], D("170.00"))
+        self.assertEqual(result["time_cost"], D("100"))
+        self.assertEqual(result["total_cost"], D("400.00"))
+        self.assertEqual(result["break_even_willingness"], D("0"))
+        self.assertEqual(result["net"], D("200.00"))
+
+    def test_transfer_block_rounding_and_idealised_one_mile_boundary(self):
+        normal = reference_model("Tokyo", {"transfer_block": 10000, "miles_per_dollar": D("3.85")})
+        idealised = reference_model("Tokyo", {"transfer_block": 1, "miles_per_dollar": D("3.85")})
+        self.assertEqual((normal["transfer_goal"], normal["months"]), (D("40000"), 11))
+        self.assertEqual((idealised["transfer_goal"], idealised["months"]), (D("38500"), 10))
+        self.assertEqual(idealised["whole_month_excess"], D("0.00"))
 
     def test_single_monthly_spend_pool_respects_cap(self):
         result = reference_model("Tokyo", {"monthly_spend": D("1500"), "monthly_cap": D("1000")})
-        self.assertEqual(result["months"], 15)
-        self.assertEqual(result["cashback_cost"], D("255.00"))
-
-    def test_welcome_miles_reduce_earning_and_credit_delay_is_parallel(self):
-        result = reference_model("Tokyo", {
-            "welcome_miles": D("20000"),
-            "welcome_delay_months": 12,
-            "transfer_block": 10000,
-        })
-        self.assertEqual(result["transfer_goal"], D("40000"))
         self.assertEqual(result["months"], 10)
-        self.assertEqual(result["ready_months"], 12)
-        self.assertEqual(result["leftover"], D("5500"))
         self.assertEqual(result["cashback_cost"], D("170.00"))
 
-    def test_bonus_that_covers_award_leaves_no_earning_cost_and_has_delay(self):
+    def test_welcome_miles_reduce_earning_and_credit_timing_is_not_modelled(self):
+        result = reference_model("Tokyo", {"welcome_miles": D("20000"), "transfer_block": 10000})
+        self.assertEqual(result["transfer_goal"], D("40000"))
+        self.assertEqual(result["months"], 10)
+        self.assertEqual(result["leftover"], D("5500"))
+        self.assertNotIn("ready_months", result)
+
+    def test_bonus_that_covers_award_needs_no_monthly_earning(self):
         result = reference_model("Perth", {
             "welcome_miles": D("50000"),
-            "welcome_delay_months": 3,
             "monthly_spend": D("0"),
         })
         self.assertEqual(result["months"], 0)
-        self.assertEqual(result["ready_months"], 3)
         self.assertEqual(result["cashback_cost"], D("0"))
         self.assertEqual(result["leftover"], D("7500"))
 
@@ -202,68 +171,71 @@ class ReferenceModelTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             reference_model("Tokyo", {"transfer_block": 0})
 
-    def test_optional_cash_gift_offsets_cost_but_displaced_cash_offer_is_a_cost(self):
+    def test_displaced_cash_and_declared_general_fees_only_count_when_explicit(self):
         baseline = reference_model("Tokyo")
         adjusted = reference_model("Tokyo", {
-            "miles_cash_gift": D("400"),
+            "ongoing_fee": D("226.20"),
             "displaced_cash_bonus": D("200"),
-            "welcome_fee": D("50"),
         })
-        self.assertEqual(adjusted["total_cost"], baseline["total_cost"] + D("250"))
-        self.assertEqual(adjusted["break_even_willingness"], D("0"))
-        self.assertEqual(adjusted["net"], baseline["net"] + D("150"))
+        self.assertEqual(adjusted["total_cost"], baseline["total_cost"] + D("396.20"))
+        self.assertEqual(adjusted["break_even_willingness"], D("346.20"))
+        self.assertEqual(adjusted["net"], baseline["net"] - D("396.20"))
 
 
 class StaticContractTests(unittest.TestCase):
-    def test_required_static_files_exist_and_calculator_has_local_script_and_styles(self):
-        for name in ("index.html", "app.js", "styles.css", "slides.html"):
+    def test_required_static_files_and_research_script_are_local(self):
+        for name in ("index.html", "app.js", "research-data.js", "styles.css", "slides.html"):
             self.assertTrue((ROOT / name).is_file(), name)
         self.assertTrue((ROOT / "tests" / "test_model.py").is_file())
+        self.assertTrue((ROOT / "tests" / "runtime.cjs").is_file())
         html = (ROOT / "index.html").read_text(encoding="utf-8")
+        self.assertIn('src="research-data.js"', html)
         self.assertIn('src="app.js"', html)
         self.assertIn('href="styles.css"', html)
-        self.assertIn("Value", html)
-        self.assertIn("Earn", html)
-        self.assertIn("Cost", html)
+        self.assertLess(html.index('src="research-data.js"'), html.index('src="app.js"'))
 
-    def test_javascript_declares_model_and_explicit_finite_number_guard(self):
+    def test_javascript_exports_shared_model_and_rejects_nonfinite_inputs(self):
         js = (ROOT / "app.js").read_text(encoding="utf-8")
+        self.assertIn("window.MILES_CALCULATOR", js)
         self.assertRegex(js, r"function\s+calculateScenario\s*\(")
         self.assertIn("Number.isFinite", js)
         self.assertIn("Math.ceil", js)
         self.assertNotRegex(js, r"fetch\s*\(")
         self.assertNotRegex(js, r"XMLHttpRequest")
 
-    def test_route_presets_match_the_one_way_saver_awards(self):
-        js = (ROOT / "app.js").read_text(encoding="utf-8")
-        expected = {
-            "Perth": 42500,
-            "Tokyo": 54500,
-            "London Heathrow": 108500,
-        }
-        for city, miles in expected.items():
-            self.assertIn(f'name: "{city}"', js)
-            self.assertIn(f"awardMiles: {miles}", js)
+    def test_default_inputs_and_removed_controls_match_the_shared_example(self):
         html = (ROOT / "index.html").read_text(encoding="utf-8")
-        self.assertIn('value="1000"', html)
-        self.assertIn('value="4"', html)
-        self.assertIn('value="1.7"', html)
-        self.assertIn('value="15"', html)
-        self.assertIn('value="40"', html)
-        self.assertIn('value="30"', html)
-        self.assertIn('value="10000"', html)
+        for value in ('value="450"', 'value="150"', 'value="1000"',
+                      'value="4"', 'value="16000"', 'value="100"', 'value="30"',
+                      'value="15"', 'value="40"', 'value="1"'):
+            self.assertIn(value, html)
+        self.assertIn("1 June 2027", html)
+        self.assertIn("unverified", html.lower())
+        self.assertIn("CAPTCHA", html)
+        self.assertIn('id="idealised-transfer" name="idealised-transfer" type="checkbox" checked', html)
+        for forbidden in ('id="welcome-fee"', 'id="welcome-delay"', 'id="miles-cash-gift"'):
+            self.assertNotIn(forbidden, html)
+        js = (ROOT / "app.js").read_text(encoding="utf-8")
+        for forbidden in ("welcomeFee", "welcomeDelayMonths", "milesCashGift"):
+            self.assertNotIn(forbidden, js)
 
-    def test_slide_deck_has_five_slides_and_no_external_asset_dependencies(self):
+    def test_slides_have_one_example_five_pages_and_no_external_asset_dependencies(self):
         inspector = MarkupInspector()
-        inspector.feed((ROOT / "slides.html").read_text(encoding="utf-8"))
+        slides = (ROOT / "slides.html").read_text(encoding="utf-8")
+        inspector.feed(slides)
         self.assertEqual(inspector.slides, 5)
         self.assertFalse(inspector.external_assets)
-        self.assertIn("yiming-xu.github.io/miles_cba/", (ROOT / "slides.html").read_text(encoding="utf-8"))
+        self.assertEqual(len(inspector.ids), len(set(inspector.ids)))
+        self.assertIn("1 June 2027", slides)
+        self.assertIn("S$450", slides)
+        self.assertIn('src="research-data.js"', slides)
+        self.assertIn('src="app.js"', slides)
 
-    def test_styles_do_not_import_external_fonts_or_assets(self):
+    def test_styles_do_not_import_external_fonts_or_assets_and_support_dynamic_tables(self):
         css = (ROOT / "styles.css").read_text(encoding="utf-8")
         self.assertNotRegex(css, re.compile(r"@import\s+url\s*\(", re.IGNORECASE))
         self.assertNotRegex(css, re.compile(r"url\s*\(\s*['\"]?https?://", re.IGNORECASE))
+        self.assertRegex(css, r"\.award-chart-wrap\s*\{")
 
 
 if __name__ == "__main__":

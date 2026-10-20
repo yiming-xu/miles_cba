@@ -249,6 +249,39 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .award-rate strong { color: #fff; font-size: 1.55rem; font-variant-numeric: tabular-nums; line-height: 1.2; }
 .award-rate strong small { color: #b9d0cc; font-size: 0.75rem; }
 .award-rate-route { color: #d3e4de; font-size: 0.85rem; }
+.flight-date-badge {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.75rem 0.9rem;
+  color: var(--ink);
+  background: #e6f6ee;
+  border-left: 3px solid var(--teal-dark);
+  border-radius: 0.35rem 0.7rem 0.7rem 0.35rem;
+  font-size: 0.79rem;
+}
+.flight-date-badge strong { color: var(--navy); font-size: 0.82rem; }
+.flight-date-badge span { color: #53666c; }
+.hero-footnote .flight-date-badge {
+  max-width: 760px;
+  padding: 0.45rem 0.65rem;
+  color: #d5e0df;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(182, 231, 219, 0.22);
+  border-left: 3px solid var(--teal);
+  font-size: 0.72rem;
+}
+.hero-footnote .flight-date-badge strong { color: #a5e8dd; font-size: inherit; }
+.hero-footnote .flight-date-badge span { color: #d5e0df; }
+.benefit-note {
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  color: #415b5e;
+  background: #f0f5ef;
+  border: 1px solid #d9e5dd;
+  border-radius: 0.7rem;
+  font-size: 0.8rem;
+}
+.benefit-note strong { color: var(--navy); }
 .inline-note { display: flex; gap: 0.6rem; margin: 1.1rem 0 0; padding-top: 0.85rem; color: #4e666b; border-top: 1px solid #e5e9e4; font-size: 0.79rem; }
 .inline-note span { color: var(--teal-dark); font-weight: 900; }
 
@@ -320,6 +353,16 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .leftover-details p strong { display: inline; margin: 0; font-size: inherit; }
 .method-note, .decision-note { margin: 1rem 0 0; color: #c7d7d4; font-size: 0.75rem; line-height: 1.55; }
 .method-note strong { color: #fff; }
+.date-feasibility-note {
+  margin: 0.75rem 0 0;
+  padding: 0.8rem 0.95rem;
+  color: #fff2d6;
+  background: rgba(208, 157, 61, 0.13);
+  border: 1px solid rgba(231, 193, 112, 0.32);
+  border-radius: 0.65rem;
+  font-size: 0.77rem;
+  line-height: 1.5;
+}
 .decision-note { padding-top: 0.85rem; border-top: 1px solid rgba(255, 255, 255, 0.12); }
 
 .closing-card {
@@ -354,6 +397,36 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .appendix-columns li + li { margin-top: 0.35rem; }
 .text-link { display: inline-block; margin: 0.2rem 0; color: var(--teal-dark); font-size: 0.78rem; font-weight: 760; }
 .source-caveat { margin: 1rem 0 0; padding-top: 0.85rem; color: var(--muted); border-top: 1px solid var(--line); font-size: 0.73rem; }
+.promotion-note {
+  margin: 0.1rem 0 0;
+  padding: 0.75rem 0.85rem;
+  color: #425e5c;
+  background: #eef6f0;
+  border-left: 3px solid var(--teal-dark);
+  border-radius: 0.3rem;
+  font-size: 0.76rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.promotion-note a { display: inline-block; margin-left: 0.3rem; color: var(--teal-dark); font-weight: 780; }
+.award-chart-wrap {
+  width: 100%;
+  overflow: auto;
+  margin-top: 0.75rem;
+  border: 1px solid var(--line);
+  border-radius: 0.7rem;
+}
+.award-chart { width: 100%; min-width: 48rem; border-collapse: collapse; text-align: left; }
+.award-chart th, .award-chart td {
+  padding: 0.65rem 0.7rem;
+  color: #425a5d;
+  border-bottom: 1px solid #e3e9e5;
+  font-size: 0.71rem;
+  vertical-align: top;
+}
+.award-chart th { color: var(--navy); background: #eef5f0; font-size: 0.67rem; letter-spacing: 0.035em; }
+.award-chart td:nth-child(3), .award-chart td:nth-child(4) { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.award-chart tr:last-child td { border-bottom: 0; }
 .site-footer { display: flex; justify-content: space-between; gap: 1rem; padding: 1.2rem max(1.25rem, calc((100vw - 1060px) / 2)); color: #c8d4d1; background: var(--navy-deep); font-size: 0.72rem; }
 .site-footer p { margin: 0; }
 .site-footer a { color: #91ded0; text-decoration: none; }
@@ -390,6 +463,9 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .slide-url a { display: inline-block; margin-top: 0.15rem; color: #8ce0d1; font-size: clamp(1rem, 2.3vw, 1.3rem); font-weight: 800; overflow-wrap: anywhere; text-decoration: none; }
 .slide-url a:hover { text-decoration: underline; }
 .slide-note { margin: 1.15rem 0 0; color: #a7bcba; font-size: 0.75rem; }
+.slide-flight-badge { max-width: 780px; margin-top: 1.35rem; color: #e0efea; background: rgba(255,255,255,0.07); border-color: rgba(57,198,176,0.45); }
+.slide-flight-badge strong { color: #a0e7db; }
+.slide-flight-badge span { color: #d0dfda; }
 .slide-kpis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.85rem; margin-top: 1.6rem; }
 .slide-kpi { padding: 1.05rem; background: rgba(255,255,255,0.065); border: 1px solid rgba(255,255,255,0.11); border-radius: 0.85rem; }
 .slide-kpi span { display: block; color: #a9c5c1; font-size: 0.72rem; font-weight: 750; }
@@ -417,6 +493,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
 .slide-result span { display: block; color: #bdd1cd; font-size: 0.72rem; }
 .slide-result strong { display: block; margin-top: 0.25rem; color: #fff; font-size: clamp(1.3rem, 3vw, 2rem); font-variant-numeric: tabular-nums; }
 .slide-result .highlight strong { color: var(--teal); }
+.slide-result-one { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .slide-controls { width: min(calc(100% - 2rem), 1120px); display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: 1rem auto 2.6rem; }
 .slide-control-group { display: flex; align-items: center; gap: 0.55rem; }
 .slide-controls button {

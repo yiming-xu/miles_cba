@@ -4,9 +4,10 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#10263a">
-  <meta name="description" content="A transparent, hypothetical miles-versus-cash calculator for one-way Singapore Airlines awards from Singapore.">
+  <meta name="description" content="A transparent, hypothetical miles-versus-cash calculator for the Singapore–Haneda trip example.">
   <title>Miles or cash? — a personal cost–benefit calculator</title>
   <link rel="stylesheet" href="styles.css">
+  <script src="research-data.js" defer></script>
   <script src="app.js" defer></script>
 </head>
 <body class="calculator-page">
@@ -17,22 +18,22 @@
     </a>
     <nav class="top-nav" aria-label="Page navigation">
       <a href="slides.html">Five-slide talk <span aria-hidden="true">↗</span></a>
-      <a href="#research-appendix">Sources &amp; offers</a>
+      <a href="#research-appendix">Sources &amp; award chart</a>
     </nav>
   </header>
 
   <section class="hero" aria-labelledby="page-title">
     <div class="hero-copy">
-      <p class="eyebrow eyebrow-light">A Singapore-origin, one-way teaching model</p>
+      <p class="eyebrow eyebrow-light">One shared example · Singapore to Haneda · one way</p>
       <h1 id="page-title">What are the miles<br><em>worth to you?</em></h1>
-      <p class="hero-lede">Start with the trip you would actually buy. Then count the cash, time and fees needed to earn an award.</p>
+      <p class="hero-lede">Start with the economy trip you would actually buy. Then count the cash, time and fees behind a possible award.</p>
     </div>
     <div class="hypothesis-banner" role="note">
       <span class="banner-icon" aria-hidden="true">i</span>
-      <p><strong>Every default cash amount is hypothetical — not a fare or quote.</strong> Award-seat availability and date-specific prices are not checked. Replace the examples with your matched itinerary and current card terms.</p>
+      <p><strong>S$450 is an assumed placeholder, not a verified or updated fare quote.</strong> It is the example SQ Economy cash amount for SIN–HND on 1 June 2027; the SQ fare lookup was blocked by CAPTCHA. No award-seat inventory has been checked.</p>
     </div>
     <div class="hero-footnote">
-      <span>Full SQ Saver awards · one person · one way · from Singapore</span>
+      <span class="flight-date-badge"><strong>Example flight date: 1 June 2027</strong> · Economy alternative: S$450 assumed / unverified · Award inventory: not checked</span>
       <a href="slides.html">Open the browser presentation <span aria-hidden="true">→</span></a>
     </div>
   </section>
@@ -47,7 +48,7 @@
       <strong id="sticky-net">—</strong>
     </div>
     <div class="sticky-metric sticky-metric-secondary">
-      <span>Ready in</span>
+      <span>Earning time</span>
       <strong><span id="sticky-months">—</span><small> months</small></strong>
     </div>
     <a class="sticky-link" href="#full-result">See breakdown <span aria-hidden="true">↓</span></a>
@@ -59,7 +60,7 @@
         <p class="eyebrow">A guided comparison</p>
         <h2>Value <span>→</span> Earn <span>→</span> Cost</h2>
       </div>
-      <p class="intro-note">The model starts with a zero miles balance. It estimates a future earning decision, not the sunk cost of miles you already have.</p>
+      <p class="intro-note">The model starts with zero existing miles. It estimates future earning; it is not a valuation of a balance you already own.</p>
     </div>
 
     <div class="input-error" id="input-errors" role="alert" hidden></div>
@@ -73,35 +74,41 @@
             <h2 id="value-heading">What is this trip worth to you?</h2>
           </div>
         </div>
-        <p class="section-lede">Choose the trip first. Compare the award with the cash you would actually avoid paying—not a retail business fare.</p>
+        <p class="section-lede">The shared worked example is SQ Economy from Singapore (SIN) to Tokyo Haneda (HND), 1 June 2027. Other routes are selectable for comparison.</p>
+
+        <div class="flight-date-badge flight-date-badge-light" role="note">
+          <strong>1 June 2027 · SIN → HND · SQ Economy alternative</strong>
+          <span>S$450 assumed placeholder — unverified; SQ fare lookup blocked by CAPTCHA. Not a live quote. No award inventory checked.</span>
+        </div>
 
         <div class="field-grid field-grid-wide">
           <div class="field field-span-two">
             <label for="destination">Singapore Airlines Saver award destination</label>
             <select id="destination" name="destination">
-              <option value="perth">Perth</option>
-              <option value="tokyo" selected>Tokyo (Haneda or Narita)</option>
-              <option value="heathrow">London Heathrow</option>
+              <option value="tokyo-hnd" selected>Tokyo (Haneda)</option>
             </select>
-            <span class="field-hint">Full one-way business-class award, one person, Singapore origin. Miles are from the chart; seat availability is not checked.</span>
+            <span class="field-hint">Full one-way business-class award, one person, Singapore origin. Award miles are chart rates; availability is not checked.</span>
           </div>
           <div class="award-rate" aria-live="polite" aria-label="Selected award rate">
-            <span class="award-rate-label">Full award rate</span>
+            <span class="award-rate-label">Full SQ Saver business award</span>
             <strong><span id="award-miles-display">54,500</span> <small>miles</small></strong>
-            <span class="award-rate-route" id="award-route-display">Singapore → Tokyo</span>
+            <span class="award-rate-route" id="award-route-display">Singapore → Tokyo (Haneda)</span>
           </div>
           <div class="field">
             <label for="economy-saving">Economy cash you would avoid <span class="unit">SGD</span></label>
             <div class="input-with-prefix"><span aria-hidden="true">S$</span><input id="economy-saving" name="economy-saving" type="number" inputmode="decimal" min="0" step="0.01" value="450" required aria-describedby="economy-hint"></div>
-            <span class="field-hint" id="economy-hint">Hypothetical default. Use your actual incremental saving for the whole itinerary.</span>
+            <span class="field-hint" id="economy-hint">S$450 is assumed and unverified for the stated date, not an updated SQ quote. Replace it with a matched itinerary price.</span>
           </div>
           <div class="field">
-            <label for="upgrade-willingness">Extra you would personally pay for business <span class="unit">SGD</span></label>
+            <label for="upgrade-willingness">Extra you would personally pay above economy for business <span class="unit">SGD</span></label>
             <div class="input-with-prefix"><span aria-hidden="true">S$</span><input id="upgrade-willingness" name="upgrade-willingness" type="number" inputmode="decimal" min="0" step="0.01" value="150" required aria-describedby="willingness-hint"></div>
-            <span class="field-hint" id="willingness-hint">A personal preference, not an airline valuation. Hypothetical default.</span>
+            <span class="field-hint" id="willingness-hint">Personal preference, not an airline valuation. Default S$150 is hypothetical.</span>
           </div>
         </div>
-        <div class="inline-note"><span aria-hidden="true">↳</span> Compare matched travel dates and the whole journey. One-way cash prices may not equal half a return fare.</div>
+        <div class="benefit-note" role="note">
+          <strong>What the extra willingness is for:</strong> the business seat and space to sleep, lounge access and dining, a 40 kg checked-baggage allowance subject to route, and priority check-in, boarding and baggage delivery. It does not promise immigration fast-track; the cabin product depends on the aircraft.
+        </div>
+        <div class="inline-note"><span aria-hidden="true">↳</span> Compare the full journey and matched travel dates. One-way cash prices may not equal half a return fare.</div>
       </section>
 
       <section class="step-card earn-card" id="earn-section" aria-labelledby="earn-heading">
@@ -112,62 +119,56 @@
             <h2 id="earn-heading">How much earning would it take?</h2>
           </div>
         </div>
-        <p class="section-lede">One simple pool: monthly spend is capped once, then used for both miles and cashback comparisons. There is no multi-bank or category optimiser.</p>
+        <p class="section-lede">One simple pool: eligible monthly spend is capped once, then used for miles and cashback. This does not combine banks or optimize categories.</p>
 
         <div class="field-grid">
           <div class="field">
             <label for="monthly-spend">Eligible card spend per month <span class="unit">SGD</span></label>
             <div class="input-with-prefix"><span aria-hidden="true">S$</span><input id="monthly-spend" name="monthly-spend" type="number" inputmode="decimal" min="0" step="0.01" value="1000" required></div>
-            <span class="field-hint">Hypothetical monthly eligible spend.</span>
+            <span class="field-hint">Hypothetical eligible spend: S$1,000 per month.</span>
           </div>
           <div class="field">
             <label for="monthly-cap">One-pool eligible spend cap <span class="unit">SGD / month</span></label>
             <div class="input-with-prefix"><span aria-hidden="true">S$</span><input id="monthly-cap" name="monthly-cap" type="number" inputmode="decimal" min="0" step="0.01" value="1000" required aria-describedby="cap-hint"></div>
-            <span class="field-hint" id="cap-hint">Hypothetical simple cap. Effective spend is the lower of spend and cap.</span>
+            <span class="field-hint" id="cap-hint">S$1,000 per month for this Citi Rewards scenario; confirm the current eligible-spend rules and cap.</span>
           </div>
           <div class="field">
-            <label for="miles-rate">Miles earned per eligible S$ <span class="unit">mpd</span></label>
+            <label for="miles-rate">Citi Rewards miles per eligible S$ <span class="unit">mpd</span></label>
             <div class="input-with-suffix"><input id="miles-rate" name="miles-rate" type="number" inputmode="decimal" min="0" step="0.01" value="4" required><span>miles / S$</span></div>
-            <span class="field-hint">Illustrative earn rate. Check live card eligibility and caps.</span>
+            <span class="field-hint">Default 4 mpd, with S$1,000 eligible spend per month modeled. The cited Citi Rewards promotion restricts 4 mpd to eligible online/shopping spend (online travel and mobile wallets excluded); this model assumes every entered dollar qualifies and does not simulate the statement-month bonus-points cap or transaction exclusions.</span>
           </div>
           <div class="field">
             <label for="cashback-rate">Cashback alternative <span class="unit">% of same spend</span></label>
             <div class="input-with-suffix"><input id="cashback-rate" name="cashback-rate" type="number" inputmode="decimal" min="0" max="100" step="0.01" value="1.7" required><span>%</span></div>
-            <span class="field-hint">Hypothetical default: 1.7%. Adjust to the cashback you would really earn.</span>
+            <span class="field-hint">Hypothetical default: 1.7%. Use the cashback you would really earn.</span>
           </div>
         </div>
 
-        <details class="optional-details">
-          <summary>Optional welcome route — model only what genuinely applies</summary>
-          <p class="details-lede">Welcome miles are assumed to be earned and usable toward this award. Any qualifying spend, eligibility rules, timing conditions, or extra costs not entered here are not modelled.</p>
+        <details class="optional-details" open>
+          <summary>Welcome offer and displaced cash scenario</summary>
+          <p class="details-lede">The default is Citi Rewards: 40,000 ThankYou points converted to 16,000 miles, with S$800 qualifying spend by the end of the second calendar month after approval (approval month plus two calendar months). The bonus must be fulfilled within three calendar months after the spend period. This timeline does not model eligibility, qualifying spend or bonus posting; recheck terms through 31 March 2027.</p>
           <div class="field-grid">
-            <div class="field">
-              <label for="welcome-miles">Welcome miles credited <span class="unit">miles</span></label>
-              <input id="welcome-miles" name="welcome-miles" type="number" inputmode="numeric" min="0" step="1" value="0" required>
-              <span class="field-hint">Zero by default. No public offer is preselected.</span>
-            </div>
-            <div class="field">
-              <label for="welcome-delay">Welcome credit delay <span class="unit">whole months</span></label>
-              <input id="welcome-delay" name="welcome-delay" type="number" inputmode="numeric" min="0" step="1" value="0" required>
-              <span class="field-hint">For the ready-date estimate only; bonus credit is assumed to run in parallel with earning.</span>
-            </div>
-            <div class="field">
-              <label for="welcome-fee">Incremental welcome-route fee <span class="unit">SGD</span></label>
-              <div class="input-with-prefix"><span aria-hidden="true">S$</span><input id="welcome-fee" name="welcome-fee" type="number" inputmode="decimal" min="0" step="0.01" value="0" required></div>
-              <span class="field-hint">One-time fee you would not otherwise pay.</span>
-            </div>
-            <div class="field">
-              <label for="displaced-cash-bonus">Cash bonus genuinely displaced <span class="unit">SGD</span></label>
-              <div class="input-with-prefix"><span aria-hidden="true">S$</span><input id="displaced-cash-bonus" name="displaced-cash-bonus" type="number" inputmode="decimal" min="0" step="0.01" value="0" required></div>
-              <span class="field-hint">Only enter cash you would actually lose by choosing this miles route.</span>
-            </div>
             <div class="field field-span-two">
-              <label for="miles-cash-gift">Cash gift that can accompany the miles card <span class="unit">SGD</span></label>
-              <div class="input-with-prefix"><span aria-hidden="true">S$</span><input id="miles-cash-gift" name="miles-cash-gift" type="number" inputmode="decimal" min="0" step="0.01" value="0" required></div>
-              <span class="field-hint">Add only a gift you can actually receive alongside this miles strategy. Cash and miles routes are not assumed mutually exclusive.</span>
+              <label for="promotion-picker">Offer preset</label>
+              <select id="promotion-picker" name="promotion-picker">
+                <option value="citi-rewards-16k" selected>Citi Rewards — 40,000 points / 16,000 miles welcome offer</option>
+                <option value="custom">Custom / manually entered values</option>
+              </select>
+              <div class="field-hint">Current presets fill the bonus, local earn rate, spend cap and any separately declared offer fee. Expired offers remain disabled for reference.</div>
+              <p id="promotion-note" class="promotion-note" role="note">Citi Rewards official terms: 40,000 ThankYou points (16,000 miles), S$800 qualifying spend by the end of the second calendar month after approval, bonus fulfilled within three calendar months after the spend period; terms through 31 March 2027. Recheck before use. <a href="https://www.citibank.com.sg/credit-cards/rewards/citi-rewards-card/pdf/online-product-led-acquisition-promotion-terms-and-conditions.pdf" target="_blank" rel="noopener">Official campaign terms</a></p>
+            </div>
+            <div class="field">
+              <label for="welcome-miles">Welcome miles assumed <span class="unit">miles</span></label>
+              <input id="welcome-miles" name="welcome-miles" type="number" inputmode="numeric" min="0" step="1" value="16000" required>
+              <span class="field-hint">40,000 Citi ThankYou points = 16,000 miles. S$800 qualifying spend is required; it is not counted as ongoing monthly earning spend.</span>
+            </div>
+            <div class="field">
+              <label for="displaced-cash-bonus">Cash offer genuinely displaced <span class="unit">SGD</span></label>
+              <div class="input-with-prefix"><span aria-hidden="true">S$</span><input id="displaced-cash-bonus" name="displaced-cash-bonus" type="number" inputmode="decimal" min="0" step="0.01" value="0" required></div>
+              <span class="field-hint">Default S$0. Enter cash only if you would actually lose it by choosing this route.</span>
             </div>
           </div>
-          <p class="assumption-callout">Welcome-offer fields are separate from ongoing rewards. The model does not infer that a cash gift is lost, combine offers, or check eligibility.</p>
+          <p class="assumption-callout">Offer choices do not automatically stack. Any cash offer that can accompany a miles card is not treated as lost unless you enter a genuinely displaced amount.</p>
         </details>
       </section>
 
@@ -179,41 +180,41 @@
             <h2 id="cost-heading">What do you give up?</h2>
           </div>
         </div>
-        <p class="section-lede">Count award cash charges, cashback you could have earned, your time, and only the fees that are incremental to this choice.</p>
+        <p class="section-lede">Count award cash charges, cashback you could have earned, your time, and only genuinely incremental general fees.</p>
 
         <div class="field-grid">
           <div class="field">
             <label for="award-cash">Award cash charges <span class="unit">SGD</span></label>
             <div class="input-with-prefix"><span aria-hidden="true">S$</span><input id="award-cash" name="award-cash" type="number" inputmode="decimal" min="0" step="0.01" value="100" required></div>
-            <span class="field-hint">Hypothetical default; enter the actual taxes and charges for your itinerary.</span>
+            <span class="field-hint">Hypothetical default; enter actual itinerary taxes and charges.</span>
           </div>
           <div class="field">
             <label for="ongoing-fee">Other incremental miles-strategy fees <span class="unit">SGD total</span></label>
             <div class="input-with-prefix"><span aria-hidden="true">S$</span><input id="ongoing-fee" name="ongoing-fee" type="number" inputmode="decimal" min="0" step="0.01" value="30" required></div>
-            <span class="field-hint">Hypothetical total fee allowance. Add annual fees if they are not waived.</span>
+            <span class="field-hint">S$30 hypothetical general-fee allowance. A preset adds only a fee declared in its terms; the default promotion adds S$0 in fees.</span>
           </div>
           <div class="field">
             <label for="minutes-per-month">Extra time vs cashback <span class="unit">minutes / month</span></label>
             <div class="input-with-suffix"><input id="minutes-per-month" name="minutes-per-month" type="number" inputmode="decimal" min="0" step="0.01" value="15" required><span>minutes</span></div>
-            <span class="field-hint">Hypothetical time spent managing the miles strategy each earning month.</span>
+            <span class="field-hint">Hypothetical strategy-management time for each earning month.</span>
           </div>
           <div class="field">
             <label for="hourly-value">Your time value <span class="unit">SGD / hour</span></label>
             <div class="input-with-prefix"><span aria-hidden="true">S$</span><input id="hourly-value" name="hourly-value" type="number" inputmode="decimal" min="0" step="0.01" value="40" required></div>
-            <span class="field-hint">A personal assumption; set to zero if you do not want to price time.</span>
+            <span class="field-hint">Personal assumption; set to zero if you do not want to price time.</span>
           </div>
         </div>
 
         <div class="transfer-controls">
           <div class="field transfer-field">
             <label for="transfer-block">Miles transfer block <span class="unit">miles</span></label>
-            <input id="transfer-block" name="transfer-block" type="number" inputmode="numeric" min="1" step="1" value="10000" required aria-describedby="transfer-hint">
-            <span class="field-hint" id="transfer-hint">Hypothetical bank block. The earning goal rounds up to a whole block; excess miles have no assigned value.</span>
+            <input id="transfer-block" name="transfer-block" type="number" inputmode="numeric" min="1" step="1" value="1" required aria-describedby="transfer-hint">
+            <span class="field-hint" id="transfer-hint">The idealised default uses 1-mile blocks. Real programs may require larger transfers; excess miles have no assigned value.</span>
           </div>
           <label class="switch-row" for="idealised-transfer">
-            <input id="idealised-transfer" name="idealised-transfer" type="checkbox">
+            <input id="idealised-transfer" name="idealised-transfer" type="checkbox" checked>
             <span class="switch-visual" aria-hidden="true"></span>
-            <span><strong>Idealised 1-mile blocks</strong><small>For comparison only; not a claim about an actual transfer program.</small></span>
+            <span><strong>Idealised 1-mile blocks</strong><small>Checked by default for comparison; not a claim about an actual transfer program.</small></span>
           </label>
         </div>
       </section>
@@ -235,9 +236,9 @@
           <span id="net-explainer">A positive result is not a guarantee of value.</span>
         </div>
         <div class="result-break-even">
-          <span>Break-even upgrade willingness</span>
+          <span>Break-even extra willingness above economy</span>
           <strong id="break-even">—</strong>
-          <small id="break-even-note">After the economy saving and any miles-card cash gift.</small>
+          <small id="break-even-note">After the economy saving.</small>
         </div>
       </div>
       <div class="sensitivity-note" id="sensitivity-note" hidden></div>
@@ -250,19 +251,17 @@
             <div><dt>Transfer-rounded earning goal</dt><dd><span data-output="transfer-goal">—</span> miles</dd></div>
             <div><dt>Effective eligible spend / month</dt><dd data-output="effective-spend">—</dd></div>
             <div><dt>Whole earning months</dt><dd><span data-output="earning-months">—</span></dd></div>
-            <div><dt>Estimated award-ready timeline</dt><dd><span data-output="ready-months">—</span> months</dd></div>
           </dl>
         </div>
         <div class="result-group">
           <h3>Modeled cost</h3>
           <dl>
             <div><dt>Economy cash avoided</dt><dd data-output="economy-value">—</dd></div>
-            <div><dt>Upgrade willingness</dt><dd data-output="willingness-value">—</dd></div>
-            <div><dt>Cash gift with miles card</dt><dd data-output="cash-gift">—</dd></div>
+            <div><dt>Extra personal willingness</dt><dd data-output="willingness-value">—</dd></div>
             <div><dt>Cashback forgone on earning spend</dt><dd data-output="cashback-cost">—</dd></div>
             <div><dt>Personal time cost</dt><dd data-output="time-cost">—</dd></div>
             <div><dt>Award cash charges</dt><dd data-output="award-cash-cost">—</dd></div>
-            <div><dt>Other fees + welcome fee</dt><dd data-output="fees-cost">—</dd></div>
+            <div><dt>Other incremental fees</dt><dd data-output="fees-cost">—</dd></div>
             <div><dt>Genuinely displaced cash offer</dt><dd data-output="displaced-cash">—</dd></div>
             <div class="total-row"><dt>Total modeled cost</dt><dd data-output="total-cost">—</dd></div>
           </dl>
@@ -274,12 +273,13 @@
           <strong><span data-output="leftover-miles">—</span> <small>miles</small></strong>
         </div>
         <div class="leftover-details">
-          <p><span data-output="transfer-remainder">—</span> from transfer-block rounding · <span data-output="month-excess">—</span> from whole-month earning · <span data-output="welcome-excess">—</span> welcome miles beyond the target.</p>
-          <p>All leftover miles are valued at <strong>S$0</strong> in this conservative comparison.</p>
+          <p><span data-output="transfer-remainder">—</span> from transfer-block rounding · <span data-output="month-excess">—</span> from whole-month earning · <span data-output="welcome-excess">—</span> welcome miles beyond target.</p>
+          <p>All leftover miles are valued at <strong>S$0</strong> in this comparison.</p>
         </div>
       </div>
-      <p class="method-note"><strong>How to read the timeline:</strong> Transfer-rounded miles are earned from zero; accumulation is rounded up to whole months. Cashback and time costs cover every full earning month, including any end-of-month surplus. A welcome-credit delay is shown in parallel with accumulation and does not add assumed monthly spending or time cost.</p>
-      <p class="decision-note">This is a simplified personal comparison, not financial advice. It assumes the hypothetical earn rate and one spend cap apply for every earning month. It does not model award-seat availability, expiry, devaluation, card eligibility, qualifying-spend requirements, statement timing, transaction exclusions, or taxes/fees not entered above.</p>
+      <p class="method-note"><strong>How to read the timeline:</strong> miles are earned from zero and rounded up to whole earning months. Cashback and time costs cover every full earning month. The selected welcome miles are treated as available in the estimate; qualifying spend, eligibility and bonus-credit timing are not modeled. The stated offer window is a condition, not a ready-date forecast.</p>
+      <p class="date-feasibility-note" id="date-feasibility-note" role="note">At default assumptions, the modeled 10 earning months exceed the remaining time to 1 June 2027 from the 20 October 2026 research snapshot; bonus posting can shorten the runway further.</p>
+      <p class="decision-note">This is a simplified personal comparison, not financial advice. It does not verify the S$450 fare, award inventory, card eligibility, transaction exclusions, award expiry, devaluation, actual transfer rules, or taxes/fees not entered above. The business-cabin product depends on the aircraft; 40 kg checked baggage is subject to route rules.</p>
     </section>
 
     <section class="closing-card" aria-labelledby="closing-heading">
@@ -293,34 +293,41 @@
     </section>
 
     <details class="research-appendix" id="research-appendix">
-      <summary>Research appendix: card and route examples <span class="appendix-tag">Not auto-applied</span></summary>
+      <summary>Research appendix: award chart and offer terms <span class="appendix-tag">Reviewed <span id="research-checked">date in research data</span></span></summary>
       <div class="appendix-content">
         <div class="appendix-warning">
-          <strong>Research snapshot: 19 October 2026.</strong> Offer terms expire and must be rechecked before use. No date-specific award-seat search was performed. The calculator does not select or recommend any offer automatically.
+          <strong>The S$450 SIN–HND economy amount is assumed and unverified.</strong> SQ fare lookup was blocked by CAPTCHA. The date badge is a teaching example only; no award-seat availability or live fare is asserted.
         </div>
         <div class="appendix-columns">
           <div>
-            <h3>Welcome offers are separate choices</h3>
-            <ul>
-              <li>Citi PremierMiles direct fee-paying example: 30,000 bonus miles, S$196.20 fee and S$800 qualifying spend; source terms run to 31 March 2027.</li>
-              <li>Fee-waived example: 8,000 bonus miles and S$800 qualifying spend, with the qualifying period through the end of the second calendar month after approval; source terms run to 31 March 2027.</li>
-              <li>MoneySmart example: S$400 cash baseline (S$450 for the first 200 qualifying applicants), at least S$500 spend within 30 days plus claim requirements; promotion dates 10–31 October 2026 and new-to-Citi eligibility apply.</li>
-              <li>These routes may not stack. A cash gift can accompany a miles-earning card; compare application routes separately and do not subtract cash unless it is genuinely displaced.</li>
-            </ul>
-            <a class="text-link" href="https://github.com/yiming-xu/miles_cba/blob/main/presentation.md#appendix--public-welcome-offer-examples" target="_blank" rel="noopener">Read the detailed offer notes in presentation.md <span aria-hidden="true">↗</span></a>
+            <h3>One-way award comparison</h3>
+            <p>Singapore Airlines Saver full-award rates and Cathay Pacific comparison routes are supplied separately in research-data.js. Confirm chart dates, routings, cash charges and availability before use.</p>
+            <div class="award-chart-wrap" role="region" aria-label="Singapore Airlines and Cathay Pacific award comparison" tabindex="0">
+              <table class="award-chart">
+                <thead>
+                  <tr>
+                    <th scope="col">Zone</th>
+                    <th scope="col">Destination</th>
+                    <th scope="col">SQ Saver miles</th>
+                    <th scope="col">Cathay miles</th>
+                    <th scope="col">Cathay routing</th>
+                    <th scope="col">Miles note</th>
+                  </tr>
+                </thead>
+                <tbody id="award-chart-body">
+                  <tr><td>—</td><td>Tokyo (Haneda)</td><td>54,500</td><td>Not supplied</td><td>Not supplied</td><td>Fallback only; load researched route data before relying on a comparison.</td></tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <div>
-            <h3>Route notes &amp; source files</h3>
-            <p>Perth and Tokyo are live examples; Heathrow is a backup long-haul comparison. Lower-mileage routes are only useful if you actually want that trip.</p>
-            <ul>
-              <li>Singapore Airlines award chart rates are one-way Saver awards; cash charges are additional and seats are capacity-controlled.</li>
-              <li>Promotional award examples are time-sensitive, not permanent presets; verify expiry and inventory.</li>
-            </ul>
-            <a class="text-link" href="https://github.com/yiming-xu/miles_cba/blob/main/research/sweet-spots.md" target="_blank" rel="noopener">Read sweet spots and promotion notes <span aria-hidden="true">↗</span></a><br>
-            <a class="text-link" href="https://github.com/yiming-xu/miles_cba/blob/main/research/worked-examples.json" target="_blank" rel="noopener">Read the earlier continuous-accrual worked examples <span aria-hidden="true">↗</span></a>
+            <h3>Welcome offer: verify before use</h3>
+            <p>The default is Citi Rewards: 40,000 ThankYou points (16,000 miles), S$800 qualifying spend through the end of the second calendar month after approval, with the bonus fulfilled within three calendar months after the spend period. Terms are noted through 31 March 2027; recheck eligibility and posting timing. Citi PremierMiles remains a separate 8,000-mile, 1.2-mpd fee-waived alternative where current terms apply.</p>
+            <p>The S$30 general-fee allowance is separate from any declared offer fee. A fee on another selected preset is added explicitly; changing back to a fee-waived preset resets that added amount.</p>
+            <p>Offer requirements do not count as extra monthly earning spend in this simplified model. A qualifying-spend condition is not a promise that the bonus will be approved or credited.</p>
           </div>
         </div>
-        <p class="source-caveat">This page’s current default cost model intentionally uses whole-month accumulation and a 10,000-mile transfer block, so its worked estimate can differ from the continuous-accrual examples in the linked research file.</p>
+        <p class="source-caveat">The chart and offer source snapshot is <span id="research-checked-footer">the date shown above</span>. Recheck research and issuer terms before presenting or booking.</p>
       </div>
     </details>
   </main>
