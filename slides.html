@@ -7,6 +7,7 @@
   <meta name="description" content="A six-slide 16:9 presentation about the value, time and cost of a SIN–HND business-class award.">
   <title>SIN → HND · Miles or cash?</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="slides-polish.css">
   <script src="research-data.js"></script>
   <script src="app.js"></script>
 </head>
@@ -87,8 +88,9 @@
           <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 23.5 10.5 11l4 8 3-5 8.5 9.5H6ZM12 8.5h8M16 5v7M5 27h22"/></svg>
           <span><strong>Priority baggage handling</strong><small>Business Class tags are marked PRIO-J</small></span>
         </div>
-        <p class="benefit-footnote">*Lounge entry and baggage allowance depend on the itinerary and ticket rules.</p>
+        <p class="benefit-footnote">Lounge and baggage rules vary by itinerary.</p>
       </div>
+      <p class="slide-footnote"><strong>Beyond Business: First Class / Suites</strong> — personal concierge, buggy transfers and priority screening (restricted). First Class SilverKris Lounge table-service dining from 28 Oct 2026. <strong>Not included in our Business Class example.</strong></p>
       <p class="slide-guide"><strong>Set your own value.</strong> Value benefits you would use; add only what you would pay above economy.</p>
     </section>
 
@@ -120,22 +122,22 @@
         <div class="earning-rate-card">
           <p class="mini-label">One modeled spending pool</p>
           <p class="earning-formula">S$<strong id="slide-monthly-spend">1,000</strong> × <strong id="slide-miles-rate">4</strong> mpd = <b id="slide-monthly-miles">4,000</b> miles / month</p>
-          <p class="earning-caption">Illustrative Citi Rewards pace · eligible spend only</p>
+          <p class="earning-caption">Assumes S$1,000/month of qualifying online/shopping spend</p>
         </div>
         <div class="earning-time-card">
           <span class="mini-label">Whole earning months</span>
           <strong id="slide-earning-months">10</strong>
-          <small>with the default 1-mile transfer block</small>
+          <small>10 months needed · only 7 available before 1 June</small>
         </div>
       </div>
-      <p class="slide-guide"><strong>Adjust the pace.</strong> Change eligible spend, mpd or welcome miles: spend × mpd sets monthly miles; award target − welcome miles sets the gap.</p>
-      <p class="slide-footnote earning-note">Bonus eligibility, eligible-spend rules and posting time matter. A miles target is not a seat or booking-date guarantee.</p>
+      <p class="slide-guide"><strong>Adjust the pace.</strong> In your calculator, change qualifying spend or the offer. More miles per month shortens the runway.</p>
+      <p class="slide-footnote earning-note">This dated trip is not achievable from zero under these inputs. Welcome-bonus timing and seat availability can further constrain it.</p>
     </section>
 
     <section class="slide slide-cost" id="slide-4" aria-labelledby="slide-title-4" aria-hidden="true" hidden>
       <header class="slide-heading">
         <p class="slide-kicker">04 <span>/</span> The real cost</p>
-        <h1 id="slide-title-4">Miles have a <em>cash cost.</em></h1>
+        <h1 id="slide-title-4">Miles have an <em>economic cost.</em></h1>
       </header>
       <div class="cost-layout">
         <div class="cost-total-card">
@@ -164,8 +166,8 @@
           </div>
         </div>
       </div>
-      <p class="cash-fare-tag"><span>Business cash reference</span><strong>S$2,500 illustrative</strong><small>not a live quote · not used in the model</small></p>
-      <p class="slide-guide"><strong>Adjust the costs.</strong> Change cashback rate, monthly minutes, hourly value and award charges; these form modeled cash cost.</p>
+      <p class="cash-fare-tag">Cash paid + rewards forgone + time valued = total economic cost</p>
+      <p class="slide-guide"><strong>Adjust the costs.</strong> In your calculator, change cashback or time spent. Higher alternatives make miles more costly.</p>
     </section>
 
     <section class="slide slide-answer" id="slide-5" aria-labelledby="slide-title-5" aria-hidden="true" hidden>
@@ -178,7 +180,7 @@
         <span class="equation-sign" aria-hidden="true">+</span>
         <div class="value-cell"><span>Your extra willingness</span><strong id="slide-willingness">S$150.00</strong></div>
         <span class="equation-sign" aria-hidden="true">=</span>
-        <div class="value-cell value-cell-total"><span>Total modeled value</span><small class="value-prompt">Calculated below</small></div>
+        <div class="value-cell value-cell-total"><span>Total modeled value</span><strong id="slide-value-sum">S$1,008.00</strong></div>
       </div>
       <div class="net-equation" aria-label="Total modeled value minus total modeled cost equals net benefit">
         <div class="net-cell"><span>Your modeled value</span><strong id="slide-total-value">S$1,008.00</strong></div>
@@ -190,7 +192,7 @@
       <div class="answer-band">
         <div class="answer-interpretation">
           <span class="mini-label">How to read the break-even</span>
-          <p>Above this extra-willingness threshold, modeled value covers modeled cost.</p>
+          <p>Economy cash avoided already exceeds modeled costs: no extra premium is needed here.</p>
         </div>
         <div class="answer-divider" aria-hidden="true"></div>
         <div class="answer-break-even">
@@ -198,8 +200,8 @@
           <strong id="slide-break-even">S$0.00</strong>
         </div>
       </div>
-      <p class="slide-guide"><strong>Make it yours.</strong> Use the economy fare you would really pay and extra willingness above it; positive net means value exceeds modeled cost.</p>
-      <p class="slide-footnote answer-note">SQ nonstop economy: S$858 listed · 1 Jun 2027 · checked 20 Oct 2026. Prices change. S$2,500 business is illustrative and excluded.</p>
+      <p class="slide-guide"><strong>Make it yours.</strong> In your calculator, enter the extra you would pay. Positive value does not guarantee a feasible trip.</p>
+      <p class="slide-footnote answer-note">Economic result only: 10 earning months do not fit the 7-month runway. Economy fare is a dated listing, not guaranteed.</p>
     </section>
 
     <section class="slide slide-tips" id="slide-6" aria-labelledby="slide-title-6" aria-hidden="true" hidden>
@@ -211,12 +213,12 @@
         <article class="tip-card tip-sweet-spot">
           <span class="tip-number">01</span>
           <h2>Start early; find a seat</h2>
-          <p>Award seats are limited. Search early across flexible dates and a backup route; transfer only after you find a bookable seat.</p>
+          <p>Award seats are limited. Search early across flexible dates and a backup route; check availability before transferring points.</p>
         </article>
         <article class="tip-card">
           <span class="tip-number">02</span>
           <h2>Compare different products</h2>
-          <p>Same city-pair and cabin, but distinct airlines and currencies:</p>
+          <p>Another route: SIN–HKG, one-way Business</p>
           <div class="sweet-spot-pair">
             <span>Cathay Pacific · Asia Miles <b>27,000</b></span>
             <span>Singapore Airlines · KrisFlyer Saver <b>35,500</b></span>
@@ -230,7 +232,7 @@
         </article>
       </div>
       <div class="closing-line"><span>Want the destination.</span><i aria-hidden="true">→</i><span>Count cash and time.</span><i aria-hidden="true">→</i><strong>Then decide.</strong></div>
-      <p class="slide-guide"><strong>Practical sequence:</strong> search early across flexible dates; confirm a seat, then transfer only required points.</p>
+      <p class="slide-guide"><strong>Check before transferring.</strong> Transfers take time; seats can disappear before points arrive.</p>
     </section>
 
     <nav class="slide-controls" aria-label="Presentation controls">
@@ -263,6 +265,7 @@
       </div>
       <div>
         <h3>Official SQ image credits</h3>
+        <p>First Class comparison on slide 2: <a href="https://milelion.com/2026/10/21/singapore-airlines-unveils-new-first-class-ground-experience/">The MileLion, 21 October 2026</a>. Concierge and buggy/priority-security benefits concern eligible Suites/First Class passengers, not the Business Class worked example. Buggy transfers are subject to availability. The premium screening lane is limited to T3 gates A1–A5, 08:30–12:30 and 21:00–01:00; other gates receive assistance. First Class SilverKris Lounge full-service dining with menus and table ordering is announced from 28 October 2026, not already available as of the article date. Recheck eligibility and operations before travel.</p>
         <p>Slide 2 drinks: red and white wines selected to accompany the meal; no specific bottle or vintage guaranteed. Sources: <a href="https://www.singaporeair.com/en_UK/sg/flying-withus/dining/wine-experts/">SQ wine experts</a> and the Business Class cabin guide. Check the flight-specific digital menu nearer departure.</p>
         <ul>
           <li>Business Class bed and Book the Cook photos: <a href="https://www.singaporeair.com/en_UK/sg/flying-withus/cabins/business-class/business-class-2/" target="_blank" rel="noopener noreferrer">Singapore Airlines Business Class cabin guide</a>.</li>
@@ -328,6 +331,7 @@
         setText("slide-economy-saving", calculator.formatMoney(inputs.economySaving));
         setText("slide-willingness", calculator.formatMoney(inputs.willingness));
         setText("slide-total-value", calculator.formatMoney(result.totalValue));
+        setText("slide-value-sum", calculator.formatMoney(result.totalValue));
         setText("slide-break-even", calculator.formatMoney(result.breakEvenWillingness));
         setText("slide-net", result.netBenefit > 0
           ? `+${calculator.formatMoney(result.netBenefit)}`
@@ -336,6 +340,8 @@
 
       function showSlide(index) {
         current = Math.max(0, Math.min(slides.length - 1, index));
+        const brandContext = document.querySelector(".slide-brand > span");
+        if (brandContext) brandContext.textContent = current === 5 ? "OTHER ROUTES · PRACTICAL TIPS" : "SIN → HND · 1 JUN 2027";
         slides.forEach((slide, slideIndex) => {
           const active = slideIndex === current;
           slide.hidden = !active;
