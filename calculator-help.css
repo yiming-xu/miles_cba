@@ -15,6 +15,17 @@
 .calculator-page #illustration-status { background: #fff0cf; color: #624715; border-radius: 8px; padding: 10px 14px; }
 .calculator-page [hidden] { display: none !important; }
 
+/* Field-associated help: inline expansion avoids clipped or off-screen popovers. */
+.calculator-page .field-label-row { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.calculator-page .field-label-row label { margin:0; flex:1; }
+.calculator-page .field-help-button { flex:0 0 44px; width:44px; height:44px; border:0; border-radius:50%; background:transparent; color:#245e56; font-size:17px; font-weight:750; cursor:pointer; }
+.calculator-page .field-help-button::first-letter { border:1px solid currentColor; border-radius:50%; padding:0 5px; }
+.calculator-page .field-help-button:hover, .calculator-page .field-help-button[aria-expanded="true"] { background:#e2efea; }
+.calculator-page .field-help-button:focus-visible { outline:3px solid #16756b; outline-offset:2px; }
+.calculator-page details.field-help { margin:0; }
+.calculator-page details.field-help > summary { display:none; }
+.calculator-page details.field-help[open] { margin-top:8px; padding:12px; background:#edf5f1; border-left:3px solid #4c9587; border-radius:6px; }
+.calculator-page details.field-help .field-hint { margin:0; color:#334f49; font-size:14px; line-height:1.5; }
 /* Mobile participation: get to the inputs quickly, leave secondary settings optional. */
 .section-jumps { display:flex; gap:8px; flex-wrap:wrap; margin:0 0 16px; }
 .section-jumps a { padding:10px 14px; border-radius:22px; background:#e2efea; color:#173f3a; text-decoration:none; font-weight:700; }

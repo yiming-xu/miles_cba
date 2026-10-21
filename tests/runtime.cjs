@@ -580,4 +580,24 @@ run("assumptions start visible and remain interactive when toggled", () => {
  dom.window.close();
 });
 
+run("field help buttons retain context, toggle by click and close with Escape", () => {
+ const dom=createDomFromResearchFile(), d=dom.window.document;
+ const buttons=Array.from(d.querySelectorAll(".field-help-button"));
+ assert.ok(buttons.length >= 10);
+ for (const button of buttons) {
+   const help=d.getElementById(button.getAttribute("aria-controls"));
+   const field=button.closest(".field");
+   assert.equal(help.closest(".field"),field);
+   assert.ok(button.getAttribute("aria-label").includes(field.querySelector("label").textContent.trim()));
+   assert.equal(help.open,false);
+   button.click(); assert.equal(help.open,true);
+   assert.equal(button.getAttribute("aria-expanded"),"true");
+   button.dispatchEvent(new dom.window.KeyboardEvent("keydown",{key:"Escape",bubbles:true}));
+   assert.equal(help.open,false);
+   assert.equal(button.getAttribute("aria-expanded"),"false");
+ }
+ assert.ok(!d.querySelector(".section-help .field-help"));
+ dom.window.close();
+});
+
 process.stdout.write(`\n${passed} runtime checks passed.\n`);
