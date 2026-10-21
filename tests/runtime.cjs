@@ -564,12 +564,15 @@ run("help disclosures start collapsed and remain operable", () => {
   dom.window.close();
 });
 
-run("secondary inputs stay bound inside collapsed advanced groups", () => {
+run("assumptions start visible and remain interactive when toggled", () => {
  const dom=createDomFromResearchFile(), d=dom.window.document;
  assert.equal(d.querySelectorAll(".advanced-inputs").length,2);
+ assert.ok(Array.from(d.querySelectorAll(".advanced-inputs")).every(g => g.open));
+ assert.ok(Array.from(d.querySelectorAll(".section-help")).every(g => !g.open));
  assert.ok(d.getElementById("miles-rate").closest(".advanced-inputs"));
  assert.ok(!d.getElementById("promotion-picker").closest(".advanced-inputs"));
  const group=d.getElementById("miles-rate").closest("details");
+ group.querySelector("summary").click(); assert.equal(group.open,false);
  group.querySelector("summary").click(); assert.equal(group.open,true);
  d.getElementById("miles-rate").value="2";dispatchInput(dom.window,d.getElementById("miles-rate"));
  assert.equal(d.getElementById("sticky-months").textContent,"20");

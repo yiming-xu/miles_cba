@@ -56,7 +56,10 @@
  .calculator-page .hero-lede { max-width:none; }
  .calculator-page .value-card > .section-lede { display:none; }
  .calculator-page #selected-fare-context { margin:0 0 10px; }
- .calculator-page #selected-fare-context > strong { display:none; }
+ .calculator-page #selected-fare-context > strong { display:block; font-size:12px; line-height:1.4; }
+ .calculator-page .advanced-inputs > summary { min-height:44px; }
+ .calculator-page .advanced-inputs .field-grid { row-gap:16px; }
+ .calculator-page .section-jumps a:focus-visible { outline:3px solid #16756b; outline-offset:2px; }
  .calculator-page #selected-fare-context summary { min-height:36px; }
  .calculator-page .award-rate { min-height:0; padding:10px 12px; gap:3px; }
  .calculator-page .award-rate strong { font-size:24px; }

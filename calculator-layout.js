@@ -10,8 +10,9 @@
     if (!section) continue;
     const details = document.createElement("details");
     details.className = "advanced-inputs";
+    details.open = true;
     const summary = document.createElement("summary");
-    summary.textContent = "Advanced assumptions";
+    summary.textContent = sectionId === "earn-section" ? "Earning assumptions" : "Time & transfer assumptions";
     details.appendChild(summary);
     const grid = document.createElement("div");
     grid.className = "field-grid";
