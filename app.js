@@ -298,7 +298,9 @@
     const leftoverMiles = transferRemainder + wholeMonthExcess + welcomeExcess;
     // Keep the legacy result field for consumers, but do not model unverified fees.
     const feesCost = 0;
-    const totalCost = inputs.awardCash
+    const offerFee = inputs.offerFee ?? 0;
+    if (!finiteNonnegative(offerFee)) return { available: false, reason: "Offer fee must be non-negative." };
+    const totalCost = offerFee + inputs.awardCash
       + cashbackCost
       + timeCost
       + inputs.displacedCashBonus;
@@ -318,6 +320,7 @@
       welcomeExcess,
       leftoverMiles,
       feesCost,
+      offerFee,
       totalCost,
       totalValue,
       rawBreakEven,
@@ -347,6 +350,7 @@
       welcomeExcess,
       leftoverMiles,
       feesCost,
+      offerFee,
       totalCost,
       totalValue,
       rawBreakEven,
@@ -426,6 +430,8 @@
         values[definition.key] = value;
       }
     }
+    const selected = promotionById.get(promotionPicker.value);
+    values.offerFee = selected && promotionAvailabilityStatus(selected).illustration ? Number(selected.fee ?? 0) : 0;
     return { values, errors };
   }
 
@@ -474,6 +480,8 @@
     setOutput("award-cash-cost", formatMoney(inputs.awardCash));
     setOutput("displaced-cash", formatMoney(inputs.displacedCashBonus));
     setOutput("total-cost", formatMoney(result.totalCost));
+    setOutput("offer-fee", formatMoney(result.offerFee));
+    byId("illustration-status").hidden = !promotionAvailabilityStatus(promotionById.get(promotionPicker.value) || {}).illustration;
     setOutput("leftover-miles", formatMiles(result.leftoverMiles));
     setOutput("transfer-remainder", `${formatMiles(result.transferRemainder)} miles`);
     setOutput("month-excess", `${formatMiles(result.wholeMonthExcess)} miles`);
@@ -501,8 +509,8 @@
       ? `${route.name} · positive under these assumptions`
       : `${route.name} · below break-even under these assumptions`;
     byId("result-status").textContent = result.netBenefit >= 0
-      ? "Under these assumptions, the modeled personal value exceeds the modeled cost. This is not a guarantee of availability or realized savings."
-      : "Under these assumptions, the modeled cost exceeds the selected personal value. Change only inputs that reflect your real alternative.";
+      ? "Your modeled value exceeds your costs. Try changing a personal assumption to see what matters."
+      : "Your modeled costs exceed your personal value. Compare a simpler cashback strategy.";
 
     const sensitivity = byId("sensitivity-note");
     if (Math.abs(result.netBenefit) <= 50) {
@@ -630,6 +638,10 @@
   function promotionAvailabilityStatus(promotion, now = new Date()) {
     const expiryStatus = promotionExpiryStatus(promotion, now);
     const feeStatus = promotionFeeStatus(promotion);
+    if (expiryStatus.disabled && /expired|historical/.test(expiryStatus.label)
+      && (promotion.fee == null || (Number.isFinite(promotion.fee) && promotion.fee >= 0))) {
+      return { disabled: false, illustration: true, label: "historical / expired · illustration", category: "expired" };
+    }
     const reasons = [
       ...(expiryStatus.disabled ? [expiryStatus.label] : []),
       ...(feeStatus ? [feeStatus] : []),
@@ -646,7 +658,7 @@
 
   function promotionOptionLabel(promotion, expiryStatus) {
     const expiry = promotion.expiry ? ` · through ${promotion.expiry.slice(0, 10)}` : "";
-    const status = expiryStatus.disabled ? ` · ${expiryStatus.label}` : expiry;
+    const status = expiryStatus.disabled || expiryStatus.illustration ? ` · ${expiryStatus.label}` : expiry;
     return `${promotion.label}${status}`;
   }
 
@@ -656,11 +668,11 @@
     const configuredDefault = research.promotions.find((promotion) => (
       promotion.id === research.defaultPromotionId
     ));
-    if (configuredDefault && !promotionAvailabilityStatus(configuredDefault).disabled) {
+    if (configuredDefault && !promotionAvailabilityStatus(configuredDefault).disabled && !promotionAvailabilityStatus(configuredDefault).illustration) {
       return configuredDefault;
     }
     return research.promotions.find((promotion) => (
-      isDefaultPromotion(promotion) && !promotionAvailabilityStatus(promotion).disabled
+      isDefaultPromotion(promotion) && !promotionAvailabilityStatus(promotion).disabled && !promotionAvailabilityStatus(promotion).illustration
     )) || null;
   }
 
@@ -674,7 +686,7 @@
     const current = document.createElement("optgroup");
     current.label = "Current or undated offers — verify terms";
     const expired = document.createElement("optgroup");
-    expired.label = "Historical / expired offers (disabled)";
+    expired.label = "Historical / expired — select to illustrate";
     const excluded = document.createElement("optgroup");
     excluded.label = "Paid / unclear-fee offers (disabled; fees omitted)";
     for (const promotion of research.promotions) {
@@ -722,7 +734,7 @@
       note.textContent = "Custom/manual scenario: enter only verified bonus, earning-rate and cap assumptions. Paid-fee presets are disabled rather than treated as free; expired or historical presets are not applied automatically.";
       return;
     }
-    appendText(note, `${promotion.terms} Paid-fee presets are disabled rather than treated as free.`);
+    appendText(note, `${promotion.terms} Paid-fee presets are disabled rather than treated as free; historical examples can be selected and their stated fees are included.`);
     addSafeSourceLink(note, promotion.source);
   }
 

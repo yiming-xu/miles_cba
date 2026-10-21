@@ -7,6 +7,7 @@
   <meta name="description" content="A transparent miles-versus-cash calculator with dated destination-specific economy fare listings.">
   <title>Miles or cash? — a personal cost–benefit calculator</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="calculator-help.css">
   <script src="research-data.js" defer></script>
   <script src="app.js" defer></script>
 </head>
@@ -28,10 +29,10 @@
       <h1 id="page-title">What are the miles<br><em>worth to you?</em></h1>
       <p class="hero-lede">Start with the economy trip you would actually buy. Then count the cash and time behind a possible award.</p>
     </div>
-    <div class="hypothesis-banner" role="note">
+    <details class="input-help"><summary>Fare snapshot & limitations</summary><div class="hypothesis-banner" role="note">
       <span class="banner-icon" aria-hidden="true">i</span>
       <p><strong>Economy defaults are dated Google Flights listings for 1 June 2027.</strong> One-way economy, one adult, SGD; checked 20 October 2026. Prices can change; baggage and checkout conditions are unverified. No award-seat inventory has been checked.</p>
-    </div>
+    </div></details>
     <div class="hero-footnote">
       <span class="flight-date-badge"><strong>Economy alternative:</strong> 1 Jun 2027 listed fare · Award inventory: not checked</span>
       <a href="slides.html">Open the browser presentation <span aria-hidden="true">→</span></a>
@@ -60,7 +61,7 @@
         <p class="eyebrow">A guided comparison</p>
         <h2>Value <span>→</span> Earn <span>→</span> Cost</h2>
       </div>
-      <p class="intro-note">The model starts with zero existing miles. It estimates future earning; it is not a valuation of a balance you already own.</p>
+      <details class="input-help"><summary>Model scope</summary><p class="intro-note">The model starts with zero existing miles. It estimates future earning; it is not a valuation of a balance you already own.</p></details>
     </div>
 
     <div class="input-error" id="input-errors" role="alert" hidden></div>
@@ -78,7 +79,7 @@
 
         <div class="flight-date-badge flight-date-badge-light" id="selected-fare-context" role="note" aria-live="polite">
           <strong id="selected-fare-title">Selected destination economy alternative</strong>
-          <span id="selected-fare-note">Tokyo Haneda: 1 June 2027, SQ nonstop S$858 listed; checked 20 October 2026, not a checkout guarantee.</span>
+          <details class="input-help"><summary>Fare details &amp; source</summary><span id="selected-fare-note">Tokyo Haneda: 1 June 2027, SQ nonstop S$858 listed; checked 20 October 2026, not a checkout guarantee.</span></details>
         </div>
 
         <div class="field-grid field-grid-wide">
@@ -87,7 +88,7 @@
             <select id="destination" name="destination">
               <option value="tokyo-hnd" selected>Tokyo (Haneda)</option>
             </select>
-            <span class="field-hint">Full one-way business-class award, one person, Singapore origin. Award miles are chart rates; availability is not checked.</span>
+            <details class="input-help"><summary>About this input</summary><span class="field-hint">Full one-way business-class award, one person, Singapore origin. Award miles are chart rates; availability is not checked.</span></details>
           </div>
           <div class="award-rate" aria-live="polite" aria-label="Selected award rate">
             <span class="award-rate-label">Full SQ Saver business award</span>
@@ -97,18 +98,18 @@
           <div class="field">
             <label for="economy-saving"><strong>Economy flight cost (cash alternative)</strong> <span class="unit">SGD</span></label>
             <div class="input-with-prefix"><span aria-hidden="true">S$</span><input id="economy-saving" name="economy-saving" type="number" inputmode="decimal" min="0" step="0.01" value="858" required aria-describedby="economy-hint"></div>
-            <span class="field-hint" id="economy-hint">Enter the cash price you would pay for a matched one-way itinerary.</span>
+            <details class="input-help"><summary>About this input</summary><span class="field-hint" id="economy-hint">Enter the cash price you would pay for a matched one-way itinerary.</span></details>
           </div>
           <div class="field">
             <label for="upgrade-willingness">Extra you would personally pay above economy for business <span class="unit">SGD</span></label>
             <div class="input-with-prefix"><span aria-hidden="true">S$</span><input id="upgrade-willingness" name="upgrade-willingness" type="number" inputmode="decimal" min="0" step="0.01" value="150" required aria-describedby="willingness-hint"></div>
-            <span class="field-hint" id="willingness-hint">Personal preference, not an airline valuation. Default S$150 is hypothetical.</span>
+            <details class="input-help"><summary>About this input</summary><span class="field-hint" id="willingness-hint">Personal preference, not an airline valuation. Default S$150 is hypothetical.</span></details>
           </div>
         </div>
-        <div class="benefit-note" role="note">
+        <details class="input-help"><summary>What does business class include?</summary><div class="benefit-note" role="note">
           <strong>What the extra willingness is for:</strong> the business seat and space to sleep, lounge access and dining, a 40 kg checked-baggage allowance subject to route, and priority check-in, boarding and baggage delivery. It does not promise immigration fast-track; the cabin product depends on the aircraft.
-        </div>
-        <div class="inline-note"><span aria-hidden="true">↳</span> Compare the full journey and matched travel dates. One-way cash prices may not equal half a return fare.</div>
+        </div></details>
+        <details class="input-help"><summary>Comparing one-way and return fares</summary><div class="inline-note"><span aria-hidden="true">↳</span> Compare the full journey and matched travel dates. One-way cash prices may not equal half a return fare.</div></details>
       </section>
 
       <section class="step-card earn-card" id="earn-section" aria-labelledby="earn-heading">
@@ -125,28 +126,28 @@
           <div class="field">
             <label for="monthly-spend">Eligible card spend per month <span class="unit">SGD</span></label>
             <div class="input-with-prefix"><span aria-hidden="true">S$</span><input id="monthly-spend" name="monthly-spend" type="number" inputmode="decimal" min="0" step="0.01" value="1000" required></div>
-            <span class="field-hint">Hypothetical eligible spend: S$1,000 per month.</span>
+            <details class="input-help"><summary>About this input</summary><span class="field-hint">Hypothetical eligible spend: S$1,000 per month.</span></details>
           </div>
           <div class="field">
             <label for="monthly-cap">One-pool eligible spend cap <span class="unit">SGD / month</span></label>
             <div class="input-with-prefix"><span aria-hidden="true">S$</span><input id="monthly-cap" name="monthly-cap" type="number" inputmode="decimal" min="0" step="0.01" value="1000" required aria-describedby="cap-hint"></div>
-            <span class="field-hint" id="cap-hint">S$1,000 per month for this Citi Rewards scenario; confirm the current eligible-spend rules and cap.</span>
+            <details class="input-help"><summary>About this input</summary><span class="field-hint" id="cap-hint">S$1,000 per month for this Citi Rewards scenario; confirm the current eligible-spend rules and cap.</span></details>
           </div>
           <div class="field">
-            <label for="miles-rate">Citi Rewards miles per eligible S$ <span class="unit">mpd</span></label>
+            <label for="miles-rate">Miles per eligible S$ <span class="unit">mpd</span></label>
             <div class="input-with-suffix"><input id="miles-rate" name="miles-rate" type="number" inputmode="decimal" min="0" step="0.01" value="4" required><span>miles / S$</span></div>
-            <span class="field-hint">Default 4 mpd, with S$1,000 eligible spend per month modeled. The cited Citi Rewards promotion restricts 4 mpd to eligible online/shopping spend (online travel and mobile wallets excluded); this model assumes every entered dollar qualifies and does not simulate the statement-month bonus-points cap or transaction exclusions.</span>
+            <details class="input-help"><summary>About this input</summary><span class="field-hint">Default 4 mpd, with S$1,000 eligible spend per month modeled. The cited Citi Rewards promotion restricts 4 mpd to eligible online/shopping spend (online travel and mobile wallets excluded); this model assumes every entered dollar qualifies and does not simulate the statement-month bonus-points cap or transaction exclusions.</span></details>
           </div>
           <div class="field">
             <label for="cashback-rate">Cashback alternative <span class="unit">% of same spend</span></label>
             <div class="input-with-suffix"><input id="cashback-rate" name="cashback-rate" type="number" inputmode="decimal" min="0" max="100" step="0.01" value="1.7" required><span>%</span></div>
-            <span class="field-hint">Hypothetical default: 1.7%. Use the cashback you would really earn.</span>
+            <details class="input-help"><summary>About this input</summary><span class="field-hint">Hypothetical default: 1.7%. Use the cashback you would really earn.</span></details>
           </div>
         </div>
 
         <details class="optional-details" open>
           <summary>Welcome offer and displaced cash scenario</summary>
-          <p class="details-lede">The default is Citi Rewards: 40,000 ThankYou points converted to 16,000 miles, with S$800 qualifying spend by the end of the second calendar month after approval (approval month plus two calendar months). The bonus must be fulfilled within three calendar months after the spend period. This timeline does not model eligibility, qualifying spend or bonus posting; recheck terms through 31 March 2027.</p>
+          <details class="input-help"><summary>Welcome offer requirements</summary><p class="details-lede">The default is Citi Rewards: 40,000 ThankYou points converted to 16,000 miles, with S$800 qualifying spend by the end of the second calendar month after approval (approval month plus two calendar months). The bonus must be fulfilled within three calendar months after the spend period. This timeline does not model eligibility, qualifying spend or bonus posting; recheck terms through 31 March 2027.</p></details>
           <div class="field-grid">
             <div class="field field-span-two">
               <label for="promotion-picker">Offer preset</label>
@@ -154,21 +155,21 @@
                 <option value="citi-rewards-16k" selected>Citi Rewards — 40,000 points / 16,000 miles welcome offer</option>
                 <option value="custom">Custom / manually entered values</option>
               </select>
-              <div class="field-hint">Available presets fill the bonus, local earn rate and spend cap. Paid-fee offers are disabled rather than treated as free; expired offers remain disabled for reference.</div>
-              <p id="promotion-note" class="promotion-note" role="note">Citi Rewards official terms: 40,000 ThankYou points (16,000 miles), S$800 qualifying spend by the end of the second calendar month after approval, bonus fulfilled within three calendar months after the spend period; terms through 31 March 2027. Recheck before use. <a href="https://www.citibank.com.sg/credit-cards/rewards/citi-rewards-card/pdf/online-product-led-acquisition-promotion-terms-and-conditions.pdf" target="_blank" rel="noopener">Official campaign terms</a></p>
+              <details class="input-help"><summary>Offer rules</summary><div class="field-hint">Available presets fill the bonus, local earn rate and spend cap. Expired offers are selectable illustrations; their stated fees are included. Current paid offers remain reference-only.</div></details>
+              <details class="input-help"><summary>Selected offer terms</summary><p id="promotion-note" class="promotion-note" role="note">Citi Rewards official terms: 40,000 ThankYou points (16,000 miles), S$800 qualifying spend by the end of the second calendar month after approval, bonus fulfilled within three calendar months after the spend period; terms through 31 March 2027. Recheck before use. <a href="https://www.citibank.com.sg/credit-cards/rewards/citi-rewards-card/pdf/online-product-led-acquisition-promotion-terms-and-conditions.pdf" target="_blank" rel="noopener">Official campaign terms</a></p></details>
             </div>
             <div class="field">
               <label for="welcome-miles">Welcome miles assumed <span class="unit">miles</span></label>
               <input id="welcome-miles" name="welcome-miles" type="number" inputmode="numeric" min="0" step="1" value="16000" required>
-              <span class="field-hint">40,000 Citi ThankYou points = 16,000 miles. S$800 qualifying spend is required; it is not counted as ongoing monthly earning spend.</span>
+              <details class="input-help"><summary>About this input</summary><span class="field-hint">40,000 Citi ThankYou points = 16,000 miles. S$800 qualifying spend is required; it is not counted as ongoing monthly earning spend.</span></details>
             </div>
             <div class="field">
               <label for="displaced-cash-bonus">Cash offer genuinely displaced <span class="unit">SGD</span></label>
               <div class="input-with-prefix"><span aria-hidden="true">S$</span><input id="displaced-cash-bonus" name="displaced-cash-bonus" type="number" inputmode="decimal" min="0" step="0.01" value="0" required></div>
-              <span class="field-hint">Default S$0. Enter cash only if you would actually lose it by choosing this route.</span>
+              <details class="input-help"><summary>About this input</summary><span class="field-hint">Default S$0. Enter cash only if you would actually lose it by choosing this route.</span></details>
             </div>
           </div>
-          <p class="assumption-callout">Offer choices do not automatically stack. Any cash offer that can accompany a miles card is not treated as lost unless you enter a genuinely displaced amount.</p>
+          <details class="input-help"><summary>Offer combinations</summary><p class="assumption-callout">Offer choices do not automatically stack. Any cash offer that can accompany a miles card is not treated as lost unless you enter a genuinely displaced amount.</p></details>
         </details>
       </section>
 
@@ -182,23 +183,23 @@
         </div>
         <p class="section-lede">Count award cash charges, cashback you could have earned, your time, and any genuinely displaced cash offer.</p>
 
-        <div class="assumption-callout fee-omission-warning" role="note"><strong>Fees omitted:</strong> Annual card fees and miles-transfer fees (including conversion fees) are not included in this estimate. Paid-fee offer presets are disabled rather than treated as free.</div>
+        <details class="input-help"><summary>Fees & modelling assumptions</summary><div class="assumption-callout fee-omission-warning" role="note"><strong>Fees omitted:</strong> Annual card fees and miles-transfer fees (including conversion fees) are not included except for the stated fee of a selected historical illustration. Current paid-fee offer presets are disabled. Historical illustration fees are included automatically.</div></details>
 
         <div class="field-grid">
           <div class="field">
             <label for="award-cash">Award cash charges <span class="unit">SGD</span></label>
             <div class="input-with-prefix"><span aria-hidden="true">S$</span><input id="award-cash" name="award-cash" type="number" inputmode="decimal" min="0" step="0.01" value="100" required></div>
-            <span class="field-hint">Hypothetical default; enter actual itinerary taxes and charges.</span>
+            <details class="input-help"><summary>About this input</summary><span class="field-hint">Hypothetical default; enter actual itinerary taxes and charges.</span></details>
           </div>
           <div class="field">
             <label for="minutes-per-month">Extra time vs cashback <span class="unit">minutes / month</span></label>
             <div class="input-with-suffix"><input id="minutes-per-month" name="minutes-per-month" type="number" inputmode="decimal" min="0" step="0.01" value="15" required><span>minutes</span></div>
-            <span class="field-hint">Hypothetical strategy-management time for each earning month.</span>
+            <details class="input-help"><summary>About this input</summary><span class="field-hint">Hypothetical strategy-management time for each earning month.</span></details>
           </div>
           <div class="field">
             <label for="hourly-value">Your time value <span class="unit">SGD / hour</span></label>
             <div class="input-with-prefix"><span aria-hidden="true">S$</span><input id="hourly-value" name="hourly-value" type="number" inputmode="decimal" min="0" step="0.01" value="40" required></div>
-            <span class="field-hint">Personal assumption; set to zero if you do not want to price time.</span>
+            <details class="input-help"><summary>About this input</summary><span class="field-hint">Personal assumption; set to zero if you do not want to price time.</span></details>
           </div>
         </div>
 
@@ -206,7 +207,7 @@
           <div class="field transfer-field">
             <label for="transfer-block">Miles transfer block <span class="unit">miles</span></label>
             <input id="transfer-block" name="transfer-block" type="number" inputmode="numeric" min="1" step="1" value="1" required aria-describedby="transfer-hint">
-            <span class="field-hint" id="transfer-hint">The idealised default uses 1-mile blocks. Real programs may require larger transfers; excess miles have no assigned value.</span>
+            <details class="input-help"><summary>About this input</summary><span class="field-hint" id="transfer-hint">The idealised default uses 1-mile blocks. Real programs may require larger transfers; excess miles have no assigned value.</span></details>
           </div>
           <label class="switch-row" for="idealised-transfer">
             <input id="idealised-transfer" name="idealised-transfer" type="checkbox" checked>
@@ -225,6 +226,7 @@
         </div>
         <span class="model-badge">Prospective · zero opening balance</span>
       </div>
+      <p id="illustration-status" hidden role="status">Historical / expired offer illustration — stated offer fees included; not currently available.</p>
       <p id="result-status" class="result-status">Updating the estimate.</p>
       <div class="result-topline">
         <div class="result-net-block">
@@ -259,6 +261,7 @@
             <div><dt>Personal time cost</dt><dd data-output="time-cost">—</dd></div>
             <div><dt>Award cash charges</dt><dd data-output="award-cash-cost">—</dd></div>
             <div><dt>Genuinely displaced cash offer</dt><dd data-output="displaced-cash">—</dd></div>
+            <div><dt>Historical offer fees</dt><dd data-output="offer-fee">—</dd></div>
             <div class="total-row"><dt>Total modeled cost</dt><dd data-output="total-cost">—</dd></div>
           </dl>
         </div>
@@ -273,9 +276,9 @@
           <p>All leftover miles are valued at <strong>S$0</strong> in this comparison.</p>
         </div>
       </div>
-      <p class="method-note"><strong>How to read the timeline:</strong> miles are earned from zero and rounded up to whole earning months. Cashback and time costs cover every full earning month. The selected welcome miles are treated as available in the estimate; qualifying spend, eligibility and bonus-credit timing are not modeled. The stated offer window is a condition, not a ready-date forecast.</p>
-      <p class="date-feasibility-note" id="date-feasibility-note" role="note">This estimate shows the earning time for your inputs. All researched fare presets depart on 1 June 2027.</p>
-      <p class="decision-note">This is a simplified personal comparison, not financial advice. It does not verify the selected economy cash alternative, award inventory, card eligibility, transaction exclusions, award expiry, devaluation, actual transfer rules, annual card fees, miles-transfer fees, or taxes beyond the award cash charge entered above. The business-cabin product depends on the aircraft; 40 kg checked baggage is subject to route rules.</p>
+      <details class="input-help"><summary>How the timeline works</summary><p class="method-note"><strong>How to read the timeline:</strong> miles are earned from zero and rounded up to whole earning months. Cashback and time costs cover every full earning month. The selected welcome miles are treated as available in the estimate; qualifying spend, eligibility and bonus-credit timing are not modeled. The stated offer window is a condition, not a ready-date forecast.</p></details>
+      <details class="input-help"><summary>Can I earn the miles before departure?</summary><p class="date-feasibility-note" id="date-feasibility-note" role="note">This estimate shows the earning time for your inputs. All researched fare presets depart on 1 June 2027.</p></details>
+      <details class="input-help"><summary>Limitations of this illustration</summary><p class="decision-note">This is a simplified personal comparison, not financial advice. It does not verify the selected economy cash alternative, award inventory, card eligibility, transaction exclusions, award expiry, devaluation, actual transfer rules, annual card fees, miles-transfer fees, or taxes beyond the award cash charge entered above. The business-cabin product depends on the aircraft; 40 kg checked baggage is subject to route rules.</p></details>
     </section>
 
     <section class="closing-card" aria-labelledby="closing-heading">
@@ -319,11 +322,11 @@
           <div>
             <h3>Welcome offer: verify before use</h3>
             <p>The default is Citi Rewards: 40,000 ThankYou points (16,000 miles), S$800 qualifying spend through the end of the second calendar month after approval, with the bonus fulfilled within three calendar months after the spend period. Terms are noted through 31 March 2027; recheck eligibility and posting timing. Citi PremierMiles remains a separate 8,000-mile, 1.2-mpd fee-waived alternative where current terms apply.</p>
-            <p>Annual card fees and miles-transfer or conversion fees are omitted from the model. Presets with a declared paid fee are disabled rather than presented as free; verify all fees in the issuer and transfer-program terms.</p>
+            <p>Historical illustration fees are included automatically. Other annual card fees and miles-transfer or conversion fees are omitted. Current paid presets remain disabled; verify issuer and transfer-program terms.</p>
             <p>Offer requirements do not count as extra monthly earning spend in this simplified model. A qualifying-spend condition is not a promise that the bonus will be approved or credited.</p>
           </div>
         </div>
-<details class="optional-details"><summary>Seven welcome-offer examples — current, paid and historical</summary><p>These are seven offer routes, not seven fee-free recommendations. Paid and expired examples cannot be applied to the simplified model.</p><ul><li><strong>Citi Rewards —16,000 bonus miles (40,000 points)</strong> — Fee-waived preset. Ends 2027-03-31. <a href="https://www.citibank.com.sg/credit-cards/rewards/citi-rewards-card/pdf/online-product-led-acquisition-promotion-terms-and-conditions.pdf" target="_blank" rel="noopener">Source and full terms</a><p>New-to-Citi principal cardholders only; no Citi principal card closed in preceding12months and no pending application. S$800 qualifying spend: approval month plus2calendar months; approval within30days. Bonus within3calendar months after qualifying period, may be extended. No stacking unless stated. Eligibility/posting not automatically modelled. 4mpd only eligible online/shopping; excludes online travel/mobile wallets;9,000 bonuspoints per statementmonth. First-year annualfee waived; later fees assumed waived otherwise add to total.</p></li><li><strong>Citi PremierMiles —8,000 bonus miles, fee-waived route</strong> — Fee-waived preset. Ends 2027-03-31. <a href="https://www.citibank.com.sg/credit-cards/travel/premiermiles-card/pdf/online-acquisition-offer-30k-miles-tnc.pdf" target="_blank" rel="noopener">Source and full terms</a><p>New-to-Citi principal cardholders only; no Citi principal card closed in preceding12months and no pending application. S$800 qualifying spend: approval month plus2calendar months; approval within30days. Bonus within3calendar months after qualifying period, may be extended. No stacking unless stated. Eligibility/posting not automatically modelled. 1.2mpd eligible SGD spend, no earning cap; cap field1,000,000 is model sentinel not bank cap. Any voucher value deliberately omitted.</p></li><li><strong>DBS Altitude —28,000 bonus miles, ALTSW28 fee-waived</strong> — Fee-waived preset. Ends 2026-10-31. <a href="https://www.dbs.com.sg/iwov-resources/media/pdf/cards/promotions/acquisition/dbs-alt-acqui-promo-tnc.pdf" target="_blank" rel="noopener">Source and full terms</a><p>New-to-DBS/POSB principal cardholders; none cancelled in last12months. Apply with ALTSW28 by31Oct2026, approved14Nov2026; S$800 qualifying spend within60days approval; valid PayLah by qualifyingperiod end. Credit3–5months after qualifying spend; firstyear fee waived. SGD1.3mpd eligible spend; cap1,000,000 is model sentinel not bank cap. No stacking. Add subsequent annualfees if not waived; transferfees not auto verified.</p></li><li><strong>HISTORICAL 2019 — SC X Card 60,000 miles (expired)</strong> — Expired historical. Ends 2019-12-31. <a href="https://mainlymiles.com/2019/12/21/last-10-days-for-the-x-cards-60000-miles-sign-up-bonus/" target="_blank" rel="noopener">Source and full terms</a><p>Expired reference only: approval by31Dec2019; S$6,000 eligible spend within60days; pay S$695.50 annualfee. 30,000 upfront miles plus30,000 signup miles; ongoing spending miles separate. Never apply as a fee-free or current offer.</p></li><li><strong>Citi PremierMiles — 30,000 bonus Citi Miles (paid direct-online offer)</strong> — Paid · reference only. Ends 2027-03-31. <a href="https://www.citibank.com.sg/credit-cards/travel/premiermiles-card/pdf/online-acquisition-offer-tnc.pdf?icid=SGLEUJ5ENPREMCAAN17" target="_blank" rel="noopener">Source and full terms</a><p>Current direct online offer, as checked 2026-10-20. New principal Citi customers only: no existing principal Citi card at application, none closed in prior 12 months, and no pending principal-card application; approval/opening required within 30 days. Pay the S$196.20 annual fee for 10,000 miles, then make S$800 qualifying retail spend within the account-opening month plus two calendar months for another 20,000 miles. BonusMiles is 30,000 only; ordinary spend miles excluded. Local base rate 1.2 mpd (2.2 mpd overseas, per MileLion). Monthly cap not specified in the cited offer terms (null). No stacking with other acquisition offers unless stated.</p></li><li><strong>AMEX KrisFlyer Ascend — up to45,000 bonus miles (two annual fees)</strong> — Paid · reference only. Ends 2027-01-31. <a href="https://www.americanexpress.com/content/dam/amex/sg/campaigns/pdfs/kfa-ntb-welcomeoffer-1oct26.pdf" target="_blank" rel="noopener">Source and full terms</a><p>Current offer, checked 2026-10-20. New-to-AMEX eligibility applies; apply during the promotion and receive approval within 45 days. The 45,000 bonus comprises 5,000 on the first charge (first-ever Amex Singapore Airlines cobrand applicants only), 20,000 after S$5,000 eligible spend within six months and payment of the first S$397.85 annual fee, plus 20,000 after at least S$1 eligible spend in month 15. The second-year annual fee is also S$397.85; full 45,000-mile path therefore costs S$795.70 in annual fees. fee is the per-year annual fee. A separate S$100 eCapitaVoucher was limited to applications by 2026-11-01; not included in bonusMiles. Base earn is 1.2 mpd local and uncapped per Amex; welcome miles exclude ordinary spend.</p></li><li><strong>HSBC TravelOne —20,000 advertised partner miles (paid; ratio varies)</strong> — Paid · reference only. Ends 2026-10-31. <a href="https://www.hsbc.com.sg/content/dam/hsbc/sg/documents/credit-cards/travelone/travelone-sign-up-gift-offer-terms-and-conditions.pdf" target="_blank" rel="noopener">Source and full terms</a><p>Current offer, checked 2026-10-20. Apply 2026-07-01 through 2026-10-31 and be approved by 2026-11-14; provide marketing consent. New HSBC cardholder means no current principal HSBC card and none cancelled in the 12 months before approval. Pay the S$196.20 first-year annual fee (strictly chargeable, not waivable) and spend S$1,000 in qualifying transactions from account opening through the end of the following month. New-cardholder gift is 20,000 miles (50,000 HSBC Reward points) plus Samsonite luggage; existing HSBC customers receive 10,000 miles instead. Local base rate 1.2 mpd (2.4 mpd overseas, per MileLion); cap not specified in the offer terms (null). BonusMiles excludes ordinary spend miles. HSBC KrisFlyer conversion differs from Asia Miles; do not assume advertised miles equals KrisFlyer miles.</p></li></ul></details>
+<details class="optional-details"><summary>Seven welcome-offer examples — current, paid and historical</summary><p>These are seven offer routes, not seven fee-free recommendations. Expired examples can be selected for illustration; stated fees are added automatically. Current paid examples remain reference-only.</p><ul><li><strong>Citi Rewards —16,000 bonus miles (40,000 points)</strong> — Fee-waived preset. Ends 2027-03-31. <a href="https://www.citibank.com.sg/credit-cards/rewards/citi-rewards-card/pdf/online-product-led-acquisition-promotion-terms-and-conditions.pdf" target="_blank" rel="noopener">Source and full terms</a><p>New-to-Citi principal cardholders only; no Citi principal card closed in preceding12months and no pending application. S$800 qualifying spend: approval month plus2calendar months; approval within30days. Bonus within3calendar months after qualifying period, may be extended. No stacking unless stated. Eligibility/posting not automatically modelled. 4mpd only eligible online/shopping; excludes online travel/mobile wallets;9,000 bonuspoints per statementmonth. First-year annualfee waived; later fees assumed waived otherwise add to total.</p></li><li><strong>Citi PremierMiles —8,000 bonus miles, fee-waived route</strong> — Fee-waived preset. Ends 2027-03-31. <a href="https://www.citibank.com.sg/credit-cards/travel/premiermiles-card/pdf/online-acquisition-offer-30k-miles-tnc.pdf" target="_blank" rel="noopener">Source and full terms</a><p>New-to-Citi principal cardholders only; no Citi principal card closed in preceding12months and no pending application. S$800 qualifying spend: approval month plus2calendar months; approval within30days. Bonus within3calendar months after qualifying period, may be extended. No stacking unless stated. Eligibility/posting not automatically modelled. 1.2mpd eligible SGD spend, no earning cap; cap field1,000,000 is model sentinel not bank cap. Any voucher value deliberately omitted.</p></li><li><strong>DBS Altitude —28,000 bonus miles, ALTSW28 fee-waived</strong> — Fee-waived preset. Ends 2026-10-31. <a href="https://www.dbs.com.sg/iwov-resources/media/pdf/cards/promotions/acquisition/dbs-alt-acqui-promo-tnc.pdf" target="_blank" rel="noopener">Source and full terms</a><p>New-to-DBS/POSB principal cardholders; none cancelled in last12months. Apply with ALTSW28 by31Oct2026, approved14Nov2026; S$800 qualifying spend within60days approval; valid PayLah by qualifyingperiod end. Credit3–5months after qualifying spend; firstyear fee waived. SGD1.3mpd eligible spend; cap1,000,000 is model sentinel not bank cap. No stacking. Add subsequent annualfees if not waived; transferfees not auto verified.</p></li><li><strong>HISTORICAL 2019 — SC X Card 60,000 miles (expired)</strong> — Expired historical. Ends 2019-12-31. <a href="https://mainlymiles.com/2019/12/21/last-10-days-for-the-x-cards-60000-miles-sign-up-bonus/" target="_blank" rel="noopener">Source and full terms</a><p>Expired reference only: approval by31Dec2019; S$6,000 eligible spend within60days; pay S$695.50 annualfee. 30,000 upfront miles plus30,000 signup miles; ongoing spending miles separate. Never apply as a fee-free or current offer.</p></li><li><strong>Citi PremierMiles — 30,000 bonus Citi Miles (paid direct-online offer)</strong> — Paid · reference only. Ends 2027-03-31. <a href="https://www.citibank.com.sg/credit-cards/travel/premiermiles-card/pdf/online-acquisition-offer-tnc.pdf?icid=SGLEUJ5ENPREMCAAN17" target="_blank" rel="noopener">Source and full terms</a><p>Current direct online offer, as checked 2026-10-20. New principal Citi customers only: no existing principal Citi card at application, none closed in prior 12 months, and no pending principal-card application; approval/opening required within 30 days. Pay the S$196.20 annual fee for 10,000 miles, then make S$800 qualifying retail spend within the account-opening month plus two calendar months for another 20,000 miles. BonusMiles is 30,000 only; ordinary spend miles excluded. Local base rate 1.2 mpd (2.2 mpd overseas, per MileLion). Monthly cap not specified in the cited offer terms (null). No stacking with other acquisition offers unless stated.</p></li><li><strong>AMEX KrisFlyer Ascend — up to45,000 bonus miles (two annual fees)</strong> — Paid · reference only. Ends 2027-01-31. <a href="https://www.americanexpress.com/content/dam/amex/sg/campaigns/pdfs/kfa-ntb-welcomeoffer-1oct26.pdf" target="_blank" rel="noopener">Source and full terms</a><p>Current offer, checked 2026-10-20. New-to-AMEX eligibility applies; apply during the promotion and receive approval within 45 days. The 45,000 bonus comprises 5,000 on the first charge (first-ever Amex Singapore Airlines cobrand applicants only), 20,000 after S$5,000 eligible spend within six months and payment of the first S$397.85 annual fee, plus 20,000 after at least S$1 eligible spend in month 15. The second-year annual fee is also S$397.85; full 45,000-mile path therefore costs S$795.70 in annual fees. fee is the per-year annual fee. A separate S$100 eCapitaVoucher was limited to applications by 2026-11-01; not included in bonusMiles. Base earn is 1.2 mpd local and uncapped per Amex; welcome miles exclude ordinary spend.</p></li><li><strong>HSBC TravelOne —20,000 advertised partner miles (paid; ratio varies)</strong> — Paid · reference only. Ends 2026-10-31. <a href="https://www.hsbc.com.sg/content/dam/hsbc/sg/documents/credit-cards/travelone/travelone-sign-up-gift-offer-terms-and-conditions.pdf" target="_blank" rel="noopener">Source and full terms</a><p>Current offer, checked 2026-10-20. Apply 2026-07-01 through 2026-10-31 and be approved by 2026-11-14; provide marketing consent. New HSBC cardholder means no current principal HSBC card and none cancelled in the 12 months before approval. Pay the S$196.20 first-year annual fee (strictly chargeable, not waivable) and spend S$1,000 in qualifying transactions from account opening through the end of the following month. New-cardholder gift is 20,000 miles (50,000 HSBC Reward points) plus Samsonite luggage; existing HSBC customers receive 10,000 miles instead. Local base rate 1.2 mpd (2.4 mpd overseas, per MileLion); cap not specified in the offer terms (null). BonusMiles excludes ordinary spend miles. HSBC KrisFlyer conversion differs from Asia Miles; do not assume advertised miles equals KrisFlyer miles.</p></li></ul></details>
         <p class="source-caveat">The chart and offer source snapshot is <span id="research-checked-footer">the date shown above</span>. Recheck research and issuer terms before presenting or booking.</p>
       </div>
     </details>

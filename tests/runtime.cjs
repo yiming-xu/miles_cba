@@ -250,13 +250,13 @@ run("checked research-data.js feeds all twelve routes and Citi presets into the 
   dom.window.close();
 });
 
-run("offer expiry is date-inclusive, expired and flagged historical options are disabled", () => {
+run("offer expiry is date-inclusive and historical options allow explicit illustration", () => {
   const dom = createDom(indexHtml, { data: research });
   const { document } = dom.window;
   assert.equal(value(dom, "promotion-picker"), "citi-rewards-16k");
   assert.equal(document.querySelector('#promotion-picker option[value="boundary-route"]').disabled, false);
-  assert.equal(document.querySelector('#promotion-picker option[value="expired-route"]').disabled, true);
-  assert.equal(document.querySelector('#promotion-picker option[value="historic-no-expiry"]').disabled, true);
+  assert.equal(document.querySelector('#promotion-picker option[value="expired-route"]').disabled, false);
+  assert.equal(document.querySelector('#promotion-picker option[value="historic-no-expiry"]').disabled, false);
   dom.window.close();
 });
 
@@ -343,7 +343,7 @@ run("a stale default offer is never selected automatically", () => {
   };
   const dom = createDom(indexHtml, { data: stale });
   assert.equal(value(dom, "promotion-picker"), "custom");
-  assert.equal(dom.window.document.querySelector('#promotion-picker option[value="citi-rewards-16k"]').disabled, true);
+  assert.equal(dom.window.document.querySelector('#promotion-picker option[value="citi-rewards-16k"]').disabled, false);
   assert.equal(value(dom, "welcome-miles"), "0");
   dom.window.close();
 });
@@ -519,6 +519,41 @@ run("dated fare defaults and real slides agree on the Tokyo example", () => {
   assert.equal(d.getElementById("slide-economy-saving").textContent, "S$858.00");
   assert.equal(d.getElementById("slide-total-value").textContent, "S$1,008.00");
   assert.equal(d.getElementById("slide-net").textContent, "+S$638.00");
+  dom.window.close();
+});
+
+run("historical SC X offer applies explicitly with its unavoidable fee", () => {
+  const dom = createDomFromResearchFile();
+  const d = dom.window.document;
+  const picker = d.getElementById("promotion-picker");
+  assert.equal(d.querySelector('option[value="sc-x-2019"]').disabled, false);
+  picker.value = "sc-x-2019";
+  dispatchInput(dom.window, picker, "change");
+  assert.equal(value(dom,"welcome-miles"), "60000");
+  assert.equal(value(dom,"miles-rate"), "1.2");
+  assert.equal(d.querySelector('[data-output="offer-fee"]').textContent, "S$695.50");
+  assert.equal(d.querySelector('[data-output="total-cost"]').textContent, "S$795.50");
+  assert.equal(d.getElementById("illustration-status").hidden, false);
+  picker.value = "citi-rewards-16k";
+  dispatchInput(dom.window, picker, "change");
+  assert.equal(d.querySelector('[data-output="offer-fee"]').textContent, "S$0.00");
+  assert.equal(d.querySelector('[data-output="total-cost"]').textContent, "S$370.00");
+  assert.equal(d.getElementById("illustration-status").hidden, true);
+  dom.window.close();
+});
+
+run("help disclosures start collapsed and remain operable", () => {
+  const dom = createDomFromResearchFile();
+  const d = dom.window.document;
+  const helps = Array.from(d.querySelectorAll("details.input-help"));
+  assert.ok(helps.length >= 20);
+  assert.ok(helps.every(h => !h.open && h.querySelector("summary")));
+  const details = d.getElementById("selected-fare-note").closest("details");
+  assert.ok(details);
+  details.querySelector("summary").click();
+  assert.equal(details.open, true);
+  assert.ok(d.getElementById("promotion-note").closest("details"));
+  assert.ok(d.getElementById("date-feasibility-note").closest("details"));
   dom.window.close();
 });
 

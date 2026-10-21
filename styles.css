@@ -1333,3 +1333,143 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   .slides-page .slide-experience, .slides-page .slide-earning, .slides-page .slide-cost,
   .slides-page .slide-answer, .slides-page .slide-tips { display: flex !important; }
 }
+
+/* Compact actionable guidance and the explicit value-minus-cost calculation. */
+.slides-page .slide-guide {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0.9cqh 1cqw;
+  color: #cbdad6;
+  background: rgba(57, 198, 176, 0.075);
+  border: 1px solid rgba(143, 224, 209, 0.16);
+  border-left: 0.18cqw solid var(--deck-accent-strong);
+  border-radius: 0.55cqw;
+  font-size: clamp(0.7rem, 0.92cqw, 1rem);
+  line-height: 1.35;
+}
+.slides-page .slide-guide strong { color: var(--deck-accent); }
+.slides-page .slide-cover .slide-guide-cover {
+  max-width: 43cqw;
+  margin-top: 2.2cqh;
+}
+
+/* Slide 5 keeps the inputs and the resulting arithmetic readable at 16:9. */
+.slides-page .slide-answer { gap: 1.65cqh; }
+.slides-page .slide-answer .value-equation { gap: 0.8cqw; }
+.slides-page .slide-answer .value-cell {
+  min-height: 11cqh;
+  padding: 1.15cqh 1.05cqw;
+}
+.slides-page .value-prompt {
+  display: block;
+  margin-top: 0.7cqh;
+  color: var(--deck-accent);
+  font-size: clamp(0.54rem, 0.75cqw, 0.82rem);
+  font-weight: 680;
+  line-height: 1.25;
+}
+.slides-page .net-equation {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+  align-items: stretch;
+  gap: 0.7cqw;
+}
+.slides-page .net-cell {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1.05cqh 1.05cqw;
+  background: rgba(255, 255, 255, 0.055);
+  border: 1px solid rgba(230, 244, 239, 0.1);
+  border-radius: 0.7cqw;
+}
+.slides-page .net-cell > span {
+  color: #a8bbbb;
+  font-size: clamp(0.54rem, 0.77cqw, 0.84rem);
+  line-height: 1.25;
+}
+.slides-page .net-cell > strong {
+  margin-top: 0.55cqh;
+  color: #fff;
+  font-size: clamp(1rem, 2.25cqw, 2.45rem);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.055em;
+  line-height: 1.05;
+  white-space: nowrap;
+}
+.slides-page .net-cell-result {
+  background: rgba(57, 198, 176, 0.09);
+  border-color: rgba(143, 224, 209, 0.25);
+}
+.slides-page .net-cell-result > strong { color: var(--deck-accent); }
+.slides-page .net-operator {
+  align-self: center;
+  color: var(--deck-accent-strong);
+  font-size: clamp(1.1rem, 2.4cqw, 2.6rem);
+  font-weight: 420;
+}
+.slides-page .slide-answer .answer-band {
+  gap: 1.3cqw;
+  padding: 1.35cqh 1.6cqw;
+}
+.slides-page .answer-interpretation .mini-label { display: block; }
+.slides-page .answer-interpretation p {
+  margin: 0.55cqh 0 0;
+  color: #c4d5d1;
+  font-size: clamp(0.56rem, 0.8cqw, 0.86rem);
+  line-height: 1.35;
+}
+.slides-page .slide-answer .answer-divider { height: 6cqh; }
+.slides-page .slide-answer .answer-note { margin-top: 0; }
+
+/* The final slide stays practical without crowding the three-column close. */
+.slides-page .slide-tips { grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.16fr) minmax(0, 0.92fr); gap: 1.8cqh; }
+.slides-page .tip-card { padding: 1.45cqh 1.35cqw; }
+.slides-page .tip-card h2 { margin-top: 0.85cqh; }
+.slides-page .tip-card p { margin-top: 0.8cqh; font-size: clamp(0.58rem, 0.88cqw, 0.94rem); line-height: 1.38; }
+.slides-page .tip-card > small { margin-top: 0.65cqh; font-size: clamp(0.54rem, 0.72cqw, 0.78rem); }
+.slides-page .sweet-spot-pair { gap: 0.55cqh; margin-top: 0.75cqh; }
+.slides-page .sweet-spot-pair span { padding: 0.65cqh 0.7cqw; font-size: clamp(0.54rem, 0.78cqw, 0.84rem); line-height: 1.25; }
+
+@media (max-width: 760px) {
+  .slides-page .slide-guide { padding: 0.75cqh 0.8cqw; font-size: clamp(0.64rem, 0.9cqw, 0.82rem); }
+  .slides-page .net-equation { gap: 0.42cqw; }
+  .slides-page .net-cell { padding: 0.8cqh 0.65cqw; }
+  .slides-page .net-cell > span { font-size: clamp(0.48rem, 0.66cqw, 0.7rem); }
+  .slides-page .net-cell > strong { font-size: clamp(0.76rem, 1.75cqw, 1.25rem); }
+  .slides-page .net-operator { font-size: clamp(0.9rem, 2.25cqw, 1.5rem); }
+  .slides-page .slide-answer .answer-band { padding: 1cqh 1cqw; }
+  .slides-page .answer-interpretation p { font-size: clamp(0.5rem, 0.68cqw, 0.7rem); }
+  .slides-page .slide-tips { gap: 1.45cqh; }
+  .slides-page .tip-card { padding: 1cqh 0.9cqw; }
+  .slides-page .tip-card p { font-size: clamp(0.5rem, 0.72cqw, 0.76rem); }
+  .slides-page .sweet-spot-pair span { padding: 0.5cqh 0.55cqw; font-size: clamp(0.46rem, 0.62cqw, 0.66rem); }
+  .slides-page .tip-card > small { font-size: clamp(0.5rem, 0.62cqw, 0.68rem); }
+}
+@media (max-width: 540px) {
+  .slides-page .slide-cover .slide-guide-cover { max-width: 46cqw; margin-top: 1.4cqh; }
+  .slides-page .slide-answer .value-equation { gap: 0.3cqw; }
+  .slides-page .slide-answer .value-cell { padding: 0.8cqh 0.5cqw; }
+  .slides-page .slide-answer .value-cell span { font-size: clamp(0.44rem, 0.68cqw, 0.62rem); }
+  .slides-page .slide-answer .value-cell strong { font-size: clamp(0.72rem, 1.65cqw, 1rem); }
+  .slides-page .value-prompt { font-size: clamp(0.44rem, 0.62cqw, 0.58rem); }
+  .slides-page .net-cell > span { font-size: clamp(0.43rem, 0.58cqw, 0.56rem); }
+  .slides-page .net-cell > strong { font-size: clamp(0.68rem, 1.55cqw, 0.92rem); }
+}
+@media print {
+  .slides-page .slide-guide { color: #234b49; background: #eaf6f0; border-color: #9ed4c8; }
+  .slides-page .slide-guide strong, .slides-page .net-operator { color: #087f75; }
+  .slides-page .value-prompt { color: #087f75; }
+  .slides-page .net-cell, .slides-page .slide-answer .answer-band { background: #f3f7f4; border-color: #d0d9d4; }
+  .slides-page .net-cell > span, .slides-page .answer-interpretation p { color: #374e58; }
+  .slides-page .net-cell > strong { color: #10263a; }
+  .slides-page .net-cell-result > strong { color: #087f75; }
+}
+
+/* Keep the earning explanation and its qualification note above the fixed controls. */
+.slides-page .slide-earning { gap: 1.45cqh; }
+.slides-page .slide-earning .mile-step { min-height: 16cqh; }
+.slides-page .slide-earning .earning-rate-card,
+.slides-page .slide-earning .earning-time-card { padding-top: 1.3cqh; padding-bottom: 1.3cqh; }

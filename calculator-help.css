@@ -1,0 +1,16 @@
+/* Click-to-expand help keeps teaching inputs prominent, including on touch screens. */
+.calculator-page .input-help { margin: 8px 0; font-size: .82rem; color: #526474; }
+.calculator-page .input-help > summary { cursor: pointer; width: fit-content; font-weight: 550; padding: 4px 0; list-style: none; display: flex; gap: 6px; align-items: center; }
+.calculator-page .input-help > summary::before { content: "+"; display: inline-grid; place-items: center; width: 16px; height: 16px; font-size: 12px; background: #e3efec; color: #345c55; border-radius: 50%; }
+.calculator-page .input-help[open] > summary::before { content: "−"; }
+.calculator-page .input-help > summary::-webkit-details-marker { display: none; }
+.calculator-page .input-help > summary:hover { color: #16756b; }
+.calculator-page .input-help > summary:focus-visible { outline: 2px solid #16756b; outline-offset: 3px; }
+.calculator-page .input-help[open] > summary { margin-bottom: 7px; }
+.calculator-page .input-help .field-hint { display: block; }
+.calculator-page .hero > .input-help { color: #c4d1dc; }
+.calculator-page .hero > .input-help > summary:hover { color: white; }
+.calculator-page #selected-fare-context { display: block; }
+.calculator-page #selected-fare-context .input-help { margin-bottom: 0; }
+.calculator-page #illustration-status { background: #fff0cf; color: #624715; border-radius: 8px; padding: 10px 14px; }
+.calculator-page [hidden] { display: none !important; }
