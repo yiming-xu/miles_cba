@@ -260,22 +260,27 @@ run("offer expiry is date-inclusive and historical options allow explicit illust
   dom.window.close();
 });
 
-run("paid-fee presets are disabled and cannot be applied as if they were free", () => {
-  const dom = createDom(indexHtml, { data: research });
-  const { document } = dom.window;
-  const picker = dom.window.document.getElementById("promotion-picker");
-  const paidOption = document.querySelector('#promotion-picker option[value="paid-route"]');
-  assert.equal(paidOption.disabled, true);
-  assert.match(paidOption.textContent, /paid fee omitted.*not modeled/i);
-  assert.match(document.getElementById("promotion-note").textContent, /paid-fee presets are disabled/i);
-
-  picker.value = "paid-route";
-  dispatchInput(dom.window, picker, "change");
-  assert.equal(value(dom, "promotion-picker"), "custom");
-  assert.equal(value(dom, "welcome-miles"), "16000");
-  assert.equal(value(dom, "miles-rate"), "4");
-  assert.equal(value(dom, "monthly-cap"), "1000");
-  assert.equal(document.querySelector('[data-output="total-cost"]').textContent, "S$370.00");
+run("all seven shipped offers are selectable and fees enter the actual model", () => {
+  const dom = createDomFromResearchFile();
+  const d = dom.window.document, picker = d.getElementById("promotion-picker");
+  const presets = dom.window.MILES_RESEARCH.promotions;
+  assert.equal(presets.length, 7);
+  for (const p of presets) {
+    const o = d.querySelector(`option[value="${p.id}"]`);
+    assert.equal(o.disabled, false, p.id);
+    picker.value = p.id;
+    dispatchInput(dom.window, picker, "change");
+    assert.equal(value(dom,"welcome-miles"), String(p.bonusMiles));
+    assert.equal(value(dom,"miles-rate"), String(p.milesRate));
+    assert.equal(d.querySelector('[data-output="offer-fee"]').textContent, dom.window.MILES_CALCULATOR.formatMoney(p.fee || 0));
+    const c=dom.window.MILES_CALCULATOR;
+    const route=c.getDefaultRoute(c.getResearch().routes);
+    const expected=c.calculateScenario(route,{...c.defaultExample,welcomeMiles:p.bonusMiles,milesRate:p.milesRate,monthlyCap:p.monthlyCap,offerFee:p.fee||0});
+    assert.equal(d.querySelector('[data-output="total-cost"]').textContent,c.formatMoney(expected.totalCost));
+  }
+  picker.value="citi-rewards-16k";dispatchInput(dom.window,picker,"change");
+  assert.equal(d.querySelector('[data-output="total-cost"]').textContent,"S$370.00");
+  assert.match(d.querySelector('option[value="hsbc-travelone-new-customer-20k-2026-10"]').textContent,/assumed/);
   dom.window.close();
 });
 
@@ -327,9 +332,9 @@ run("a paid configured default cannot leave a bonus silently modeled as free", (
   assert.equal(value(dom, "welcome-miles"), "0");
   assert.equal(
     dom.window.document.querySelector('#promotion-picker option[value="paid-route"]').disabled,
-    true,
+    false,
   );
-  assert.match(dom.window.document.getElementById("promotion-note").textContent, /paid-fee presets are disabled/i);
+  assert.match(dom.window.document.getElementById("promotion-note").textContent, /selectable illustrations/i);
   dom.window.close();
 });
 

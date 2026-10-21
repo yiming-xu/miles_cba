@@ -248,18 +248,18 @@ window.MILES_RESEARCH = {
       "monthlyCap": 1000000,
       "expiry": "2027-01-31",
       "fee": 795.7,
-      "terms": "Current offer, checked 2026-10-20. New-to-AMEX eligibility applies; apply during the promotion and receive approval within 45 days. The 45,000 bonus comprises 5,000 on the first charge (first-ever Amex Singapore Airlines cobrand applicants only), 20,000 after S$5,000 eligible spend within six months and payment of the first S$397.85 annual fee, plus 20,000 after at least S$1 eligible spend in month 15. The second-year annual fee is also S$397.85; full 45,000-mile path therefore costs S$795.70 in annual fees. fee is the per-year annual fee. A separate S$100 eCapitaVoucher was limited to applications by 2026-11-01; not included in bonusMiles. Base earn is 1.2 mpd local and uncapped per Amex; welcome miles exclude ordinary spend.",
+      "terms": "Current offer, checked 2026-10-20. New-to-AMEX eligibility applies; apply during the promotion and receive approval within 45 days. The 45,000 bonus comprises 5,000 on the first charge (first-ever Amex Singapore Airlines cobrand applicants only), 20,000 after S$5,000 eligible spend within six months and payment of the first S$397.85 annual fee, plus 20,000 after at least S$1 eligible spend in month 15. The second-year annual fee is also S$397.85; full 45,000-mile path therefore costs S$795.70 in annual fees. fee records the total two-year annual fees for the full bonus illustration. A separate S$100 eCapitaVoucher was limited to applications by 2026-11-01; not included in bonusMiles. Base earn is 1.2 mpd local and uncapped per Amex; welcome miles exclude ordinary spend.",
       "source": "https://www.americanexpress.com/content/dam/amex/sg/campaigns/pdfs/kfa-ntb-welcomeoffer-1oct26.pdf"
     },
     {
       "id": "hsbc-travelone-new-customer-20k-2026-10",
-      "label": "HSBC TravelOne —20,000 advertised partner miles (paid; ratio varies)",
+      "label": "HSBC TravelOne —20,000 miles illustration (assumed 2.5 points/mile)",
       "bonusMiles": 20000,
       "milesRate": 1.2,
       "monthlyCap": 1000000,
       "expiry": "2026-10-31",
       "fee": 196.2,
-      "terms": "Current offer, checked 2026-10-20. Apply 2026-07-01 through 2026-10-31 and be approved by 2026-11-14; provide marketing consent. New HSBC cardholder means no current principal HSBC card and none cancelled in the 12 months before approval. Pay the S$196.20 first-year annual fee (strictly chargeable, not waivable) and spend S$1,000 in qualifying transactions from account opening through the end of the following month. New-cardholder gift is 20,000 miles (50,000 HSBC Reward points) plus Samsonite luggage; existing HSBC customers receive 10,000 miles instead. Local base rate 1.2 mpd (2.4 mpd overseas, per MileLion); cap not specified in the offer terms (null). BonusMiles excludes ordinary spend miles. HSBC KrisFlyer conversion differs from Asia Miles; do not assume advertised miles equals KrisFlyer miles.",
+      "terms": "Current offer, checked 2026-10-20. Apply 2026-07-01 through 2026-10-31 and be approved by 2026-11-14; provide marketing consent. New HSBC cardholder means no current principal HSBC card and none cancelled in the 12 months before approval. Pay the S$196.20 first-year annual fee (strictly chargeable, not waivable) and spend S$1,000 in qualifying transactions from account opening through the end of the following month. New-cardholder gift is 20,000 miles (50,000 HSBC Reward points) plus Samsonite luggage; existing HSBC customers receive 10,000 miles instead. Local base rate 1.2 mpd (2.4 mpd overseas, per MileLion); cap not specified in the offer terms (null). BonusMiles excludes ordinary spend miles. Calculator illustration assumes 50,000 points convert to 20,000 target miles (2.5 points/mile); this is a hypothetical conversion, NOT a verified KrisFlyer ratio. Change the welcome miles and ongoing rate to the actual target-programme conversion before making a real decision.",
       "source": "https://www.hsbc.com.sg/content/dam/hsbc/sg/documents/credit-cards/travelone/travelone-sign-up-gift-offer-terms-and-conditions.pdf"
     }
   ]

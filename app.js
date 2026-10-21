@@ -632,7 +632,7 @@
     if (!Number.isFinite(promotion.fee) || promotion.fee < 0) {
       return "fee unclear — not modeled";
     }
-    return promotion.fee > 0 ? "paid fee omitted — not modeled" : "";
+    return "";
   }
 
   function promotionAvailabilityStatus(promotion, now = new Date()) {
@@ -653,6 +653,7 @@
         category: expiryStatus.disabled ? "expired" : "excluded",
       };
     }
+    if (promotion.fee > 0) return { disabled: false, illustration: true, label: "paid illustration · stated fee included", category: "current" };
     return { ...expiryStatus, category: "current" };
   }
 
@@ -731,10 +732,10 @@
     const note = byId("promotion-note");
     clearNode(note);
     if (!promotion) {
-      note.textContent = "Custom/manual scenario: enter only verified bonus, earning-rate and cap assumptions. Paid-fee presets are disabled rather than treated as free; expired or historical presets are not applied automatically.";
+      note.textContent = "Custom/manual scenario: enter only verified bonus, earning-rate and cap assumptions. All supplied offers are selectable illustrations. Stated preset fees are included; historical offers are never chosen automatically.";
       return;
     }
-    appendText(note, `${promotion.terms} Paid-fee presets are disabled rather than treated as free; historical examples can be selected and their stated fees are included.`);
+    appendText(note, `${promotion.terms} Stated offer fees are included. Full welcome bonus is assumed credited; qualifying spend and posting delays are not simulated. Partner-mile conversion may be illustrative, not a guaranteed KrisFlyer amount.`);
     addSafeSourceLink(note, promotion.source);
   }
 

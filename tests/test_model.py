@@ -216,7 +216,7 @@ class StaticContractTests(unittest.TestCase):
                           'id="ongoing-fee"', 'data-output="fees-cost"'):
             self.assertNotIn(forbidden, html)
         self.assertRegex(html, r"(?is)annual card fees.*transfer fees.*not included")
-        self.assertRegex(html, r"(?is)paid-fee offer presets.*disabled")
+        self.assertRegex(html, r"(?is)paid presets.*stated offer fees")
         js = (ROOT / "app.js").read_text(encoding="utf-8")
         for forbidden in ("welcomeFee", "welcomeDelayMonths", "milesCashGift"):
             self.assertNotIn(forbidden, js)
