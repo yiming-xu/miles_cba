@@ -130,6 +130,7 @@ function createDom(html = indexHtml, { data = null, today = "2026-10-20" } = {})
     },
   });
   dom.window.eval(appSource);
+  dom.window.eval(fs.readFileSync(path.join(ROOT, "calculator-layout.js"), "utf8"));
   return dom;
 }
 
@@ -144,6 +145,7 @@ function createDomFromResearchFile(html = indexHtml, today = "2026-10-20") {
   });
   dom.window.eval(researchDataSource);
   dom.window.eval(appSource);
+  dom.window.eval(fs.readFileSync(path.join(ROOT, "calculator-layout.js"), "utf8"));
   return dom;
 }
 
@@ -560,6 +562,19 @@ run("help disclosures start collapsed and remain operable", () => {
   assert.ok(d.getElementById("promotion-note").closest("details"));
   assert.ok(d.getElementById("date-feasibility-note").closest("details"));
   dom.window.close();
+});
+
+run("secondary inputs stay bound inside collapsed advanced groups", () => {
+ const dom=createDomFromResearchFile(), d=dom.window.document;
+ assert.equal(d.querySelectorAll(".advanced-inputs").length,2);
+ assert.ok(d.getElementById("miles-rate").closest(".advanced-inputs"));
+ assert.ok(!d.getElementById("promotion-picker").closest(".advanced-inputs"));
+ const group=d.getElementById("miles-rate").closest("details");
+ group.querySelector("summary").click(); assert.equal(group.open,true);
+ d.getElementById("miles-rate").value="2";dispatchInput(dom.window,d.getElementById("miles-rate"));
+ assert.equal(d.getElementById("sticky-months").textContent,"20");
+ assert.equal(d.querySelectorAll(".section-jumps a").length,4);
+ dom.window.close();
 });
 
 process.stdout.write(`\n${passed} runtime checks passed.\n`);

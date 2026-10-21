@@ -14,3 +14,53 @@
 .calculator-page #selected-fare-context .input-help { margin-bottom: 0; }
 .calculator-page #illustration-status { background: #fff0cf; color: #624715; border-radius: 8px; padding: 10px 14px; }
 .calculator-page [hidden] { display: none !important; }
+
+/* Mobile participation: get to the inputs quickly, leave secondary settings optional. */
+.section-jumps { display:flex; gap:8px; flex-wrap:wrap; margin:0 0 16px; }
+.section-jumps a { padding:10px 14px; border-radius:22px; background:#e2efea; color:#173f3a; text-decoration:none; font-weight:700; }
+.advanced-inputs, .section-help { margin-top:16px; border-top:1px solid #dce5df; padding-top:8px; }
+.advanced-inputs > summary, .section-help > summary { cursor:pointer; padding:12px 0; font-weight:650; color:#315b54; }
+.advanced-inputs > .field-grid { margin-top:12px; }
+@media(max-width:600px) {
+ .calculator-page .site-header { padding:10px 16px; min-height:52px; }
+ .calculator-page .brand { font-size:16px; }
+ .calculator-page .top-nav { gap:12px; }
+ .calculator-page .top-nav a { font-size:12px; padding:10px 0; }
+ .calculator-page .top-nav a:last-child { display:none; }
+ .calculator-page .hero { padding:18px 16px 14px; }
+ .calculator-page .hero h1 { font-size:30px; line-height:1.08; }
+ .calculator-page .hero h1 br { display:none; }
+ .calculator-page .hero-lede { margin:8px 0 0; font-size:14px; }
+ .calculator-page .hero .eyebrow { display:none; }
+ .calculator-page .hero > .input-help { margin:5px 0 0; }
+ .calculator-page .hero-footnote { display:none; }
+ .calculator-page .sticky-result { top:0; margin:0; width:100%; border-radius:0; padding:8px 16px; min-height:0; gap:12px; grid-template-columns:1fr auto; }
+ .calculator-page .sticky-result-copy, .calculator-page .sticky-metric-secondary { display:none; }
+ .calculator-page .sticky-metric { display:flex; align-items:baseline; gap:8px; }
+ .calculator-page .sticky-metric > strong { font-size:22px; }
+ .calculator-page .sticky-link { display:block; font-size:13px; }
+ .calculator-page .page-main { padding:14px 0 30px; }
+ .calculator-page .intro-row { display:none; }
+ .calculator-page .section-jumps { gap:6px; margin-bottom:12px; }
+ .calculator-page .section-jumps a { flex:1; padding:11px 5px; text-align:center; font-size:13px; }
+ .calculator-page .step-card { padding:18px 16px; scroll-margin-top:70px; }
+ .calculator-page .section-lede { font-size:14px; margin-bottom:12px; }
+ .calculator-page #selected-fare-context { font-size:12px; margin-bottom:12px; padding:8px 10px; }
+ .calculator-page .field-grid { gap:14px; }
+ .calculator-page .field label { font-size:14px; }
+ .calculator-page .input-help > summary { min-height:44px; }
+ .calculator-page #full-result { scroll-margin-top:65px; }
+}
+
+@media(max-width:600px) {
+ .calculator-page .hero-lede { max-width:none; }
+ .calculator-page .value-card > .section-lede { display:none; }
+ .calculator-page #selected-fare-context { margin:0 0 10px; }
+ .calculator-page #selected-fare-context > strong { display:none; }
+ .calculator-page #selected-fare-context summary { min-height:36px; }
+ .calculator-page .award-rate { min-height:0; padding:10px 12px; gap:3px; }
+ .calculator-page .award-rate strong { font-size:24px; }
+ .calculator-page .award-rate-route { font-size:12px; }
+ .calculator-page .step-heading { margin-bottom:12px; }
+ .calculator-page .sticky-result .sticky-metric { padding:0; }
+}

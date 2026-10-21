@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="calculator-help.css">
   <script src="research-data.js" defer></script>
   <script src="app.js" defer></script>
+  <script src="calculator-layout.js" defer></script>
 </head>
 <body class="calculator-page">
   <header class="site-header">
@@ -64,6 +65,7 @@
       <details class="input-help"><summary>Model scope</summary><p class="intro-note">The model starts with zero existing miles. It estimates future earning; it is not a valuation of a balance you already own.</p></details>
     </div>
 
+    <nav class="section-jumps" aria-label="Calculator sections"><a href="#value-section">1 Value</a><a href="#earn-section">2 Earn</a><a href="#cost-section">3 Cost</a><a href="#full-result">Result ↓</a></nav>
     <div class="input-error" id="input-errors" role="alert" hidden></div>
 
     <form id="calculator-form" class="calculator-form" novalidate>

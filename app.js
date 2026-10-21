@@ -660,7 +660,16 @@
   function promotionOptionLabel(promotion, expiryStatus) {
     const expiry = promotion.expiry ? ` · through ${promotion.expiry.slice(0, 10)}` : "";
     const status = expiryStatus.disabled || expiryStatus.illustration ? ` · ${expiryStatus.label}` : expiry;
-    return `${promotion.label}${status}`;
+    const shortLabels = {
+      "citi-rewards-16k": "Citi Rewards · 16k miles",
+      "citi-premiermiles-8k": "Citi PremierMiles · 8k · fee waived",
+      "dbs-altitude-28k": "DBS Altitude · 28k miles",
+      "sc-x-2019": "SC X 2019 · 60k · expired",
+      "citi-premiermiles-paid-30k-direct-2027": "Citi PremierMiles · 30k · paid",
+      "amex-krisflyer-ascend-45k-new-to-amex-2027": "AMEX Ascend · 45k · two fees",
+      "hsbc-travelone-new-customer-20k-2026-10": "HSBC TravelOne · 20k · assumed",
+    };
+    return shortLabels[promotion.id] || `${promotion.label}${status}`;
   }
 
   const promotionById = new Map(research.promotions.map((promotion) => [promotion.id, promotion]));
